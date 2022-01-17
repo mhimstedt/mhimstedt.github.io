@@ -4,7 +4,7 @@ title: Projects
 permalink: /projects/
 description: An overview of publicly funded projects I've been working on.
 nav: true
-display_categories: [University of L\"ubeck, HTW Dresden, UTS Sydney]
+display_categories: [work]
 horizontal: false
 ---
 <div class="projects">
