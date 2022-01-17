@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Projects
+title: projects
 permalink: /projects/
-description: An overview of publicly funded projects I've been working on.
+description: A growing collection of your cool projects.
 nav: true
-display_categories: [University of L\"ubeck, HTW Dresden, UTS Sydney]
+display_categories: [work, fun]
 horizontal: false
 ---
 <div class="projects">
