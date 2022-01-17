@@ -15,9 +15,9 @@ Since 2022 I am independently teaching the following courses:
 
 As a postdoc with the Institute of Medical Informatics I have been involved in the following courses:
 <ul>
-    <li>Programming for Machine Learning and Image Analysis in Medicine, Exercise organisation and teaching assistant</li>
-    <li>Medical Deep Learning, Exercise organisation and teaching assistant</li>
-    <li>Advanded Methods of Medical Image Analysis, Exercise organisation and teaching assistant</li>
+    <li>Programming for Machine Learning and Image Analysis in Medicine, since 2021, Exercise organisation and teaching assistant</li>
+    <li>Medical Deep Learning, since 2021, Exercise organisation and teaching assistant</li>
+    <li>Advanded Methods of Medical Image Analysis, since 2021, Exercise organisation and teaching assistant</li>
 </ul>
 
 While being a PhD student with the Institute of Computer Engineering I was involved in the following courses:
