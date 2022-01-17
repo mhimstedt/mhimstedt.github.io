@@ -2,10 +2,28 @@
 layout: page
 permalink: /teaching/
 title: teaching
-description: Materials for courses you taught. Replace this text with your description.
+description: Overview of taught courses
 nav: true
 ---
 
-For now, this page is assumed to be a static description of your courses. You can convert it to a collection similar to `_projects/` so that you can have a dedicated page for each course.
+<h2> University of Lübeck </h2>
 
-Organize your courses by years, topics, or universities, however you like!
+Since 2022 I am independently teaching the following courses:
+<ul>
+    <li>Programming for Machine Learning and Image Analysis in Medicine</li>
+</ul>
+
+As a postdoc with the Institute of Medical Informatics I have been involved in the following courses:
+<ul>
+    <li>Programming for Machine Learning and Image Analysis in Medicine, Exercise organisation and teaching assistant</li>
+    <li>Medical Deep Learning, Exercise organisation and teaching assistant</li>
+    <li>Advanded Methods of Medical Image Analysis, Exercise organisation and teaching assistant</li>
+</ul>
+
+While being a PhD student with the Institute of Computer Engineering I was involved in the following courses:
+<ul>
+    <li>Embedded Systems, 2015-2016, Exercise organisation and teaching assistant</li>
+    <li>Fundamentals of Computer Engineering I+II, 2013-2015, Teaching assistant</li>
+    <li>Introduction to Robotics and Automation, 2015-2016, Exercise organisation and teaching assistant</li>
+    <li>Mobile Robots, 2016, Teaching assistant</li>
+</ul>
