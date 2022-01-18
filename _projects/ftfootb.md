@@ -15,11 +15,3 @@ The use of automated guided vehicles (AGVs) is of great advantage in manufacturi
 <div class="caption">
     FTF out-of-the-box in action.
 </div>
-
-
-    ---
-    layout: page
-    title: FTF out-of-the-box
-    description: Situational behavior control for interactive driverless transportation vehicles
-    img: /assets/img/ftfootb.jpg
-    ---
