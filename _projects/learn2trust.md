@@ -11,7 +11,7 @@ Learn2Trust is a research project in the field of university education. It aims 
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% responsive_image path: assets/img/learn2trust_logo.jpg title: "Learn2Trust - a KI-Campus education project." class: "img-fluid rounded z-depth-1" %}
+        {% responsive_image path: assets/img/learn2trust_logo.png title: "Learn2Trust - a KI-Campus education project." class: "img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
