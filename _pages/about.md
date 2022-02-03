@@ -17,7 +17,7 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-I am a lecturer and postdoctoral researcher at the [University of Lübeck, Germany](https://www.uni-luebeck.de/universitaet/universitaet.html) working in the [Medical Deep Learning Lab](https://www.imi.uni-luebeck.de/en/research/medical-deep-learning-lab.html) (headed by Prof. Mattias Heinrich) of the [Institute of Medical Informatics](https://www.imi.uni-luebeck.de/en/institute.html).
+I am a lecturer and senior researcher at the [University of Lübeck, Germany](https://www.uni-luebeck.de/universitaet/universitaet.html) working in the [Medical Deep Learning Lab](https://www.imi.uni-luebeck.de/en/research/medical-deep-learning-lab.html) (headed by Prof. Mattias Heinrich) of the [Institute of Medical Informatics](https://www.imi.uni-luebeck.de/en/institute.html).
 
 My research is at intersection of computer vision, robotics, machine learning and medical technology. I mainly focus on geometric vision and deep learning for navigation tasks such as simultaneous localization and mapping for endoscopic applications as well as 2D-3D registration.
 
