@@ -1,6 +1,6 @@
 ---
 layout: page
-title: projects
+title: Projects
 permalink: /projects/
 description: An overview of publicly funded projects I've been working on.
 nav: true

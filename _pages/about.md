@@ -6,7 +6,7 @@ description: Lecturer and Postdoctoral Researcher
 
 profile:
   align: right
-  image: prof_pic.jpg
+  image: prof_pic.png
   address: >
     <p>Ratzeburger Allee 160</p>
     <p>23562 L\"ubeck</p>
