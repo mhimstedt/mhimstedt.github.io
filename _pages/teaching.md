@@ -20,7 +20,7 @@ As a postdoc with the Institute of Medical Informatics I have been involved in t
     <li>Advanded Methods of Medical Image Analysis, since 2021, Exercise organisation and teaching assistant</li>
 </ul>
 
-While being a PhD student with the Institute of Computer Engineering I was involved in the following courses:
+As a PhD student with the Institute of Computer Engineering I was involved in the following courses:
 <ul>
     <li>Embedded Systems, 2015-2016, Exercise organisation</li>
     <li>Fundamentals of Computer Engineering I+II, 2013-2015, Teaching assistant</li>
