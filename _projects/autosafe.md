@@ -2,7 +2,7 @@
 layout: page
 title: AutoSAFE
 description: AI-based ultrasound diagnosis
-img: assets/img/3.jpg
+img: assets/img/autosafe.png
 importance: 1
 category: work
 ---
