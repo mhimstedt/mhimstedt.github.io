@@ -9,7 +9,7 @@ profile:
   image: prof_pic.png
   address: >
     <p>Ratzeburger Allee 160</p>
-    <p>23562 L\"ubeck</p>
+    <p>23562 Lübeck</p>
     <p>Germany</p>
 
 news: true  # includes a list of news items
