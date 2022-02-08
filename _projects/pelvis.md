@@ -2,7 +2,7 @@
 layout: page
 title: PELVIS
 description: A sub-project of KI-SIGS
-img: assets/img/pelvis.jpg
+img: assets/img/pelvis.png
 importance: 1
 category: work
 ---
