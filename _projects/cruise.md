@@ -4,7 +4,7 @@ title: CRUISE
 description: A robotic car testbench 
 img: assets/img/cruise.png
 importance: 1
-category: work
+category: study
 ---
 
 
