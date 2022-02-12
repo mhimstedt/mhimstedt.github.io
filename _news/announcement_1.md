@@ -1,7 +1,7 @@
 ---
 layout: post
-date: 2015-10-22 15:59:00-0400
+date: 2022-11-30 22:00:00-0100
 inline: true
 ---
 
-A simple inline announcement.
+Our paper on inter-patient registration of lung airways has been accepted for BVM 2022. [Link](https://openreview.net/forum?id=MeuIztsSKYy)
