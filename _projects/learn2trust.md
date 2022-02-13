@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Learn2Trust
-description: a KI-Campus education project
+description: A KI-Campus education project
 img: assets/img/learn2trust_logo.png
 importance: 1
 category: work
