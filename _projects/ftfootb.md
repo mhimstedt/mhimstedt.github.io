@@ -1,8 +1,8 @@
 ---
 layout: page
 title: FTF out-of-the box
-description: Situational behavior control for interactive driverless transportation vehicles
-img: assets/img/etv_small.jpg
+description: Interactive driverless transportation vehicles
+img: assets/img/etv_small.png
 importance: 1
 category: work
 youtubeId: d3__3lry3co
