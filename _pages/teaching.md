@@ -10,7 +10,8 @@ nav: true
 
 Since 2022 I am independently teaching the following courses:
 <ul>
-    <li>Programming for Machine Learning and Image Analysis in Medicine</li>
+    <li>Programming for Machine Learning and Image Analysis in Medicine (lectures, exercises) </li>
+    <li>Model- and AI-based Image Analysis in Medicine (lectures)</li>
 </ul>
 
 As a postdoc with the Institute of Medical Informatics I have been involved in the following courses:
