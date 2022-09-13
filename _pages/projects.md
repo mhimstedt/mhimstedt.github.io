@@ -4,7 +4,7 @@ title: Projects
 permalink: /projects/
 description: An overview of funded projects I've been working on.
 nav: true
-display_categories: [ongoing] [completed]
+display_categories: [ongoing, completed]
 horizontal: false
 ---
 <div class="projects">
