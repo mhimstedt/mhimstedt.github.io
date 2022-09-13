@@ -4,7 +4,7 @@ title: FTF out-of-the box
 description: Interactive driverless transportation vehicles
 img: assets/img/ftfootb.png
 importance: 1
-category: work
+category: completed
 youtubeId: d3__3lry3co
 ---
 

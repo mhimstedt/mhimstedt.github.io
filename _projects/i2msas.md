@@ -4,7 +4,7 @@ title: I<sup>2</sup>MSAS
 description: Robot assistant for Dresden Technical Collections
 img: assets/img/i2msas.png
 importance: 1
-category: work
+category: completed
 youtubeId: tbK3QB-yoig
 ---
 

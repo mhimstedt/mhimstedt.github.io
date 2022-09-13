@@ -4,7 +4,7 @@ title: PELVIS
 description: A sub-project of KI-SIGS
 img: assets/img/pelvis.png
 importance: 1
-category: work
+category: completed
 ---
 
 [PELVIS](https://ki-sigs.de/projekt/AP%20370) is a sub-project of the large [KI-SIGS](https://ki-sigs.de) consortia. 

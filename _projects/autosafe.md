@@ -4,7 +4,7 @@ title: AutoSAFE
 description: AI-based ultrasound diagnosis
 img: assets/img/autosafe.png
 importance: 1
-category: work
+category: ongoing
 ---
 
 The project AutoSAFE addresses ultrasound diagnostics for fracture diagnosis in children as part of point of care diagnostics (POCUS) for pediatric emergency settings. 

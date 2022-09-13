@@ -4,7 +4,7 @@ title: CRUISE
 description: A robotic car testbench 
 img: assets/img/ftfootb3.png
 importance: 1
-category: other
+category: completed
 ---
 
 
