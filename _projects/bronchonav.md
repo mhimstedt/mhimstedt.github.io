@@ -9,12 +9,11 @@ category: ongoing
 
 Video Bronchoscopy (VB) is commonly applied in conjunction with lung diseases. It is a fundamental procedure for diagnosis of lung cancer enabling biopsy of deep airway tissue. In addition to that, VB is routinely conducted for monitoring Chronic Obstructive Pulmonary Disease (COPD) patients and clarification of acute respiratory problems at Intensive Care Units (ICU). The navigation within the bronchial tree is challenging and physically demanding for physicians due to homogenous textures and perceptually similar appearance of bronchial orifices. This is particularly the case in the absence of prior CT scans and Electromagnetic Tracking (EMT) systems at ICUs. BronchoNAV investigates novel AI-based methods to enable support for physicians while navigating inside the bronchial tree using solely vision as input, omitting EMT and prior patient-specific CT scans. It enables real-time superimpositions of detected airway orifices supplemented with recognized anatomical airway labels (e.g. RB1, TriLuL etc.). 
 
-<div class="row justify-content-sm-center">
+
+
+<div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/airway_orifice_virtual.png" title="Virtual bronchoscopy with overlaid airway orifice segmentation." class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/airway_orifice_real.png" title="Real bronchoscopy with overlaid airway orifice segmentation." class="img-fluid rounded z-depth-1" %}
+        {% responsive_image path: assets/img/airway_orifice_segmentation.png title: "BronchoNAV" class: "img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
