@@ -6,25 +6,48 @@ description: Overview of taught courses
 nav: true
 ---
 
-<h2> University of Lübeck </h2>
+<h4> Technical University of Applied Sciences Lübeck </h4>
 
-Since 2022 I am independently teaching the following courses:
+Since 2024 I'm teaching the following courses for the study programs Computer Science (CS, BSc & MSc), IT & Design (ITD, BSc), Biomedical Engineering (BME, MSc) and Applied Information Technology (AIT, MSc):
 <ul>
-    <li>Programming for Machine Learning and Image Analysis in Medicine (lectures, exercises) </li>
-    <li>Model- and AI-based Image Analysis in Medicine (lectures)</li>
+    <li>Computer networks (ITD, BSc)</li>
+    <li>Fundamentals of programming (ITD, BSc)</li>
+    <li>Advanced programming (ITD, BSc)</li>
+    <li>Medical AI (CS, AIT, BME, all MSc)</li>
+    <li>Software- and Web-Engineering I (CS, BSc)</li>
 </ul>
 
-As a postdoc with the Institute of Medical Informatics I have been involved in the following courses:
+<h4> DHSH University of Applied Sciences Kiel </h4>
+
+In the time 2022-2024 I taught the following courses for the study programs IT & business (ITB, BSc) and business adminstration (BA, BSc):
 <ul>
-    <li>Programming for Machine Learning and Image Analysis in Medicine, since 2021, Exercise organisation</li>
-    <li>Medical Deep Learning, since 2021, Exercise organisation</li>
-    <li>Advanded Methods of Medical Image Analysis, since 2021, Exercise organisation and teaching assistant</li>
+    <li>Mathematics (BA, BSc)</li>
+    <li>Statistics (BA, BSc)</li>
+    <li>Fundamentals of computer science (ITB, BSc)</li>
+    <li>IT project management (jointly with Prof Sachtler, ITB, BSc)</li>
+    <li>Computing platforms and networks (jointly with Prof Paar, ITB, BSc)</li>
+    <li>Programming II (ITB, BSc)</li>
 </ul>
 
-As a PhD student with the Institute of Computer Engineering I was involved in the following courses:
+<h4> University of Lübeck </h4>
+
+As lecturer I independently tought the following courses for the study programs Medical Informatics (MI, BSc/MSc) and Medical Engineering in 2022 (ME, BSc/MSc):
 <ul>
-    <li>Embedded Systems, 2015-2016, Exercise organisation</li>
-    <li>Fundamentals of Computer Engineering I+II, 2013-2015, Teaching assistant</li>
-    <li>Introduction to Robotics and Automation, 2015-2016, Exercise organisation</li>
-    <li>Mobile Robots, 2016, Teaching assistant</li>
+    <li>Programming for Machine Learning and Image Analysis in Medicine (MI/ME BSc) </li>
+    <li>Model- and AI-based Image Analysis in Medicine (lectures only, MI/ME MSc)</li>
+</ul>
+
+As a postdoc with the Institute of Medical Informatics I have been involved in the exercises of the following courses of Prof Heinrich in 2021-2022:
+<ul>
+    <li>Medical Deep Learning (MI/ME MSc)</li>
+    <li>Advanded Methods of Medical Image Analysis (MI/ME MSc)</li>
+    <li>Programming for Machine Learning and Image Analysis in Medicine (MI/ME BSc)</li>
+</ul>
+
+As a PhD student with the Institute of Computer Engineering I worked as teaching assistant for the following undergraduate courses in 2013-2016:
+<ul>
+    <li>Embedded Systems (CS/ME, BSc)</li>
+    <li>Fundamentals of Computer Engineering I+II (different BSc programs)</li>
+    <li>Introduction to Robotics and Automation (CS, BSc)</li>
+    <li>Mobile Robots (CS, BSc)</li>
 </ul>
