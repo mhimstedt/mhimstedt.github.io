@@ -3,12 +3,82 @@
 
 <body>
     <h1>Erstes Beispiel</h1>
+    <button id="fullscreenBtn" type="button">Vollbild</button>
 
-    <iframe srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="800" frameborder="0">
+    <iframe id="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="800" frameborder="0" allow="fullscreen" allowfullscreen>
         {'id': 'Java', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
         <script type="plain/text" title="Programm.java">
         </script>
     </iframe>
+
+
+	<script>
+		(function () {
+			var iframe = document.getElementById('ideFrame');
+			var btn = document.getElementById('fullscreenBtn');
+			var originalCssText = null;
+			var originalWidthAttr = null;
+			var originalHeightAttr = null;
+
+			function isFullscreenActiveFor(el) {
+				return document.fullscreenElement === el ||
+				       document.webkitFullscreenElement === el ||
+				       document.mozFullScreenElement === el ||
+				       document.msFullscreenElement === el;
+			}
+
+			function enterFullscreen(el) {
+				if (originalCssText === null) {
+					originalCssText = el.style.cssText;
+					originalWidthAttr = el.getAttribute('width');
+					originalHeightAttr = el.getAttribute('height');
+				}
+				if (el.requestFullscreen) return el.requestFullscreen();
+				if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+				if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+				if (el.msRequestFullscreen) return el.msRequestFullscreen();
+				return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+			}
+
+			function exitFullscreen() {
+				if (document.exitFullscreen) return document.exitFullscreen();
+				if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+				if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+				if (document.msExitFullscreen) return document.msExitFullscreen();
+				return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+			}
+
+			function syncButtonLabel() {
+				btn.textContent = isFullscreenActiveFor(iframe) ? 'Vollbild beenden' : 'Vollbild';
+			}
+
+			function toggleFullscreen() {
+				if (isFullscreenActiveFor(iframe)) {
+					exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+				} else {
+					enterFullscreen(iframe).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+				}
+			}
+
+			btn.addEventListener('click', toggleFullscreen);
+			['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+				.forEach(function(ev){
+					document.addEventListener(ev, function(){
+						syncButtonLabel();
+						if (!isFullscreenActiveFor(iframe) && originalCssText !== null) {
+							// Ursprungszustand wiederherstellen
+							iframe.style.cssText = originalCssText;
+							if (originalWidthAttr != null) iframe.setAttribute('width', originalWidthAttr); else iframe.removeAttribute('width');
+							if (originalHeightAttr != null) iframe.setAttribute('height', originalHeightAttr); else iframe.removeAttribute('height');
+							// Reflow anstoßen (Safari/WebKit)
+							void iframe.offsetHeight;
+						}
+					});
+				});
+
+			syncButtonLabel();
+		})();
+	</script>
 
 
 
