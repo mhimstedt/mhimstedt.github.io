@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/exercises/assets/exercises.css">
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content"><h1>Praktikum 1: Einstieg in die Java Online IDE</h1>
+<p>In diesem Praktikum lernen Sie die Java Online IDE (kurz: JOE) kennen und wenden erste Programmierkenntnisse aus der Vorlesung an.</p>
+<h2>Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+<li>sicher und zielführend mit der IDE umgehen</li>
+<li> Zeichenketten auf der Konsole ausgeben</li>
+<li> berichten, was mit JOE alles möglich ist </li>
+</ul>
+<h2>Vorbereitung</h2>
+<p>Bei diesem Praktikum ist noch keine Vorbereitung notwendig. Damit starten wir ab dem nächsten Termin.</p>
+<h2>Aufgaben</h2>
+<p>Bitte lösen Sie die folgenden Teilaufgaben mit JOE.</p>
+<h3>Teil 1 - IDE-Nutzung</h3>
+
+<p><input type="checkbox"> <strong>Start</strong> Führen Sie den gegebenen Code aus, indem Sie auf <img src="https://mhimstedt.github.io/prog/assets/graphics/start-darg.svg" alt="Run-Symbol"> klicken oder durch Drücken von F5 (das IDE-Fenster muss dafür aktiv sein, d.h. Sie müssen darauf klicken).</p>
+
+<p><input type="checkbox"> <strong>Vollbild</strong> Für das längere Arbeiten am Code empfiehlt sich der Vollbildmodus. Diesen können Sie durch Klicken von <img src="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" alt="Fullscreen-Symbol"> starten und später durch Drücken von ESC wieder verlassen. Probieren Sie das bitte nun selbst.</p>
+
+<p><input type="checkbox"> <strong>Schrittmodus</strong> Normalerweise wird immer Ihr vollständiges Programm ausgeführt. Sollten Sie das einmal nicht wollen, können Sie stattdessen auch schrittweise vorgehen. Dazu klicken Sie bitte das Icon neben <strong>Run</strong> <img src="https://mhimstedt.github.io/prog/assets/graphics/step-over-dark.svg" alt="Step-Symbol">. Erweitern Sie Ihren Programm-Code um weitere Zeilen (z.B. mehrere <strong>print()</strong>-Ausgaben) und gehen Sie schrittweise durch den Programm-Code. Die weiteren Icons/Funktionalitäten daneben werden Sie zu einem späteren Zeitpunkt genauer betrachten.</p>
+
+<p><input type="checkbox"> <strong>Speichern</strong> Ihr Programm-Code wird auf Ihrem Rechner im Browser gespeichert (genauer gesagt in einer <a href="https://de.wikipedia.org/wiki/Indexed_Database_API">IndexedDB</a>), d.h. dass diese auch nach einem Rechner-/Browser-Neustart in der Regel noch verfügbar sind. Sicherheitshalber sollten Sie aber auch regelmäßig ihren aktuellen Stand zwischenspeichern, insbesondere, wenn der Code komplexer wird. Das können Sie durch Klicken des Icon <img src="https://mhimstedt.github.io/prog/assets/graphics/save-dark.svg" alt="Save-Symbol"> erreichen. Die Dateien bekommen die Dateierweiterung <strong>*.json</strong>. Speichern Sie Ihren aktuellen Programm-Code bitte einmal auf Ihrer Festplatte.</p>
+
+<p><input type="checkbox"> <strong>Laden</strong> Den gespeicherten Code will man natürlich auch gern wieder laden. Dazu können Sie Dateien, die mit <strong>JOE</strong> (json) gespeichert wurden, durch Klicken des Icon <img src="https://mhimstedt.github.io/prog/assets/graphics/open-file.svg" alt="Load-Symbol"> öffnen. Laden Sie den eben gespeicherten Programm-Code bitte einmal von Ihrer Festplatte. Wenn Sie den Code vorher aus JOE entfernen (oder verändern), können Sie prüfen, dass wirklich der Code von der Festplatte geladen wird.
+<strong>Achtung: Sie können hier keine Textdateien, *.java-Dateien o.Ä. laden.</strong></p>
+
+<p><input type="checkbox"> <strong>Zurücksetzen</strong> Mit der Schaltfläche <strong>Code Reset</strong> können Sie Ihr Programm-Code (aus Ihrer Browser-Datenbank, siehe oben) löschen. Beachten Sie bitte, dass er dann aber nur durch das Laden von einer Datei wiederhergestellt werden kann. Testen Sie das Feature auch gern mal.</p>
+
+<div class="admonition note"><p class="admonition-title">Hinweis</p><p><strong>Tipp:</strong> Wenn Sie keinen gültigen Programm-Code haben, d.h. bspw. Syntaxfehler oder leere Quelldateien, wird das Symbol <img src="https://mhimstedt.github.io/prog/assets/graphics/start-darg.svg" alt="Run-Symbol"> nicht angezeigt. Erst, wenn Sie die Fehler korrigiert haben, lässt sich das Programm wieder ausführen.</p>
+<p><strong>Aber:</strong> Das heißt wiederum nicht, dass ihr Programm korrekt läuft, nur, weil Sie es starten können. Im Laufe des Kurses werden wir noch weitere Fehlerquellen kennenlernen, die nicht vorab erkennbar sind.</p>
+</div>
+
+<div class="ide-container">
+  <div class="ide-inner">
+      <button class="fullscreenBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+              <path d="./assets/graphics/whole-window.svg" />
+          </svg>
+      </button>
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+          {'id': 'Java1', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+          <script type="plain/text" title="Programm.java"></script>
+      </iframe>
+  </div>
+</div>
+  
+</div><h3>Teil 2 - Inspiration und Motivation</h3>
+<p>Die folgenden Programme sollen Ihnen ein Gefühl geben, was wir <strong>JOE</strong> und <strong>Java</strong> alles machen können. Starten Sie bitte die Programme und spielen Sie gern etwas damit herum. Ich hoffe, dass diese Beispiele motivieren, das Programmieren zu lernen. <strong>Viel Spaß!</strong></p>
+<div class="ide-container">
+  <div class="ide-inner">
+      <button class="fullscreenBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+              <path d="./assets/graphics/whole-window.svg" />
+          </svg>
+      </button>
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+          {'id': 'Java2', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+          <script type="plain/text" title="Programm.java"></script>
+      </iframe>
+  </div>
+</div>
+
+
+</main>
+
+</body>
+</html>
