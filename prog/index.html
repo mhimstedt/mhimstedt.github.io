@@ -95,7 +95,7 @@
                 // Icon einsetzen, falls noch nicht vorhanden
                 if (!btn.querySelector('img')) {
                     var img = document.createElement('img');
-                    img.src = 'assets/graphics/whole_window.png';
+                    img.src = 'assets/graphics/whole-window.svg';
                     img.alt = '';
                     btn.appendChild(img);
                 }
@@ -132,7 +132,7 @@
         <div class="ide-inner">
             <button class="fullscreenBtn" type="button">
                 <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
-                    <path d="./assets/graphics/whole_window.svg" />
+                    <path d="./assets/graphics/whole-window.svg" />
                 </svg>
             </button>
             <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
@@ -146,7 +146,7 @@
         <h1>Zweites Beispiel</h1>
         <div class="ide-inner">
             <button class="fullscreenBtn" type="button">
-                <img src="./assets/graphics/whole_window.svg" alt="Vollbild">
+                <img src="./assets/graphics/whole-window.svg" alt="Vollbild">
             </button>
             <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
                 {'id': 'Java2', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
