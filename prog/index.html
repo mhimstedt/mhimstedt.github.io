@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html>
-
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+            #ideFrame {
+                width: 80vw;           /* 80% der Browserbreite */
+                height: 80vh;
+                aspect-ratio: 16 / 9;    /* entspricht 1000x800 */
+                display: block;
+                margin: 12px auto 0;    /* zentriert */
+            }
+            /* Fallback falls aspect-ratio nicht unterstützt wird */
+            @supports not (aspect-ratio: 1) {
+                #ideFrame { height: calc(80vw * 0.8); }
+            }
+        </style>
+    </head>
 <body>
     <h1>Erstes Beispiel</h1>
     <button id="fullscreenBtn" type="button">Vollbild</button>
 
-    <iframe id="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="800" frameborder="0" allow="fullscreen" allowfullscreen>
+    <iframe id="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
         {'id': 'Java', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
         <script type="plain/text" title="Programm.java">
         </script>
