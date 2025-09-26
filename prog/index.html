@@ -5,99 +5,156 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
             body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
-            #ideFrame {
-                width: 80vw;           /* 80% der Browserbreite */
-                height: 80vh;
-                aspect-ratio: 16 / 9;    /* entspricht 1000x800 */
-                display: block;
-                margin: 12px auto 0;    /* zentriert */
+            .ide-container { margin-bottom: 32px; }
+            .ide-inner {
+                position: relative;
+                width: 80vw;
+                margin: 12px auto 0;
             }
-            /* Fallback falls aspect-ratio nicht unterstützt wird */
+            .fullscreenBtn {
+				position: absolute;
+				top: 8px;
+				right: 8px;
+				z-index: 2;
+				width: 36px;
+				height: 36px;
+				padding: 0;
+				border: none;
+				border-radius: 6px;
+				background: rgb(255, 255, 255);
+				cursor: pointer;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+            }
+			.fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+            .ideFrame {
+                width: 100%;
+                height: 80vh;
+                aspect-ratio: 16 / 9;
+                display: block;
+            }
             @supports not (aspect-ratio: 1) {
-                #ideFrame { height: calc(80vw * 0.8); }
+                .ideFrame { height: calc(80vw * 0.5625); }
             }
         </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                (function () {
+                    var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                    var stateByIframe = new WeakMap();
+
+                    function isFullscreenActiveFor(el) {
+                        return document.fullscreenElement === el ||
+                               document.webkitFullscreenElement === el ||
+                               document.mozFullScreenElement === el ||
+                               document.msFullscreenElement === el;
+                    }
+
+                    function enterFullscreen(el) {
+                        if (!stateByIframe.has(el)) {
+                            stateByIframe.set(el, {
+                                originalCssText: el.style.cssText,
+                                originalWidthAttr: el.getAttribute('width'),
+                                originalHeightAttr: el.getAttribute('height')
+                            });
+                        }
+                        if (el.requestFullscreen) return el.requestFullscreen();
+                        if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                        if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                        if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                        return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                    }
+
+                    function exitFullscreen() {
+                        if (document.exitFullscreen) return document.exitFullscreen();
+                        if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                        if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                        if (document.msExitFullscreen) return document.msExitFullscreen();
+                        return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                    }
+
+            function setButtonLabel(btn, isFull) {
+                var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+                btn.setAttribute('aria-label', label);
+                btn.setAttribute('title', label);
+            }
+
+                    function toggleFor(iframeEl, btnEl) {
+                        if (isFullscreenActiveFor(iframeEl)) {
+                            exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                        } else {
+                            enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                        }
+                    }
+
+            containers.forEach(function(container){
+                var btn = container.querySelector('.fullscreenBtn');
+                var iframe = container.querySelector('.ideFrame');
+                if (!btn || !iframe) return;
+                // Icon einsetzen, falls noch nicht vorhanden
+                if (!btn.querySelector('img')) {
+                    var img = document.createElement('img');
+                    img.src = 'assets/graphics/whole_window.png';
+                    img.alt = '';
+                    btn.appendChild(img);
+                }
+                setButtonLabel(btn, isFullscreenActiveFor(iframe));
+                btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+            });
+
+                    ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                        .forEach(function(ev){
+                            document.addEventListener(ev, function(){
+                                containers.forEach(function(container){
+                                    var btn = container.querySelector('.fullscreenBtn');
+                                    var iframe = container.querySelector('.ideFrame');
+                                    if (!btn || !iframe) return;
+                                    var isFull = isFullscreenActiveFor(iframe);
+                                    setButtonLabel(btn, isFull);
+                                    if (!isFull && stateByIframe.has(iframe)) {
+                                        var st = stateByIframe.get(iframe);
+                                        iframe.style.cssText = st.originalCssText || '';
+                                        if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                        if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                        void iframe.offsetHeight;
+                                    }
+                                });
+                            });
+                        });
+                })();
+            });
+        </script>
     </head>
 <body>
-    <h1>Erstes Beispiel</h1>
-    <button id="fullscreenBtn" type="button">Vollbild</button>
+    <div class="ide-container">
+        <h1>Erstes Beispiel</h1>
+        <div class="ide-inner">
+            <button class="fullscreenBtn" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                    <path d="./assets/graphics/whole_window.svg" />
+                </svg>
+            </button>
+            <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+                {'id': 'Java1', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+                <script type="plain/text" title="Programm.java"></script>
+            </iframe>
+        </div>
+    </div>
 
-    <iframe id="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
-        {'id': 'Java', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
-        <script type="plain/text" title="Programm.java">
-        </script>
-    </iframe>
-
-
-	<script>
-		(function () {
-			var iframe = document.getElementById('ideFrame');
-			var btn = document.getElementById('fullscreenBtn');
-			var originalCssText = null;
-			var originalWidthAttr = null;
-			var originalHeightAttr = null;
-
-			function isFullscreenActiveFor(el) {
-				return document.fullscreenElement === el ||
-				       document.webkitFullscreenElement === el ||
-				       document.mozFullScreenElement === el ||
-				       document.msFullscreenElement === el;
-			}
-
-			function enterFullscreen(el) {
-				if (originalCssText === null) {
-					originalCssText = el.style.cssText;
-					originalWidthAttr = el.getAttribute('width');
-					originalHeightAttr = el.getAttribute('height');
-				}
-				if (el.requestFullscreen) return el.requestFullscreen();
-				if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
-				if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
-				if (el.msRequestFullscreen) return el.msRequestFullscreen();
-				return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
-			}
-
-			function exitFullscreen() {
-				if (document.exitFullscreen) return document.exitFullscreen();
-				if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
-				if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
-				if (document.msExitFullscreen) return document.msExitFullscreen();
-				return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
-			}
-
-			function syncButtonLabel() {
-				btn.textContent = isFullscreenActiveFor(iframe) ? 'Vollbild beenden' : 'Vollbild';
-			}
-
-			function toggleFullscreen() {
-				if (isFullscreenActiveFor(iframe)) {
-					exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
-				} else {
-					enterFullscreen(iframe).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
-				}
-			}
-
-			btn.addEventListener('click', toggleFullscreen);
-			['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
-				.forEach(function(ev){
-					document.addEventListener(ev, function(){
-						syncButtonLabel();
-						if (!isFullscreenActiveFor(iframe) && originalCssText !== null) {
-							// Ursprungszustand wiederherstellen
-							iframe.style.cssText = originalCssText;
-							if (originalWidthAttr != null) iframe.setAttribute('width', originalWidthAttr); else iframe.removeAttribute('width');
-							if (originalHeightAttr != null) iframe.setAttribute('height', originalHeightAttr); else iframe.removeAttribute('height');
-							// Reflow anstoßen (Safari/WebKit)
-							void iframe.offsetHeight;
-						}
-					});
-				});
-
-			syncButtonLabel();
-		})();
-	</script>
-
-
+    <div class="ide-container">
+        <h1>Zweites Beispiel</h1>
+        <div class="ide-inner">
+            <button class="fullscreenBtn" type="button">
+                <img src="./assets/graphics/whole_window.svg" alt="Vollbild">
+            </button>
+            <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+                {'id': 'Java2', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+                <script type="plain/text" title="Programm.java"></script>
+            </iframe>
+        </div>
+    </div>
+	
 
 
 
