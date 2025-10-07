@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GProg Praktikum 1</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="exercises.css">
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content"><h1>Praktikum 1: Einstieg in die Java Online IDE</h1>
+<p>In diesem Praktikum lernen Sie die Java Online IDE (kurz: JOE) kennen und wenden erste Programmierkenntnisse aus der Vorlesung an.</p>
+<h2>Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+<li>sicher und zielführend mit der IDE umgehen</li>
+<li> Zeichenketten auf der Konsole ausgeben</li>
+<li> berichten, was mit JOE alles möglich ist </li>
+</ul>
+<h2>Vorbereitung</h2>
+<p>Bei diesem Praktikum ist noch keine Vorbereitung notwendig. Damit starten wir ab dem nächsten Termin.</p>
+<h2>Aufgaben</h2>
+<p>Bitte lösen Sie die folgenden Teilaufgaben mit JOE.</p>
+<h3>Teil 1 - IDE-Nutzung</h3>
+
+<p><input type="checkbox"> <strong>Start</strong> Führen Sie den gegebenen Code aus, indem Sie auf <img src="https://mhimstedt.github.io/prog/assets/graphics/start-darg.svg" alt="Run-Symbol"> klicken oder durch Drücken von F5 (das IDE-Fenster muss dafür aktiv sein, d.h. Sie müssen darauf klicken).</p>
+
+<p><input type="checkbox"> <strong>Vollbild</strong> Für das längere Arbeiten am Code empfiehlt sich der Vollbildmodus. Diesen können Sie durch Klicken von <img src="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" alt="Fullscreen-Symbol"> starten und später durch Drücken von ESC wieder verlassen. Probieren Sie das bitte nun selbst.</p>
+
+<p><input type="checkbox"> <strong>Schrittmodus</strong> Normalerweise wird immer Ihr vollständiges Programm ausgeführt. Sollten Sie das einmal nicht wollen, können Sie stattdessen auch schrittweise vorgehen. Dazu klicken Sie bitte das Icon neben <strong>Run</strong> <img src="https://mhimstedt.github.io/prog/assets/graphics/step-over-dark.svg" alt="Step-Symbol">. Erweitern Sie Ihren Programm-Code um weitere Zeilen (z.B. mehrere <strong>print()</strong>-Ausgaben) und gehen Sie schrittweise durch den Programm-Code. Die weiteren Icons/Funktionalitäten daneben werden Sie zu einem späteren Zeitpunkt genauer betrachten.</p>
+
+<p><input type="checkbox"> <strong>Speichern</strong> Ihr Programm-Code wird auf Ihrem Rechner im Browser gespeichert (genauer gesagt in einer <a href="https://de.wikipedia.org/wiki/Indexed_Database_API">IndexedDB</a>), d.h. dass diese auch nach einem Rechner-/Browser-Neustart in der Regel noch verfügbar sind. Sicherheitshalber sollten Sie aber auch regelmäßig ihren aktuellen Stand zwischenspeichern, insbesondere, wenn der Code komplexer wird. Das können Sie durch Klicken des Icon <img src="https://mhimstedt.github.io/prog/assets/graphics/save-dark.svg" alt="Save-Symbol"> erreichen. Die Dateien bekommen die Dateierweiterung <strong>*.json</strong>. Speichern Sie Ihren aktuellen Programm-Code bitte einmal auf Ihrer Festplatte.</p>
+
+<p><input type="checkbox"> <strong>Laden</strong> Den gespeicherten Code will man natürlich auch gern wieder laden. Dazu können Sie Dateien, die mit <strong>JOE</strong> (json) gespeichert wurden, durch Klicken des Icon <img src="https://mhimstedt.github.io/prog/assets/graphics/open-file.svg" alt="Load-Symbol"> öffnen. Laden Sie den eben gespeicherten Programm-Code bitte einmal von Ihrer Festplatte. Wenn Sie den Code vorher aus JOE entfernen (oder verändern), können Sie prüfen, dass wirklich der Code von der Festplatte geladen wird.
+<strong>Achtung: Sie können hier keine Textdateien, *.java-Dateien o.ä. laden.</strong></p>
+
+<p><input type="checkbox"> <strong>Zurücksetzen</strong> Mit der Schaltfläche <strong>Code Reset</strong> können Sie Ihr Programm-Code (aus Ihrer Browser-Datenbank, siehe oben) löschen. Beachten Sie bitte, dass er dann aber nur durch das Laden von einer Datei wiederhergestellt werden kann. Testen Sie das Feature auch gern mal.</p>
+
+<div class="admonition note"><p class="admonition-title">Hinweis</p><p><strong>Tipp:</strong> Wenn Sie keinen gültigen Programm-Code haben, d.h. bspw. Syntaxfehler oder leere Quelldateien, wird das Symbol <img src="https://mhimstedt.github.io/prog/assets/graphics/start-darg.svg" alt="Run-Symbol"> nicht angezeigt. Erst, wenn Sie die Fehler korrigiert haben, lässt sich das Programm wieder ausführen.</p>
+<p><strong>Aber:</strong> Das heißt wiederum nicht, dass ihr Programm korrekt läuft, nur, weil Sie es starten können. Im Laufe des Kurses werden wir noch weitere Fehlerquellen kennenlernen, die nicht vorab erkennbar sind.</p>
+</div>
+
+<div class="ide-container">
+  <div class="ide-inner">
+      <button class="fullscreenBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+              <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+          </svg>
+      </button>
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+          {'id': 'Intro', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+          <script type="plain/text" title="Programm.java">
+println("Willkommen in GProg! Ich bin JOE!");
+// Hier ist eine Spielwiese ...
+          </script>
+      </iframe>
+  </div>
+</div>
+
+<h3>Teil 2 - Erste Schritte</h3>
+<p>In der folgenden Teilaufgabe wollen wir den Namen von Benutzer:innen über die Konsole einlesen, um diese persönlich zu begrüßen. </p> 
+
+<div class="admonition note">
+    <p class="admonition-title">Hinweis</p><p>Das Einlesen von der Konsole können Sie mit Hilfe von <strong>Input.readString("")</strong> realisieren. Mit <strong>println()</strong> können Sie etwas ausgeben. Durch Verschachteln dieser beiden Funktionen können Sie - ohne Zwischenspeicherung - eingelesene Werte direkt wieder ausgeben, z.B. println(Input.readString()). Außerdem können Sie auch Zeichenketten mit dem <strong>+</strong>-Operator verbinden (siehe folgendes Bsp.). </p>
+</div>
+<p><input type="checkbox"> <strong>Frage</strong> Fragen Sie den/die Benutzer:in nach dem Vornamen: <i>Bitte geben Sie Ihren Vornamen ein:</i> </p>
+<p><input type="checkbox"> <strong>Einlesen</strong> Lesen Sie bitte nun den Vornamen ein. </p>
+<p><input type="checkbox"> <strong>Ausgabe</strong> Geben Sie zunächst durch Verschachteln von println() und Input.readString() den Namen direkt wieder aus. </p>
+<p><input type="checkbox"> <strong>Begrüßung</strong> Passen Sie den Code nun bitte so an, dass der/die Benutzer:in persönlich begrüßt wird: <i>Hallo ...! Willkommen bei GProg!</i> </p>
+
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'Greeting', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+                println("Ich bin nun im " + "GProg" + "-Kurs" + "eingeschrieben");
+            </script>
+        </iframe>
+    </div>
+</div>
+  
+</div><h3>Teil 3 - Inspiration und Motivation</h3>
+<p>Die folgenden Programme sollen Ihnen ein Gefühl geben, was wir mit <strong>JOE</strong> und <strong>Java</strong> alles machen können. Starten Sie bitte die Programme und spielen Sie gern etwas damit herum. Ich hoffe, dass diese Beispiele motivieren, das Programmieren zu lernen. <strong>Keine Sorge: Sie müssen den Programm-Code noch nicht verstehen. Dafür haben wir jetzt die nächsten beiden Semester Zeit. </strong>Viel Spaß!</p>
+
+<p>JOE kann eine Vielzahl von <strong>2D-Grafiken</strong>, wie bspw. Dreiecke, Vierecke, Kreise und Polygone anzeigen. Neben verschiedenen Farben und Rändern lassen sich bspw. auch <a href="https://de.wikipedia.org/wiki/Alphakanal">Alpha-Kanäle</a> einstellen, um halbdurchlässige Objekte zu erzeugen.</p>
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'Grafik2D', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': true}
+            <script type="plain/text" title="Grafik2D.java">
+                World w = new World(800, 600);         // Grafikbereich anlegen
+                w.setBackgroundColor(Color.white);
+                
+                Circle c1 = new Circle(100, 100, 80);
+                c1.setFillColor(0xff8000);
+                c1.setBorderColor(Color.blue);
+                c1.setBorderWidth(20);
+                
+                Ellipse e1 = new Ellipse(500, 300, 150, 50);
+                e1.setFillColor(Color.red);
+                
+                Circle c2 = new Circle(200, 200, 150);
+                c2.setFillColor("rgb(50, 100, 50)", 0.5);
+                
+                Circle c3 = new Circle(400, 200, 150);
+                c3.setFillColor("rgba(0, 0, 255, 0.8)");
+                
+                for(int i = 1; i <= 10; i++) {
+                   Circle c = new Circle(70 * i, 500, 50);
+                   c.setFillColor(Math.floor(Math.random()*0xffffff), 0.1*i);
+                }
+            </script>
+            </iframe>
+      </div>
+  </div>
+
+<p>Das nächste Beispiel zeigt Ihnen das Spiel <strong>Pong</strong>. Um es zu starten, öffnen Sie bitte die Datei <textbf>Pong.java</textbf> und klicken Sie auf das Run-Symbol. Durch Drücken der Leertaste startet das Spiel. Sie können die Schläger mit Hilfe der Cursortasten (hoch/runter) sowie <textbf>Q</textbf> und <textbf>A</textbf> steuern. <strong>Beachten Sie bitte, dass die Menüleiste sich nun unten befindet. </strong></p>
+<div class="ide-container">
+  <div class="ide-inner">
+      <button class="fullscreenBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+              <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+          </svg>
+      </button>
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+          {'id': 'Pong', 'speed': 100000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': true}
+          <script type="plain/text" title="Ball.java">
+            class Ball extends Rectangle {
+   
+                double vx;
+                double vy;
+                Schlaeger schlaegerLinks;
+                Schlaeger schlaegerRechts;
+                Pong pong;
+             
+             
+                Ball(double breite, double x, double y, Schlaeger schlaegerLinks, Schlaeger schlaegerRechts, 
+                   Pong pong) {
+                   super(x - breite / 2, y - breite / 2, breite, breite);
+                   setFillColor(Color.white);
+                   this.schlaegerLinks = schlaegerLinks;
+                   this.schlaegerRechts = schlaegerRechts;
+                   this.pong = pong;
+             
+                   setzeZufallsGeschwindigkeit();
+                }
+             
+                public void act() {
+                   
+                   if(pong.zustand != "Im Spiel") {
+                      return;
+                   }
+             
+                   move(vx, vy);
+             
+                   if(getCenterY() < getWidth() / 2) {
+                      vy = vy * (-1);
+                   }
+             
+                   if(getCenterY() > 600 - getWidth() / 2) {
+                      vy = vy * (-1);
+                   }
+             
+                   if(collidesWith(schlaegerLinks) || collidesWith(schlaegerRechts)) {
+                      vx = vx * (-1);
+                   }
+             
+                   if(getCenterX() < - getWidth() / 2) {
+                      pong.punktFürRechtenSpieler();
+                      setzeZufallsGeschwindigkeit();
+                      moveTo(400, 300);
+                   }
+             
+                   if(getCenterX() > 800 + getWidth() / 2) {
+                      pong.punktFürLinkenSpieler();
+                      setzeZufallsGeschwindigkeit();
+                      moveTo(400, 300);
+                   }
+             
+                }
+                
+             
+                void setzeZufallsGeschwindigkeit() {
+             
+                   double r = Math.random() * 5 + 5;
+                   double winkelGrad = Math.random() * 50 + 20;
+                   double winkelRad = winkelGrad / 180 * Math.PI;
+                   
+                   vx = r * Math.cos(winkelRad);
+                   vy = - r * Math.sin(winkelRad);
+             
+                   if(Math.random() < 0.5) {
+                      vx = -vx;
+                   }
+             
+                   if(Math.random() < 0.5) {
+                      vy = -vy;
+                   }
+                }
+             }
+          </script>
+          <script type="plain/text" title="Schlaeger.java">
+            class Schlaeger extends Rectangle {
+   
+                String tasteRauf;
+                String tasteRunter;
+             
+                double dy = 5;
+                
+                Schlaeger(double x, double breite, double höhe, String tasteRauf, String tasteRunter) {
+                   super(x,(600 - höhe) / 2, breite, höhe);
+                   
+                   this.tasteRauf = tasteRauf;
+                   this.tasteRunter = tasteRunter;
+                   
+                   setFillColor(Color.white);
+                   
+                }
+             
+                public void act() {
+                   if(isKeyDown(tasteRauf)) {
+                      if(getCenterY() > getHeight() / 2) {
+                         move(0, -dy);
+                      }
+                   }
+                   
+                   if(isKeyDown(tasteRunter)) {
+                      if(getCenterY() < 600 - getHeight() / 2) {
+                         move(0, dy);
+                      }
+                   }
+                   
+                }
+             }
+        </script>
+        <script type="plain/text" title="Pong.java">
+            new Pong();
+
+            class Pong extends Actor {
+            
+            Text punkteanzeige;
+            
+            Text großeAnzeige;
+            
+            int punkteLinks = 0;
+            int punkteRechts = 0;
+            
+            String zustand;
+            
+            Schlaeger links;
+            Schlaeger rechts;
+            Ball ball;
+            
+            Pong() {
+                super();
+                links = new Schlaeger(0, 20, 200, "q", "a");
+                rechts = new Schlaeger(800 - 20, 20, 200, Key.ArrowUp, Key.ArrowDown);
+                ball = new Ball(20, 400, 300, links, rechts, this);
+            
+                punkteanzeige = new Text(400, 20, 64, "");
+                punkteanzeige.setAlignment(Alignment.center);
+                punkteanzeige.setFillColor(Color.white);
+                punkteAnzeigen();
+            
+                großeAnzeige = new Text(400, 150, 140, "PONG");
+                großeAnzeige.setAlignment(Alignment.center);
+                großeAnzeige.setFillColor(Color.white);
+            
+                setZustand("Vor dem Spiel");
+            }
+            
+            public void onKeyTyped(String key) {
+                if(key == " " && zustand == "Vor dem Spiel") {
+                    setZustand("Im Spiel");
+                } else 
+                if(key == " " && zustand == "Game over") {
+                    setZustand("Vor dem Spiel");
+                }
+            }
+            
+            void punkteAnzeigen() {
+                punkteanzeige.setText(punkteLinks + " : " + punkteRechts);
+                
+                if((punkteLinks == 3 || punkteRechts == 3) && zustand == "Im Spiel") {
+                    setZustand("Game over");   
+                }
+            }
+            
+            void punktFürRechtenSpieler() {
+                punkteRechts++;
+                punkteAnzeigen();
+            }
+            
+            void punktFürLinkenSpieler() {
+                punkteLinks++;
+                punkteAnzeigen();
+            }
+            
+            void setZustand(String neuerZustand) {
+                
+                if(neuerZustand == "Vor dem Spiel") {
+                    links.setVisible(false);
+                    rechts.setVisible(false);
+                    ball.setVisible(false); 
+                    punkteanzeige.setVisible(false);
+                    großeAnzeige.setVisible(true);
+                    großeAnzeige.setText("PONG");
+                } else if(neuerZustand == "Im Spiel") {
+                    links.setVisible(true);
+                    rechts.setVisible(true);
+                    ball.setVisible(true); 
+                    punkteanzeige.setVisible(true);
+                    großeAnzeige.setVisible(false);
+                    ball.setzeZufallsGeschwindigkeit();
+                    ball.moveTo(400, 300);
+                    punkteLinks = 0;
+                    punkteRechts = 0;
+                    punkteAnzeigen();
+                } else if(neuerZustand == "Game over") {
+                    links.setVisible(false);
+                    rechts.setVisible(false);
+                    ball.setVisible(false); 
+                    großeAnzeige.setVisible(true);
+                    großeAnzeige.setText("Game over"); 
+                }
+            
+                zustand = neuerZustand;
+            
+            }
+            }
+        </script>
+          
+      </iframe>
+
+  </div>
+</div>
+
+Auf der Webseite des Entwicklers der Java Online-IDE, Martin Pabst, finden Sie noch viele weitere Beispiele, u.a. auch für 3D-Grafiken: <a href="https://www.learnj.de/">https://www.learnj.de/</a>. Von dort stammen auch die obigen Beispiele.
+
+
+</main>
+
+</body>
+</html>
