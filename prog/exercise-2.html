@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GProg Praktikum 2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="exercises.css">
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+<main class="ex-content"><h1>Praktikum 2: Variablen und Datentypen</h1>
+<p>In diesem Praktikum werden wir Variablen und Datentypen in Java praktisch anwenden. Außerdem werden wir erste geometrische Figuren in JOE kennenlernen.</p>
+<h2>Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+<li>Variablen anlegen</li>
+<li>sicher mit unterschiedlichen Datentypen arbeiten</li>
+<li>passende Unicode-Zeichen finden und zielgerichtet einsetzen</li>
+<li>erste Berechnungen durchführen</li>
+<li>geometrische Primitive mit JOE ausgeben</li>
+</ul>
+
+<hr>
+<h2>Vorbereitung</h2>
+<p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. Diese sollen sicherstellen, dass Sie die gestellten Praktikumsaufgaben inhaltlich und zeitlich schaffen.</p>
+<ul>
+<li><input type="checkbox"> <strong>Datentypen</strong>: Verinnerlichen Sie sich bitte nochmal, welche primitiven Datentypen es in Java gibt und welche speziellen Eigenschaften (z.B. Wertebereich) diese haben, siehe S. 4 in <a href="https://mhimstedt.github.io/prog/lecture/2/02.html#/ganze-zahlen">Vorlesung 2</a></li>
+<li><input type="checkbox"> <strong>Namenskonventionen</strong>: Wiederholen Sie bitte die eingeführten Namenskonventionen für Variablen (siehe S. 15 in <a href="https://mhimstedt.github.io/prog/lecture/2/02.html#/namen-f%C3%BCr-variablen">Vorlesung 2</a>).</li>
+<p><input type="checkbox"> <strong>Unicode-Zeichen:</strong> Schauen Sie sich bitte schon einmal an, welche Unicode-Zeichen es gibt, z.B. auf <a href="https://de.wikipedia.org/wiki/Unicodeblock_Verschiedene_Symbole">Wikipedia</a> und <a href="https://symbl.cc/de/">symbl.cc</a> </p>
+</ul>
+
+<hr>
+<h2>Pflichtaufgaben</h2>
+<p>Bitte lösen Sie die folgenden Teilaufgaben mit JOE.</p>
+
+<h3>1 - Programm korrigieren</h3>
+<p>Das folgende Programm enthält einige Fehler. Bitte korrigieren Sie den Code, sodass er läuffähig ist, Datentypen korrekt eingesetzt werden und Namenskonventionen eingehalten werden.</p>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise2-failures', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+int first_name = "Maria";
+
+short factor = 2.1;
+                
+double threshold = 2 * factor; // threshold ist ein Schwellwert (Grenzwert)
+                
+double pi = "3.1415";   // Hinweis: PI soll eine Konstante sein
+                
+println(Mein Name ist + name);
+                
+int zip_code = 01169;
+                
+int amount = 5000000000L;
+                
+int sub_total = 100 * amount;
+                
+short total = (500 + 310) * 1.19;
+                
+float unitPrice = 23,31 €;
+            </script>
+        </iframe>
+    </div>
+  </div>
+
+<h3>2 - Kontakte erfassen und ausgeben</h3>
+<p>In dieser Aufgabe sollen Kontaktdaten erfasst und ansprechend ausgegeben werden. Dabei sollen die folgenden Informationen enthalten sein: Vorname, Nachname, Adresse, Telefonnummer, E-Mail-Adresse.</p>
+<p>Schritte:</p>
+<ul>
+<li><input type="checkbox"><strong>Variablen</strong>: Legen Sie Variablen vom Typ <strong>String</strong> für alle o.g. Kontaktinformationen an.</li>
+<li><input type="checkbox"><strong>Daten-Eingabe</strong>: Lesen Sie die Informationen nun nacheinander mittels <strong>Input</strong> ein und speichern Sie diese auf den zuvor angelegten Variablen ab.</li>
+<li><input type="checkbox"><strong>Strukturierte Ausgabe</strong>: Stellen Sie mit Hilfe von <strong>println</strong> nun die eingebenen Kontaktinformationen stukturiert zeilenweise dar.</li>
+<li><input type="checkbox"><strong>Symbole</strong>: Ergänzen Sie Ihre Ausgabe nun durch Symbole (Telefon, Adresse, E-Mail). Nutzen Sie dafür bitte geeignete <strong>Unicode-Zeichen</strong>.</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise2-contact', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+  // Ausgabe des Kontakts
+            </script>
+        </iframe>
+    </div>
+  </div>
+
+<h3>3 - Rechtecke zeichnen </h3>
+
+<p>In dieser Aufgabe sollen zweidimensionale Rechtecke gezeichnet werden. Dazu sollen zunächst die notwendigen Parameter abgefragt werden. </p>
+
+<p>Schritte:</p>
+<ul>
+<li><input type="checkbox"> <strong>Rechteck-Parameter</strong>: Legen Sie vier Variablen vom Typ <strong>double</strong> an, die den Ursprung eines Rechtecks sowie die Höhe und Breite erfassen. Initialisieren diese zunächst mit sinnvollen Werten.</li>
+<li><input type="checkbox"> <strong>Zeichnen</strong>: Mit Hilfe von <strong>new Rectangle(x,y,width,height)</strong> können Sie dieses Rechteck nun zeichnen. Variieren Sie die Koordinaten und Größe des Rechtecks, um ein Gefühl für die grafische Darstellung in JOE zu bekommen.</li>
+<li><input type="checkbox"> <strong>Interaktive Eingabe</strong>: Lesen Sie von der Kommandozeile mit Hilfe von <strong>Input</strong> jeden Parameter einzeln ein. Achten Sie dabei darauf, die eingegebenen Informationen korrekt einzulesen bzw. so zu konvertieren, dass Sie auch korrekt Ihren Variablen zugewiesen werden können. </li>
+</ul>
+
+<div class="ide-container">
+  <div class="ide-inner">
+      <button class="fullscreenBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+              <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+          </svg>
+      </button>
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+          {'id': 'exercise2-rectangle', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+          <script type="plain/text" title="Programm.java">
+// Rechteck-Implementierung
+          </script>
+      </iframe>
+  </div>
+</div>
+
+<h3>4 - Dreiecke zeichnen</h3>
+<p>In dieser Aufgabe sollen zweidimensionale Dreicke gezeichnet werden. Hierzu verwenden wir den Typ <strong>Triangle</strong> in JOE. Dieser erwartet die Koordinaten der Eckpunkte als Parameter. Wir wollen allerdings die Benutzer:innen <strong>nur zur Eingabe eines Eckpunks (Ursprung) sowie einer Seitenlänge</strong> auffordern (gleichseitiges Dreieck). Die beiden fehlenden Eckpunkte sollen dann bestimmt werden.</p>
+<p>Schritte:</p>
+<ul>
+<li><input type="checkbox"> <strong>Eckpunkte festlegen</strong>: Überlegen Sie sich zunächst geeignete Koordinaten für Eckpunkte eines Dreiecks. Legen Sie hierfür bitte geeignete Variablen an.</li>
+<li><input type="checkbox"> <strong>Zeichnen</strong>: Zeichnen Sie das zuvor festgelegte Dreieck (siehe Variablen) mittels <strong>new Triangle(x1,y1,x2,y2,x3,y3)</strong>. Erzeugen Sie bitte verschiedene Dreiecke und prüfen Sie das Ergebnis visuell.</li>
+<li><input type="checkbox"> <strong>Eckpunkte bestimmen</strong>: Nun sollen Sie Ihre Anwendung dahingehend erweitern, dass <strong>nur ein Eckpunkt</strong> sowie Seitenlänge eines gleichseitigen Dreiecks eingegeben werden. Die verbleibenden Eckpunkte sollen berechnet und die resultierenden Koordinaten dann auf den Eckpunkt-Variablen gespeichert werden. Testen Sie Ihr Programm.</li>
+<li><input type="checkbox"> <strong>Interaktive Eingabe</strong>: Fragen Sie die beiden Parameter nun mittels <strong>Input</strong> von der Kommandozeile ab. Es sollen dann ein Dreieck auf Basis der eingelesenen Werte erzeugt werden.</li>
+</ul>
+
+<div class="ide-container">
+  <div class="ide-inner">
+      <button class="fullscreenBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+              <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+          </svg>
+      </button>
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+          {'id': 'exercise2-triangle', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+          <script type="plain/text" title="Programm.java">
+// Implementierung vom Dreieck
+          </script>
+      </iframe>
+  </div>
+</div>
+<hr>
+<h2>Zusatzaufgaben</h2>
+
+<h3>5 - Stern darstellen</h3>
+
+<p>In dieser Aufgaben soll ein <strong>Stern</strong> in JOE dargestellt werden. Dazu sollen lediglich Dreiecke eingesetzt werden. </p>
+
+<p>Schritte:</p>
+<ul>
+  <li><input type="checkbox"> Überlegen Sie sich zunächst eine mögliche Anordnung der Dreiecke. Zeichnen Sie sich das Muster ggf. zunächst auf geeignetem, karierten Papier auf. </li>
+  <li><input type="checkbox"> Erstellen Sie mehrere Dreiecke. Ein Beispiel dazu ist im Code bereits gegeben. </li>
+  <li><input type="checkbox"> Erzeugen Sie eine statische (festdefinierte) Anordnung von Dreiecken, die einen Stern ergeben.</li>
+  <li><input type="checkbox"> Versuchen Sie nun den Programm-Code so anzupassen, dass Sie nur noch den Sternmittelpunkt (Koordinaten) angeben. Alle anderen Eckpunkte sollen automatisch bestimmt werden.</li>
+  <li><input type="checkbox"> Benutzer:innen sollen nun die Möglichkeit bekommen, sowohl die Mittelpunkt-Koordinaten als auch die Farbe (in RGB) angeben zu können. Finden Sie heraus, wie Sie auf einfache Weise die Farbe setzen können.</li>
+</ul>
+<div class="ide-container">
+  <div class="ide-inner">
+      <button class="fullscreenBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+              <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+          </svg>
+      </button>
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+          {'id': 'exercise2-star', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+          <script type="plain/text" title="Programm.java">
+            // Die Koordinaten 1.-6. müssen durch sinnvolle Werte ersetzt werden
+            Triangle triangleTop = new Triangle(1., 2., 3., 4., 5., 6.);
+            Triangle triangleBottom = new Triangle(1., 2., 3., 4., 5., 6.);
+          </script>
+      </iframe>
+  </div>
+</div>
+
+<h3>6 - Schachfeld darstellen</h3>
+<p>Geben Sie bitte ein Schachfeld in JOE aus. Nutzen Sie für die Figuren bitte Unicode-Zeichen, die speziell für Schachfiguren vorgesehen sind. Recherchieren Sie bitte, welche das sind. Die Ausgabe eines Unicode-Zeichens ist beispielhaft im folgenden Programm-Code dargestellt.</p>
+<p><strong>Bitte nutzen Sie für die Figurtypen (Bauern, Dame usw.) einzelne Variablen. Diese sollen dann zusammengesetzt ausgegeben werden.</strong></p>
+<ul>
+<li><input type="checkbox"> Schauen Sie sich zunächst an, wie ein Schachspielfeld aufgebaut ist, welche Spielfiguren es gibt und wie diese angeordnet sind.</li>
+<li><input type="checkbox"> Recherchieren Sie nach geeigneten Unicode-Zeichen für Schachfiguren.</li>
+<li><input type="checkbox"> Legen Sie für jede Figur eine Variable an. Achten Sie auf den richtigen Datentyp.</li>
+<li><input type="checkbox"> Geben Sie zunächst alle Figuren in richtiger Reihenfolge an.</li>
+<li><input type="checkbox"> Passen Sie die Ausgabe so an, dass das Schachfeld vollständig mit korrekter Formatierung angezeigt wird.</li>
+</ul>
+
+<div class="ide-container">
+  <div class="ide-inner">
+      <button class="fullscreenBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+              <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+          </svg>
+      </button>
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+          {'id': 'exercise2-chess', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+          <script type="plain/text" title="Programm.java">
+// Schach-Implementierung
+          </script>
+      </iframe>
+  </div>
+</div>
+
+</main>
+
+</body>
+</html>
