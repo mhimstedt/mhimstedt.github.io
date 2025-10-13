@@ -208,6 +208,10 @@ float unitPrice = 23,31 €;
 
 <h3>2 - Kontakte erfassen und ausgeben</h3>
 <p>In dieser Aufgabe sollen Kontaktdaten erfasst und ansprechend ausgegeben werden. Dabei sollen die folgenden Informationen enthalten sein: Vorname, Nachname, Adresse, Telefonnummer, E-Mail-Adresse.</p>
+
+<div class="admonition note"><p class="admonition-title">Hinweis</p><p><strong>Tipp:</strong>Sie können Unicode-Zeichen auf verschiedene Art und Weise anzeigen. Eine Möglichkeit ist, die direkte Darstellung in der Ausgabe, z.B. <strong>println("\u265f")</strong>. Alternativ kann man ein Unicode-Zeichen als <a href="https://de.wikipedia.org/wiki/Hexadezimalsystem">hexadezimale Zahl</a> interpretieren und explizit als <strong>char</strong> casten, z.B. <strong>char uniCode = (char) 0x265F</strong>.</p>
+</div>
+    
 <p>Schritte:</p>
 <ul>
 <li><input type="checkbox"><strong>Variablen</strong>: Legen Sie Variablen vom Typ <strong>String</strong> für alle o.g. Kontaktinformationen an.</li>
@@ -227,6 +231,7 @@ float unitPrice = 23,31 €;
             {'id': 'exercise2-contact', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
             <script type="plain/text" title="Programm.java">
   // Ausgabe des Kontakts
+
             </script>
         </iframe>
     </div>
@@ -235,6 +240,10 @@ float unitPrice = 23,31 €;
 <h3>3 - Rechtecke zeichnen </h3>
 
 <p>In dieser Aufgabe sollen zweidimensionale Rechtecke gezeichnet werden. Dazu sollen zunächst die notwendigen Parameter abgefragt werden. </p>
+
+<div class="admonition note"><p class="admonition-title">Hinweis</p><p><strong>Tipp: </strong>Wir verwenden in JOE ein Bild-Koordinatensystem (2D), dessen Koordinatenursprung in der linken, oberen Ecke liegt. Je weiter rechts ein Objekt liegt, desto größer ist die x-Koordinate. Je weiter unten ein Objekt liegt, desto größer ist die y-Koordinate (siehe Abbildung).</p>
+    <img src="https://mhimstedt.github.io/prog/img/rectangle.png" alt="Koordinatensystem">
+</div>
 
 <p>Schritte:</p>
 <ul>
@@ -261,6 +270,11 @@ float unitPrice = 23,31 €;
 
 <h3>4 - Dreiecke zeichnen</h3>
 <p>In dieser Aufgabe sollen zweidimensionale Dreicke gezeichnet werden. Hierzu verwenden wir den Typ <strong>Triangle</strong> in JOE. Dieser erwartet die Koordinaten der Eckpunkte als Parameter. Wir wollen allerdings die Benutzer:innen <strong>nur zur Eingabe eines Eckpunks (Ursprung) sowie einer Seitenlänge</strong> auffordern (gleichseitiges Dreieck). Die beiden fehlenden Eckpunkte sollen dann bestimmt werden.</p>
+
+<div class="admonition note"><p class="admonition-title">Hinweis</p><p><strong>Tipp: </strong>Für die Erstellung von Dreiecken in JOE müssen wir die drei Eckpunkte (x1,y1), (x2,y2), (x3,y3) eingeben. Die Reihenfolge ist in der folgenden Abbildung illustriert.</p>
+    <img src="https://mhimstedt.github.io/prog/img/triangle.png" alt="Koordinatensystem">
+</div>
+
 <p>Schritte:</p>
 <ul>
 <li><input type="checkbox"> <strong>Eckpunkte festlegen</strong>: Überlegen Sie sich zunächst geeignete Koordinaten für Eckpunkte eines Dreiecks. Legen Sie hierfür bitte geeignete Variablen an.</li>
@@ -289,7 +303,7 @@ float unitPrice = 23,31 €;
 
 <h3>5 - Stern darstellen</h3>
 
-<p>In dieser Aufgaben soll ein <strong>Stern</strong> in JOE dargestellt werden. Dazu sollen lediglich Dreiecke eingesetzt werden. </p>
+<p>In dieser Aufgabe soll ein <strong>Stern</strong> in JOE dargestellt werden. Dazu sollen lediglich Dreiecke eingesetzt werden. </p>
 
 <p>Schritte:</p>
 <ul>
