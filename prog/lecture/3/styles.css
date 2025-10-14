@@ -1,0 +1,68 @@
+/* ---------------------------
+   Wenn die State-Klasse auf html oder body oder .reveal liegt
+   (reveal.js kann den data-state als Klasse an das Dokument-Element hängen)
+   --------------------------- */
+   html.key-slide,
+   body.key-slide,
+   .reveal.key-slide,
+   .reveal.has-key-slide {
+     background-color: #b00020 !important;
+   }
+   
+   /* Sicherstellen, dass die "backgrounds" Schicht eingefärbt wird */
+   html.key-slide .reveal .backgrounds,
+   body.key-slide .reveal .backgrounds,
+   .reveal.key-slide .backgrounds,
+   .reveal.has-key-slide .backgrounds {
+     background-color: #b00020 !important;
+   }
+   
+   /* Manche Versionen legen jeweils slide-backgrounds an */
+   html.key-slide .reveal .backgrounds .slide-background,
+   body.key-slide .reveal .backgrounds .slide-background,
+   .reveal.key-slide .backgrounds .slide-background,
+   .reveal.has-key-slide .backgrounds .slide-background {
+     background-color: #b00020 !important;
+   }
+   
+   /* Die Slide-Fläche selbst (falls sie sichtbar bleibt) */
+   .reveal .slides section[data-state="key-slide"],
+   .reveal .slides section.key-slide {
+     background-color: #db3150 !important;
+     color: #ffffff !important;
+   }
+   
+   /* Überschreibe Textfarben explizit */
+   .reveal .slides section[data-state="key-slide"] h1,
+   .reveal .slides section[data-state="key-slide"] h2,
+   .reveal .slides section[data-state="key-slide"] h3,
+   .reveal .slides section[data-state="key-slide"] p,
+   .reveal .slides section.key-slide h1,
+   .reveal .slides section.key-slide h2,
+   .reveal .slides section.key-slide h3,
+   .reveal .slides section.key-slide p {
+     color: #ffffff !important;
+   }
+   
+   /* Optional: zentrieren / große Schrift für Impact */
+   .reveal .slides section[data-state="key-slide"],
+   .reveal .slides section.key-slide {
+     text-align: center;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     padding: 2rem;
+     font-weight: 700;
+   }
+   
+   /* Kleine zusätzliche Absicherung gegen Theme-Overwrites */
+   .reveal .backgrounds,
+   .reveal {
+     transition: none !important; /* verhindert Überblendungen beim Testen */
+   }
+  
+  
+.mark-red {
+  background-color: #db3150;
+  color: black;
+}
