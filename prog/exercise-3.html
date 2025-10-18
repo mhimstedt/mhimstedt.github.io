@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>GProg Praktikum 3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="exercise-3-Dateien/exercises.css">
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+<main class="ex-content"><h1>Praktikum 3: Kontrollstrukturen I</h1>
+<p>In diesem Praktikum werden wir die in der Vorlesung eingeführten <a href="https://mhimstedt.github.io/prog/lecture/3/03.html#/kontrollstrukturen">Kontrollstrukturen</a> praktisch anwenden.</p>
+<h2>Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+<li>komplexe Verzweigungen umsetzen</li>
+<li>einfache Problemstellungen mit Wiederholungen implementieren</li>
+<li>weitere geometrische Figuren in JOE zeichnen (u.a. Kreise)</li>
+</ul>
+
+<hr>
+<h2>Vorbereitung</h2>
+<p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. Diese sollen sicherstellen, dass Sie die gestellten Praktikumsaufgaben inhaltlich und zeitlich schaffen.</p>
+<ul>
+<li><input type="checkbox"> <strong>Verzweigungen</strong>: Verinnerlichen Sie sich bitte nochmal, welche Möglichkeiten der Verzweigungen es in Java gibt, siehe <a href="https://mhimstedt.github.io/prog/lecture/3/03.html">Vorlesung 3</a></li>
+<li><input type="checkbox"> <strong>Wiederholungen/Schleifen</strong>: Verinnerlichen Sie sich bitte nochmal, welche Möglichkeiten der <strong>Wiederholungen bzw. Schleifen</strong> es in Java gibt, siehe <a href="https://mhimstedt.github.io/prog/lecture/3/03.html">Vorlesung 3</a></li>
+<li><input type="checkbox"> <strong>Zahlenprüfung</strong>: 
+Benutzer:innen sollen über die Kommandozeile in JOE eine Zahl eingeben. 
+Ihr Programm soll prüfen, ob es sich dabei um eine positive oder 
+negative Zahl handelt. Im Falle einer 0 soll es "Weder positiv noch 
+negativ" ausgeben.</li>
+<li><input type="checkbox"> <strong>Zahlenausgabe</strong>: In dem zweiten Codefenster ist ein Programm gegeben, dass die <strong>Zahlen von 1 bis 10</strong> ausgeben soll. Bitte prüfen Sie es auf Korrektheit und beheben ggf. auftretende Fehler.</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise3-number-checking', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+                // Implementierung für Zahlenprüfung
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<br>
+<br>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise3-number-counting', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Ausgabe der Zahlen von 1-10
+
+for (int i = 0; i < 10; i++) {
+    println(i);
+}
+
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<hr>
+<h2>Pflichtaufgaben</h2>
+<p>Bitte löse die folgenden Aufgaben mit JOE.</p>
+
+<h3>1 - Konzerttickets </h3>
+<p>Für ein Konzert sollen Tickets gestaffelt in <strong>drei</strong> verschiedenen Preis-Kategorien zu <strong>45,50 € / 35,00 / 25,50 € </strong> verkauft werden. Zusätzlich soll erfragt werden, ob Kaufinteressierte Anspruch auf <strong>Ermäßigung (50%)</strong> bzw. <strong>freien Eintritt für Kinder</strong> unter 3 Jahren haben. </p>
+
+<p>Schritte:</p>
+<ul>
+<li><input type="checkbox"> <strong>Variablen</strong>: Legen Sie geeignete Variablen für die Preise der Kategorien an. Legen Sie auch geeignete Variablen zur Kategorieauswahl sowie zur Erfassung des Ermäßigungsanspruchs bzw. Kindertarifs an. Initialisieren Sie alle Variablen. </li>
+<li><input type="checkbox"> <strong>Preiskategorie</strong>: Nutzen Sie Verzweigungen (if / else if / else), um den Ticketpreis auf Basis der Kategorie zu bestimmen. </li>
+<li><input type="checkbox"> <strong>Ermäßigung / Kindertarif</strong>: Prüfen Sie zusätzlich, ob Kaufinteressierte Anspruch auf Ermäßigung bzw. den Kindertarif haben. Wenn ja, korrigieren Sie den Preis bitte entsprechend.</li>
+<li><input type="checkbox"> <strong>Eingabe</strong>: Wenn Sie alle vorherigen Schritte abgeschlossen haben und Ihre Preisermittlung stimmt, erfragen Sie bitte Preiskategorie, Ermäßigungsanspruch/Kindertarif über die Kommandozeile. Geben Sie den Kaufinteressierten bitte auch eine Übersicht der Preise in den Kategorien und der möglichen Ermäßigungen. </li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise3-number-counting', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Implementierung der Preisbestimmung für ein Konzertticket
+
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h3>2 - Zahlen raten</h3>
+<p> Wir programmieren nun ein kleines <strong>Zahlenratespiel</strong>. Dabei sollen Benutzer:innen die Möglichkeit haben, mehrmals Zahlen über die Kommandozeile einzugeben. Wenn die eingegebene Zahl stimmt, wird den Benutzer:innen gratuliert. </p>
+
+<div class="admonition note">
+    <p class="admonition-title">Zufallszahlen</p><p><strong>Hinweis:</strong> Zufallszahlen können Sie in JOE mithilfe von <strong>Math.random()</strong> erzeugen. Damit erhalten Sie eine Gleitkomma-Zahl im Intervall [0;1]. Wenn Sie eine Zahl bspw. im Intervall [0;10] möchten, rechnen Sie einfach <i>Math.random()*10</i>.
+    
+    Wenn Sie nur ganze Zahlen erhalten möchten, müssen Sie folgenden Typecast durchführen: <i>int zufallsZahl = <strong>(int)</strong> (Math.random()*10.) </i></p>
+</div>
+
+<p>Schritte:</p>
+<ul>
+<li><input type="checkbox"> <strong>Variablen</strong>: Legen Sie Variablen für die zu ratende Zahl sowie die einzugebene Zahl fest. Initialisieren Sie beide Zahlen zunächst mit festen Werten.</li>
+<li><input type="checkbox"> <strong>Vergleich</strong>: Prüfen Sie mithilfe einer Abfrage (if), ob die eingebene Zahl (hier noch von Ihnen festgelegt) mit der zu ratenden Zahl übereinstimmt. </li>
+<li><input type="checkbox"> <strong>Eingabe</strong>: Lesen Sie die Benutzereingabe nun mittels <strong>Input</strong> ein und vergleichen Sie diese mit der Ratezahl. </li>
+<li><input type="checkbox"> <strong>Wiederholung</strong>: Erweitern Sie Ihr Programm nun durch eine Schleife. Dadurch soll der Benutzer mehrmals nach einer Zahl gefragt werden, bis eine maximale Anzahl erreicht ist. Die Maximalzahl legen Sie bitte mithilfe einer Variable fest. </li>
+<li><input type="checkbox"> <strong>Zufallszahl</strong>: Legen Sie nun mithilfe der Funktion <strong>Math.random()</strong> eine zufällige Ratezahl fest. <strong>Lesen Sie dazu bitte genau den obigen Hinweis zu Zufallszahlen</strong>. Geben Sie nach Erreichen der maximalen Versuche die Ratezahl bitte aus.</li>
+</ul>
+
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise3-guess-numbers', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// ...
+
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h3>3 - Kreise zeichnen</h3>
+<p>In dieser Aufgabe zeichnen wir mehrere Kreise nebeneinander. </p>
+
+<div class="admonition note"><p class="admonition-title">Kreise in JOE</p><p><strong>Hinweis:</strong> Kreise können Sie in JOE mithilfe von <strong>new Circle(mx, my, r)</strong> erzeugen, wobei <strong>(mx, my)</strong> die Mittelpunktkoordinaten und <strong>r</strong> der Radius des gewünschten Kreises sind: z.B. <i>new Circle(200., 200., 50)</i> erzeugt einen Kreis mit dem Mittelpunkt (200.,200.) und einem Radius von 50 [Pixel].
+</div>
+
+
+<p>Schritte:</p>
+<ul>
+<li><input type="checkbox"> <strong>Kreise in JOE</strong>: Zeichnen Sie einen Kreis mithilfe von <strong>new Circle()</strong> im Ausgabefenster. <strong>Lesen Sie den obigen Hinweis dazu bitte genau</strong>. Achten Sie darauf, dass der Kreis vollständig sichtbar ist. Die Zeichenfläche beträgt initial 800x600 Pixel.</li>
+<li><input type="checkbox"> <strong>Wiederholung</strong>: Mithilfe einer Schleife sollen nun mehrere Kreise nebeneinander gezeichnet werden. Variieren Sie dazu die entsprechenden Mittelpunktkoordinaten der Kreise. Probieren Sie zunächst geeignete Radien und Abstände für die Kreise aus, sodass sich diese nicht überlappen und nicht über die Zeichenfläche hinaus gegangen wird (vollständige Kreise).</li>
+
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise3-circles', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Zeichnen von Kreisen
+
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<hr>
+<h2>Zusatzaufgaben (max. 1 Punkt)</h2>
+
+<h3>4 - Dynamische Radien und Abstände für Kreise</h3>
+
+<p>Benutzer:innen sollen nun eine Anzahl von gewünschten Kreisen eingeben. Berechnen Sie, wie groß Radien und Abstände für die gewünschte Anzahl von Kreisen sein müssen und prüfen Sie, ob dies auch möglich/sinnvoll ist. Wenn ja, zeichnen Sie bitte die gewünschte Anzahl Kreise. Gehen Sie von einer Zeichenfläche von 800x600 Pixel aus (bitte als Variablen definieren). </p>
+
+<div class="ide-container">
+  <div class="ide-inner">
+      <button class="fullscreenBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+              <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+          </svg>
+      </button>
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+          {'id': 'exercise3-dynamic-circles', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+          <script type="plain/text" title="Programm.java">
+// ...
+          </script>
+      </iframe>
+  </div>
+</div>
+
+<h3>5 - Länder und Hauptstädte</h3>
+
+<p>Benutzer:innen sollen die Namen von Hauptstädten für festgelegte Länder eingeben. Dabei soll den Benutzer:innen zunächst eine nummerierte Liste mit Ländern angezeigt werden. Daraufhin sollen diese sich zunächst für ein Land entscheiden, indem Sie die Zahl des Listenelements eingeben. Sie sollen sie dann nach der Hauptstadt gefragt werden. Gratulieren Sie ihnen, wenn es richtig ist und ermutigen Sie sie zum erneuten Versuch, wenn es nicht stimmt. Wiederholen Sie die Abfrage unendlich (Benutzer:innen schließen das Programm selbst).</p>
+
+<p><i>Hinweis: Nutzen Sie gern auch die Funktion toLowerCase() für Strings. Damit können Sie auf einfache Art und Weise auch "madrid" statt "Madrid" als korrekt anerkennen. Denken Sie nur daran, in diesem Fall auch Ihre Hauptstädte nur mit Kleinbuchstaben zu initialisieren. Ein Beispiel dafür ist im Programm-Code unten gegeben. </i></p>
+
+<div class="ide-container">
+  <div class="ide-inner">
+      <button class="fullscreenBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+              <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+          </svg>
+      </button>
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+          {'id': 'exercise3-country-capital', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+          <script type="plain/text" title="Programm.java">
+// Implementierung Hauptstadtspiel
+String eingabe;
+String hauptstadtSpanien = "madrid";
+    
+eingabe = Input.readString("Hauptstadt 🇪🇸 ?").toLowerCase();
+          </script>
+      </iframe>
+  </div>
+</div>
+
+</main>
+
+
+</body></html>
