@@ -331,9 +331,9 @@ for (int i = 0; i < 10; i++) {
 
 <h3>5 - Länder und Hauptstädte</h3>
 
-<p>Benutzer:innen sollen die Namen von Hauptstädten für festgelegte Länder eingeben. Dabei soll den Benutzer:innen zunächst eine nummerierte Liste mit Ländern angezeigt werden. Daraufhin sollen diese sich zunächst für ein Land entscheiden, indem Sie die Zahl des Listenelements eingeben. Sie sollen sie dann nach der Hauptstadt gefragt werden. Gratulieren Sie ihnen, wenn es richtig ist und ermutigen Sie sie zum erneuten Versuch, wenn es nicht stimmt. Wiederholen Sie die Abfrage unendlich (Benutzer:innen schließen das Programm selbst).</p>
+<p>Benutzer:innen sollen die Namen von Hauptstädten für festgelegte Länder eingeben. Dabei soll den Benutzer:innen zunächst eine nummerierte Liste mit Ländern angezeigt werden. Daraufhin sollen diese sich zunächst für ein Land entscheiden, indem Sie die Zahl des Listenelements eingeben. Sie sollen dann nach der Hauptstadt gefragt werden. Gratulieren Sie ihnen, wenn es richtig ist und ermutigen Sie sie zum erneuten Versuch, wenn es nicht stimmt. Wiederholen Sie die Abfrage unendlich (Benutzer:innen schließen das Programm selbst).</p>
 
-<p><i>Hinweis: Nutzen Sie gern auch die Funktion toLowerCase() für Strings. Damit können Sie auf einfache Art und Weise auch "madrid" statt "Madrid" als korrekt anerkennen. Denken Sie nur daran, in diesem Fall auch Ihre Hauptstädte nur mit Kleinbuchstaben zu initialisieren. Ein Beispiel dafür ist im Programm-Code unten gegeben. </i></p>
+<p><i>Hinweis: Nutzen Sie gern auch die Funktion toLowerCase() für Strings. Damit können Sie auf einfache Art und Weise auch "madrid" statt "Madrid" als korrekt anerkennen. Ein Beispiel dafür ist im Programm-Code unten gegeben. </i></p>
 
 <div class="ide-container">
   <div class="ide-inner">
@@ -346,10 +346,15 @@ for (int i = 0; i < 10; i++) {
           {'id': 'exercise3-country-capital', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
           <script type="plain/text" title="Programm.java">
 // Implementierung Hauptstadtspiel
+
 String eingabe;
-String hauptstadtSpanien = "madrid";
+String hauptstadtA = "Madrid";
     
-eingabe = Input.readString("Hauptstadt 🇪🇸 ?").toLowerCase();
+eingabe = Input.readString("Hauptstadt?");
+              
+if(eingabe.toLowerCase() == hauptstadtA.toLowerCase())  {
+    // ...
+}
           </script>
       </iframe>
   </div>
