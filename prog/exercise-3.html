@@ -246,7 +246,7 @@ for (int i = 0; i < 10; i++) {
 <div class="admonition note">
     <p class="admonition-title">Zufallszahlen</p><p><strong>Hinweis:</strong> Zufallszahlen können Sie in JOE mithilfe von <strong>Math.random()</strong> erzeugen. Damit erhalten Sie eine Gleitkomma-Zahl im Intervall [0;1]. Wenn Sie eine Zahl bspw. im Intervall [0;10] möchten, rechnen Sie einfach <i>Math.random()*10</i>.
     
-    Wenn Sie nur ganze Zahlen erhalten möchten, müssen Sie folgenden Typecast durchführen: <i>int zufallsZahl = <strong>(int)</strong> (Math.random()*10.) </i></p>
+    Die Zufallszahlen sind vom Datentyp <strong>double</strong>. Wenden Sie die Funktion Math.round() an, um diese auf die nächste ganze Zahl zu runden: <i>int zufallsZahl =  Math.round(Math.random()*10.) </i></p>
 </div>
 
 <p>Schritte:</p>
