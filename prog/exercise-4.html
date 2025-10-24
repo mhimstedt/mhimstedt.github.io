@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>GProg Praktikum 3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="exercises.css">
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content"><h1>Praktikum 4: Kontrollstrukturen II</h1>
+<p>In diesem Praktikum werden wir die Anwendung von Kontrollstrukturen weiter vertiefen.</p>
+<h2>Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+<li>den Modulo-Operator zielgerichtet einsetzen</li>
+<li>komplexe Problemstellungen mit Wiederholungen umsetzen</li>
+<li>verschachtelte Wiederholungen umsetzen</li>
+</ul>
+<h2>Vorbereitung</h2>
+<p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. Diese sollen sicherstellen, dass Sie die gestellten Praktikumsaufgaben inhaltlich und zeitlich schaffen.</p>
+<ul>
+<li><input type="checkbox"> <strong>Bitte stellen Sie unbedingt Aufgabe 3 (Kreise) aus dem vorhergehenen Praktikum fertig</strong></li>
+<li><input type="checkbox"> <strong>Modulo-Operator</strong>: Schauen Sie sich bitte nochmal die Funktionsweise des Modulo-Operators an, insbesondere zur Unterscheidung gerader/ungerader Zahlen (siehe: <a href="https://mhimstedt.github.io/prog/lecture/4/04.html#/der-modulo-operator">Vorlesung 4 #19</a>).</li>
+<li><input type="checkbox"> <strong>Verschaltete Wiederholungen</strong>: Wiederholen Sie bitte nochmal das in der Vorlesung eingeführte Konzept zu verschachtelten Schleifen (siehe <a href="https://mhimstedt.github.io/prog/lecture/4/04.html#/prinzip">Vorlesung 4 #13/14</a>). Geben Sie bitte <strong>in JOE</strong> eine Tabelle auf Basis einer vorgegebenen Anzahl an Spalten und Zeilen aus (ohne Tabellenränder). In jeder Tabellenzeile geben Sie bitte abwechselnd 'x' bzw. 'o' aus.</li>
+</ul>
+<p><strong>Hinweise: Mit der Funktion print() vermeiden Sie Zeilenumbrüche. Mit dem Zeichen '\n' bzw. println(&quot;&quot;) können Sie eine neue Zeile beginnen.</strong></p>
+<h2>Pflichtaufgaben</h2>
+<p>Diese werden rechtzeitig freigeschaltet.</p>
+
+</main>
+</body>
+</html>
