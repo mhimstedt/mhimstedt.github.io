@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>GProg Praktikum 4</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://mhimstedt.github.io/prog/exercises.css">
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 4: Kontrollstrukturen II</h1>
+<p>In diesem Praktikum werden wir die Anwendung von Kontrollstrukturen weiter vertiefen.</p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+<li>den Modulo-Operator zielgerichtet einsetzen</li>
+<li>komplexe Problemstellungen mit Wiederholungen umsetzen</li>
+<li>verschachtelte Wiederholungen implementieren</li>
+</ul>
+<h2>🤔 Vorbereitung</h2>
+<p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. Diese sollen sicherstellen, dass Sie die gestellten Praktikumsaufgaben inhaltlich und zeitlich schaffen.</p>
+<ul>
+<li><input type="checkbox"> <strong>Bitte stellen Sie unbedingt Aufgabe 3 (Kreise) aus dem vorhergehenen Praktikum fertig</strong></li>
+<li><input type="checkbox"> <strong>Modulo-Operator</strong>: Schauen Sie sich bitte nochmal die Funktionsweise des Modulo-Operators an, insbesondere zur Unterscheidung gerader/ungerader Zahlen (siehe: <a href="https://mhimstedt.github.io/prog/lecture/4/04.html#/der-modulo-operator">Vorlesung 4 #19</a>).</li>
+<li><input type="checkbox"> <strong>Verschaltete Wiederholungen</strong>: Wiederholen Sie bitte nochmal das in der Vorlesung eingeführte Konzept zu verschachtelten Schleifen (siehe <a href="https://mhimstedt.github.io/prog/lecture/4/04.html#/prinzip">Vorlesung 4 #13/14</a>). Geben Sie bitte eine Tabelle auf Basis einer vorgegebenen Anzahl an Spalten und Zeilen aus. In jeder Tabellenzeile geben Sie bitte abwechselnd 'x' bzw. 'o' aus.</li>
+</ul>
+<p><i>Hinweise: Mit der Funktion print() vermeiden Sie Zeilenumbrüche. Mit dem Zeichen '\n' bzw. println(&quot;&quot;) können Sie eine neue Zeile beginnen.</i></p>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise4-prep-nested-loop', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Implementierung für verschachtelte Schleife
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h2>📝 Pflichtaufgaben</h2>
+<p>Bitte lösen Sie <strong>alle</strong> der folgenden Teilaufgaben mit JOE.</p>
+<h3>1 - Interaktives Addieren</h3>
+<p>Entwerfen Sie ein Programm, das die von Benutzer:innen über die Kommandozeile eingegebenen Werte einliest und <strong>addiert</strong>. Dabei soll als erstes nach der maximalen Summe (Maximalwert) gefragt werden. Sobald dieser Wert erreicht bzw. überschritten wurde, soll abgebrochen werden. Als Inspiration können Sie auch gern noch einmal in das Vorlesungsbeispiel schauen: <a href="https://mhimstedt.github.io/prog/lecture/4/04.html#/4/1">Vorlesung 4 #16</a>.</p>
+<p>Anforderungen:</p>
+<ul>
+<li><input type="checkbox"> Die Summe wird initialisiert</li>
+<li><input type="checkbox"> Vorgang (Einlesen, Summieren, usw.) wird <strong>unbegrenzt</strong> wiederholt, es sei denn, die Summe ist größer/gleich dem Maximalwert (Abbruch)</li>
+<li><input type="checkbox"> Sollte der Maximalwert durch Addieren des neuen Wertes überschritten werden, so ist die letzte Summe (ohne den neuen Wert) auszugeben und abzubrechen.</li>
+<li><input type="checkbox"> Wird als neuer Wert 0 eingegeben, so soll ebenfalls abgebrochen werden.</li>
+<li><input type="checkbox"> Ausgabe der aktuellen Summe nach jeder Eingabe</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise4-interactive-adding', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Implementierung für den interaktiven Addierer
+
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h3>2 - Viele Kreise</h3>
+<p>Im letzten Praktikum haben Sie mehrere Kreise entlang einer y-Koordinate gezeichnet. Das soll nun dahingend erweitert werden, dass die gesamte Zeichenfläche mit Kreisen gefüllt wird, d.h. Sie variieren nun nicht nur die x- sondern auch die y-Koordinaten der Kreismittelpunkte. Nutzen Sie bitte <strong>verschachtelte Schleifen</strong>, siehe auch <a href="https://mhimstedt.github.io/prog/lecture/4/04.html#/beispiel">Vorlesung 4 #14</a>. Sie können den Radius gern geeignet durch Ausprobieren festlegen.</p>
+<p>Anforderungen:</p>
+<ul>
+<li><input type="checkbox"> Kreise gehen nicht über den Bildrand</li>
+<li><input type="checkbox"> Kreise überlappen nicht</li>
+<li><input type="checkbox"> Die Zeichenfläche soll (fast) vollständig mit Kreisen gefüllt sein</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise4-many-circles', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Implementierung für Darstellung vieler Kreise
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h2>⭐ Zusatzaufgaben</h2>
+<p><i>Hinweis: Für den Bonuspunkt reicht es, <strong>eine</strong> der folgenden Aufgaben zu lösen.</i></p>
+<h3>3 - Kreise mit unterschiedlichen Radien</h3>
+<p>Erweitern Sie Aufgabe 2 dahingehend, dass <strong>jeder zweite</strong> Kreis größer ist als der vorhergehende. Dafür sollen Sie immer zwei verschiedene Radien abwechselnd nutzen.</p>
+<p><strong>Achten Sie darauf, dass die Kreise in jeder Zeile versetzt gezeichnet werden müssen (kleine über große Kreise usw.).</strong></p>
+<p>Anforderungen:</p>
+<ul>
+<li><input type="checkbox"> Alle Anforderungen aus Aufgabe 2</li>
+<li><input type="checkbox"> Zwei benachbarte Kreise in einer Zeile (x-Dimension) haben unterschiedliche Radien</li>
+<li><input type="checkbox"> Zwei benachbarte Kreise in einer Spalte (y-Dimension) haben unterschiedliche Radien</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise4-alternating-circle', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Implementierung der Kreise mit unterschiedlichen Radien
+            </script>
+        </iframe>
+    </div>
+</div>
+
+
+<h3>4 - Fortschrittsbalken</h3>
+<p>Erweitern Sie Aufgabe 1 um einen Fortschrittsbalken. Dieser soll prozentual (Maximalwert: 100%) den aktuellen Fortschritt anzeigen, z.B. bei einem Maximalwert von 120 und einem aktuellen Summenwert von 60 soll die Hälfte ausgefüllt sein.</p>
+<p>Hierfür können Sie beispielsweise die Unicode-Zeichen ■ (\u25a0) bzw. □ (\u25a1) verwenden. Für 50 % bekommen Sie bspw. ■■■■■■■■■■□□□□□□□□□□. Dabei entspricht jedes Quadrat 5%.</p>
+<p><i>Hinweis: Sie können hier bspw. 2 Schleifen nacheinander - jeweils für ■ und □ laufen lassen.</i></p>
+<p>Anforderungen:</p>
+<ul>
+<li><input type="checkbox"> Alle Anforderungen aus Aufgabe 1</li>
+<li><input type="checkbox"> Prozentualer Fortschritt wird bestimmt und ausgegeben </li>
+<li><input type="checkbox"> Die Textausgabe mit dem Fortschritt aus Aufgabe 1 wird erweitert um eine grafische Ausgabe (Fortschrittsbalken)</li>
+<li><input type="checkbox"> Die Einheit des Fortschrittsbalken beträgt 5%, d.h. es gibt insgesamt 20 Kästchen.</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise4-progress-bar', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Implementierung des Fortschrittsbalkens für Addierer
+            </script>
+        </iframe>
+    </div>
+</div>
+
+</main>
+</body>
+</html>
