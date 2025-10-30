@@ -153,7 +153,7 @@
 <ul>
 <li>Arrays korrekt initialisieren</li>
 <li>Werte von Arrays durch Wiederholungen ausgeben und verändern</li>
-<li>Polygone in JOE mit Hilfe von Arrays darstellen</li>
+<li>Mehrdimensionale Arrays erstellen und zielgerichtet einsetzen.</li>
 </ul>
 <h2>🤔 Vorbereitung</h2>
 <p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. Diese sollen sicherstellen, dass Sie die gestellten Praktikumsaufgaben inhaltlich und zeitlich schaffen.</p>
@@ -178,7 +178,124 @@
 </div>
 
 <h2>📝 Pflichtaufgaben</h2>
-<p>Die Aufgaben werden rechtzeitig freigeschaltet.</p>
+<p>Bitte lösen Sie <strong>alle</strong> der folgenden Teilaufgaben mit JOE.</p>
+<h3>1 - Mittelwert bestimmen</h3>
+<p>Bestimmen Sie den Mittelwert einer Zahlenfolge, die in einem Array gespeichert ist. Legen Sie dazu zunächst ein Array an, das sie mit festen Werten initialisieren. Um den Mittelwert über dieses Array zu berechnen, durchlaufen Sie bitte alle Elemente mit einer geeigneten Schleife. </p>
+
+<div class="admonition note">
+    <p class="admonition-title">Hinweis</p>
+    <p>Den Mittelwert <i>x&#x305;<sub>arithm</sub></i> (<a href="https://de.wikipedia.org/wiki/Arithmetisches_Mittel">arithmetisches Mittel</a>) einer Zahlenfolge <i>x</i> können Sie mit Hilfe der folgenden Formel bestimmen: <br> <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/c97ef2e7c98e639a913683c5ef5052fa86754fde"></p>
+    <p>Hierbei bezieht sich <i>n</i> auf die Anzahl Elemente (im Array) und <i>x<sub>i</sub></i> auf das jeweilige Elemente des Arrays, das im aktuellen Schleifenschritt betrachtet wird.</i></p>
+</div>
+    
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li><input type="checkbox"> Ein Array wird mit mind. 5 festen <strong>double</strong>-Werten initialisiert.</li>
+<li><input type="checkbox"> Mittelwert über ein Array wird mit Hilfe einer Schleife Schritt für Schritt berechnet.</li>
+<li><input type="checkbox"> Mittelwert wird am Ende ausgegeben.</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise5-mean', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Bestimmung des Mittelwertes für ein vorher initialisiertes Array
+
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h3>2 - Eckpunkte zeichnen</h3>
+<p>In dieser Aufgabe werden wir Eckpunkte von Vierecken zeichnen. Überlegen Sie sich dafür zunächst sinnvolle Koordinaten. Fertigen Sie ggf. eine Skizze an und lösen Sie die folgenden Teilaufgaben. </p>
+
+<p>Teilaufgaben:</p>   
+<ul>
+<li><input type="checkbox"><strong>Eckpunkte als Array</strong>: Legen Sie vier Arrays <i>p1, ..., p4</i> für die Eckpunkte an. Jedes Array soll dabei aus zwei <i>double</i>-Werten bestehen: der x- sowie y-Koordinate.</li>
+<li><input type="checkbox"><strong>Eckpunkte zeichnen</strong>: Zeichnen Sie jeden der vier Eckpunkte <i>p1, ..., p4</i> nun einzeln mit Hilfe von <strong>new Circle(...)</strong> und einem <strong>Radius von 5</strong>. </li>
+<li><input type="checkbox"><strong>Punkte-Array</strong>: Legen Sie nun bitte ein weiteres Array <i>punkte</i> an. Dieses Array soll die vier Eckpunkte in einer Struktur zusammenfassen.</li>
+<li><input type="checkbox"><strong>Schleife</strong>: Anstelle Circle vier Mal zu wiederholen, sollen Sie nun eine Schleife nutzen, die alle Eckpunkte des <i>Punkte</i>-Arrays ausgibt. Überlegen Sie, welche Schleife hierfür besonders geeignet ist.</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise5-array', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Eckpunkte als Arrays
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h2>⭐ Zusatzaufgaben</h2>
+<p><i>Hinweis: Für den Bonuspunkt reicht es, <strong>eine</strong> der folgenden Aufgaben zu lösen.</i></p>
+<h3>3 - Vierecke </h3>
+<p>In dieser Aufgabe wollen wir Vierecke <strong>ohne Verwendung von Rectangle</strong> in JOE zeichnen. Dazu sollen die Eckpunkte (x- und y-Koordinaten) des Vierecks erneut als Arrays vorgegeben werden (siehe Aufgabe 2). Hier sollen Sie nun zusätzlich die <strong>Eckpunkte mit Hilfe von Linien verbinden</strong>. Initialisieren Sie dazu auch wieder ein <i>punkte</i>-Array, wobei die Reihenfolge der Punkte so gewählt werden soll, dass Sie diese auf einfache Art und Weise mit einer Schleife ausgeben können.</p>
+
+<div class="admonition note">
+    <p class="admonition-title">Hinweis</p>
+    <p>Sie können in JOE Linien zeichnen, indem Sie <strong>new Line(x1, y1, x2, y2)</strong> ausführen. Dabei sind (x1, y1) und (x2,y2) jeweils die x-/y-Koordinaten der Start- und Endpunkte der Linien. Alle Koordinaten sind vom Datentyp <i>double</i>.</p>
+</div>
+
+<strong>Anforderungen:</strong>
+<ul>
+<li><input type="checkbox">Linien werden in einer Schleife ausgegeben. </li>
+<li><input type="checkbox">Es sollen alle möglichen Vierecke funktionieren (nicht nur Rechtecke/Quadrate).</li>
+<li><input type="checkbox">Es soll nur die äußere Kontur zu sehen sein. Das Viereck soll nicht (farblich) ausgefüllt werden.</li>
+<li><input type="checkbox">Es sollen <strong>keine Polygone aus JOE</strong> dafür benutzt werden.</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise5-bonus1', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Implementierung 
+            </script>
+        </iframe>
+    </div>
+</div>
+
+
+<h3>4 - ... </h3>
+<p>Aufgabe folgt noch. </p>
+<p></p>
+<ul>
+<li><input type="checkbox"> ...</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise5-bonus2', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+// Implementierung 
+            </script>
+        </iframe>
+    </div>
+</div>
 
 </main>
 </body>
