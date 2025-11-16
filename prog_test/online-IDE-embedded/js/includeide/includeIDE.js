@@ -1,4 +1,5 @@
-let base = "https://embed.learnj.de/include/";
+//let base = "https://embed.learnj.de/include/";
+let base = "https://mhimstedt.github.io/prog_test/online-IDE-embedded/"
 
 // includeJs(base + "lib/pixijs/pixi.js");
 // includeCss(base + 'js.webpack/javaOnlineEmbedded.css');
