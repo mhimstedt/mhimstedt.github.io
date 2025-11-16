@@ -1,4 +1,5 @@
-let base = "https://embed1.learnj.de/include/";
+//let base = "https://embed1.learnj.de/include/";
+let base = "https://mhimstedt.github.io/prog/";
 
 
 let scripts = [
