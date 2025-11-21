@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>GProg Praktikum 7</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="exercises.css">
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 7: Klassen und Objekte I</h1>
+<p>In diesem Praktikum werden wir Klassen und Objekte in Java einsetzen und praktisch anwenden.</p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+<li>Klassen korrekt definieren</li>
+<li>Objekte auf Basis definierter Klassen initialisieren bzw. instanziieren</li>
+<li>Attribute von Objekten mit Konstruktoren initialisieren</li>
+</ul>
+<h2>🤔 Vorbereitung</h2>
+<p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. Diese sollen sicherstellen, dass Sie die gestellten Praktikumsaufgaben inhaltlich und zeitlich schaffen.</p>
+<ul>
+<li><input type="checkbox"> <strong>Definition von Klassen</strong>: Wiederholen Sie bitte die Definition von Klassen (siehe <a href="https://mhimstedt.github.io/prog/lecture/7/07.html#/section-4">Vorlesung 7 #11</a>) und schauen Sie sich bitte die Vorlesungsbeispiele dazu nochmal an.
+<li><input type="checkbox"> <strong>Point-Klasse</strong>: Schauen Sie sich das Vorlesungsbeispiel zur <strong>Punkt</strong>-Klasse noch einmal an. Implementieren Sie diese hier als <i>Point</i>-Klasse, so wieder in der Vorlesung eingeführt <strong>inkl. der Distanz-Methode</strong>. <strong>Bringen Sie bitte den Code (digital!) mit zum Praktikum. </strong> Hinweise zum Speichern und Laden von Code finden Sie im <a href="https://mhimstedt.github.io/prog/exercise-1.html">Einführungspraktikum</a>.  
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise7-prep', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+<h2>📝 Pflichtaufgaben</h2>
+<p>Bitte lösen Sie <strong>alle</strong> der folgenden Teilaufgaben mit JOE.</p>
+<h3>1 - Ausbau der <i>Point</i>-Klasse</h3>
+<p>In der Vorbereitungsaufgabe haben Sie bereits die <i>Point</i>-Klasse angelegt. Wir werden diese nun weiter ausbauen und praktisch einsetzen. </p>
+    
+<p><strong>Teilaufgaben:</strong></p>
+<ul>
+<li><input type="checkbox"><strong>Zufällige Koordinaten</strong>: Definieren Sie eine Methode <strong>random()</strong> für die Klasse Punkt. <i>Prüfen Sie nochmal genau, wie Methoden in Klassen angelegt werden. </i> Die Funktion <i>random(double minX, double maxX, double minY, double maxY)</i> bekommt die Intervallgrenzen (min/max für x und y) übergeben und hat keinen Rückgabewert. Stattdessen sollen den beiden Koordinaten (Attribute der Punkt-Klasse) die Zufallswerte zugewiesen werden. </li>
+<li><input type="checkbox"><strong>Konstruktor mit Koordinaten</strong>: Definieren Sie einen Konstruktur für die Point-Klasse, der zwei <i>double</i>-Parameter für x und y erhält.</li>
+<li><input type="checkbox"><strong>Konstruktor ohne Parameter</strong>: Definieren Sie einen Konstruktur, der keine Parameter erhält und die x- und y-Koordinaten mit 0 initialisiert.</li>
+<li><input type="checkbox"><strong>Konstruktor mit <i>Point</i>-Parameter</strong>: Definieren Sie einen weiteren Konstruktor, der als Parameter ein <i>Point</i>-Objekt erhält. Stellen Sie sicher, dass die übergebenen Koordinaten (von Point) korrekt übernommen werden.
+<li><input type="checkbox"><strong>draw()-Methode</strong>: Definieren Sie eine Methode <strong>draw()</strong>, die den Punkt auf der Zeichenfläche von JOE darstellen soll. Das können Sie - wie schon in den vorhergehenden Übungen - mit der <i>Circle</i>-Klasse und einem kleinen Radius umsetzen.</li>
+<li><input type="checkbox"><strong><i>Point</i>-Objekt</strong>: Legen Sie zum Testen ein <i>Point</i>-Objekt mit <i>zufälligen Koordinaten</i> an und geben Sie diesen mit <i>draw()</i> aus.</li>
+</ul>
+
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise7-point', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+<h3>2 - Bewegte Kreise</h3>
+<p>In dieser Aufgabe werden wir einen Kreis definieren und diesen durch Aufruf von Methoden über den Bildschirm bewegen.</p>
+
+<strong>Teilaufgaben:</strong>
+<ul>
+<li><input type="checkbox"> <strong>Kreis-Parameter</strong>: Definieren Sie bitte Variablen für die Parameter unseres <i>Kreises</i>, den <i>Start-Punkt</i> (Mittelpunkt) und die <i>Größe</i> (Radius). </li>
+<li><input type="checkbox"> <strong>Kreis-Objekt anlegen</strong>: Legen Sie bitte ein Objekt der Klasse <i>Circle</i> an, der mit den zuvor festgeleten Parametern initialisiert wird. <strong>Stellen Sie sicher, dass Sie eine Referenz (Variable) auf den Kreis anlegen, damit wir später damit weiter arbeiten können.</strong></li>
+<li><input type="checkbox"> <strong>Kreis bewegen</strong>: Die <i>Circle</i>-Klasse verfügt über die Methode <i>moveTo(double x, double y)</i>. Rufen Sie diese auf und bewegen Sie den Kreis zunächst an eine andere Position. <strong>Beachten Sie den Hinweis dazu auch.</strong></li>
+<li><input type="checkbox"> <strong>Zufallspositionen</strong>: In einer <strong>Schleife</strong> soll der Kreis nun <i>10 Mal</i> an unterschiedliche Positionen bewegt werden. Die Koordinaten sollen mittels <strong>Math.random()</strong> zufällig bestimmt werden. Achten Sie darauf, dass der Kreis <strong>vollständig</strong> im Fenster bleibt (siehe auch:  <a href="http://mhimstedt.github.io/prog/exercise-6.html">letztes Praktikum</a>)
+</ul>
+
+<div class="admonition note">
+    <p class="admonition-title">Hinweis</p>
+    <p>JOE bietet Möglichkeiten, die Ausführungsgeschwindigkeiten von Programmen zu kontrollieren. Das bietet sich insbesondere bei animierten Funktionalitäten an. </p>
+    <p><strong>Geschwindigkeitsregler</strong>: Wenn Sie den Regler <img src="assets/graphics/speed-control-IDE.png"> nach links verschieben, wird die Programgeschwindigkeit reduziert, in die andere Richtung wird sie erhöht. </p>
+    <p><strong>Systemfunktion</strong>: Sie können auch die eingebaute Funktion <strong>SystemTools.pause(int milliseconds)</strong> nutzen, um das Programm gezielt zu pausieren. Die Zeit wird in Millisekunden angegeben, z.B. 1000 für 1 Sekunde.</p>
+    <p></p>
+</div>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise7-moving-circle', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+<h2>⭐ Zusatzaufgaben</h2>
+<p><i>Hinweis: Für den Bonuspunkt reicht es, <strong>eine</strong> der folgenden Aufgaben zu lösen.</i></p>
+<h3>3 - Erweiterung und Nutzung der <i>Point</i>-Klasse </h3>
+<p>Aufbauend auf Aufgabe 1 werden wir die <i>Point</i>-Klasse erweitern und in einem kleinem Programm nutzen.</p>
+
+<strong>Teilaufgaben:</strong>
+<ul>
+    <li><input type="checkbox"><strong>Array für <i>Point</i>-Objekte</strong>: Legen Sie ein Array für <strong>n=10</strong> Punkte an. Nutzen Sie hierfür den <strong>new-Operator</strong>.</li>
+    <li><input type="checkbox"><strong>Instanziieren von <i>Point</i>-Objekten</strong>: Initialisieren Sie mit Hilfe einer Schleife <strong>n=10</strong> Punkte (<i>Point</i>-Objekte) mit <i>zufälligen Koordinaten</i>.</li>
+    <li><input type="checkbox"><strong>Mehrdimensionales <i>double</i>-Array</strong>: Legen Sie ein Array für <strong>n * n</strong> <i>double</i>-Werte an. Nutzen Sie hierfür den <strong>new-Operator</strong> für beide Dimensionen (siehe Hinweis).</li>
+    <li><input type="checkbox"><strong>Paarweise Distanzen</strong>: Bestimmen Sie mit Hilfe der <i>distance</i>-Methode, die Distanz jedes Punkts zu allen anderen. Speichern Sie die Distanzen im zuvor angelegten Array ab.</li>
+</ul>
+
+<div class="admonition note">
+    <p class="admonition-title">Hinweis</p>
+    <p>Sie können in Java ein mehrdimensionales Array initialisieren, indem Sie dem <i>new</i>-Operator die gewünschte Größe für jede Dimension übergeben. </p>
+    <p>Das folgende Beispiel initialisiert ein <i>int</i>-Array mit <strong>3 * 5</strong> Werten: <strong>int[][] values = new[3][5]; </strong></p>
+</div>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise7-point-advanced', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+
+<h3>4 - Ball-Simulation </h3>
+<p>Aufbauend auf Aufgabe 2 wollen wir nun einen <strong>herunterfallenden und abprallenden Ball</strong> mit Hilfe eines 2D-Kreises simulieren. </p>
+
+<strong>Anforderungen:</strong>
+<ul>
+<li><input type="checkbox"> <strong>Aufgabe 2</strong>: Alle Anforderungen aus Aufgabe 2. Der dort definierte Kreis soll uns hier als Ball weiter dienen.</li>
+<li><input type="checkbox"> <strong>Ball fällt</strong>: Von der Startposition soll der Ball zunächst <strong>nach unten</strong> (bis zum Fensterrand) fallen. Nutzen Sie dafür bitte die Funktion <strong>move(double dx, double dy)</strong>, die als Parameter die Verschiebung des Balls/Kreises von der aktuellen Position um <i>dx</i> Einheiten auf der x- und <i>dy</i> Einheiten auf der y-Achse erhält. </li>
+<li><input type="checkbox"> <strong>Ball bleibt im Spielfeld/Fenster</strong>: Achten Sie darauf, dass der Ball (Kreis) <strong>vollständig</strong> sichtbar bleibt.
+<li><input type="checkbox"> <strong>Ball prallt vom Boden ab</strong>: Sobald der Ball am unteren Fensterrand ankommen ist, soll er wieder abprallen und 10 Pixel unterhalb der letzte Startposition (vor dem Fall) stoppen und wieder herunterfallen. 
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise7-ball', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+</main>
+</body>
+</html>
