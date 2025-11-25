@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Java IDE Embed</title>
+  <head>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const passedId = params.get("id") || "";
+    window.progLectureId = passedId;
+  </script>
+    
+</head>
+
+</head>
+<body>
+
+  <iframe class="ideFrame" width="1000" height="600" 
+    frameborder="0" allow="fullscreen" allowfullscreen
+    srcdoc="
+    <script>
+      window.jo_doc = window.frameElement.textContent;
+    </script>
+    <script src='https://mhimstedt.github.io/prog/includeIDE.js'></script>" >
+    {
+      'id': '${passedId}',
+      'speed': 1000,
+      'withBottomPanel': true ,
+      'withPCode': false ,
+      'withConsole': false ,
+      'withFileList': true ,
+      'withErrorList': false
+    }
+    <script type="plain/text" title="Programm.java">
+
+    </script>
+    </iframe>
+
+
+</body>
+</html>
