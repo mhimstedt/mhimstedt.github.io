@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>GProg Praktikum 8</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="exercises.css">
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 8: Klassen und Objekte II</h1>
+<p>In diesem Praktikum werden wir Klassen und Objekte weiter in Java einsetzen und praktisch anwenden.</p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+<li>Klassen für typische Aufgaben anwenden</li>
+<li>komplexe Klassen definieren</li>
+<li>andere Klassen zielgerichtet in eigene Klassen einbinden</li>
+</ul>
+<h2>🤔 Vorbereitung</h2>
+<p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. Diese sollen sicherstellen, dass Sie die gestellten Praktikumsaufgaben inhaltlich und zeitlich schaffen.</p>
+<p><strong>Definieren Sie eine Klasse <i>Person</i></strong>, die über die folgenden Attribute und Methoden verfügen soll:</p>
+<ul>
+    <li><input type="checkbox"> <strong>firstname</strong>: Attribut</li>
+    <li><input type="checkbox"> <strong>lastname</strong>: Attribut</li>
+    <li><input type="checkbox"> <strong>street</strong>: Attribut</li>
+    <li><input type="checkbox"> <strong>zipcode</strong>: Attribut</li>
+    <li><input type="checkbox"> <strong>location</strong>: Attribut</li>
+    <li><input type="checkbox"> <strong>Person</strong>: Konstruktur, der alle genannten Attribute als Parameter bekommt</li>
+</ul>
+
+<p><strong>Bringen Sie bitte unbedingt eine <i>digitale</i> Lösung ihrer Vorbereitung mit, damit Sie im Praktikum daran weiter arbeiten können. </strong></p>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise8-prep', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Person.java">
+            </script>
+            <script type="plain/text" title="Main.java">
+            </script>
+
+            </iframe>
+    </div>
+</div>
+
+<h2>📝 Pflichtaufgaben</h2>
+<p>Bitte lösen Sie <strong>alle</strong> der folgenden Teilaufgaben mit JOE.</p>
+<h3>1 - Die <i>Person</i>-Klasse</h3>
+<p>In der Vorbereitungsaufgabe haben Sie bereits die <i>Person</i>-Klasse angelegt. Wir werden diese nun weiter ausbauen und praktisch einsetzen. </p>
+    
+<p><strong>Teilaufgaben:</strong></p>
+<ul>
+    <li><input type="checkbox"><strong>Weiterer Konstruktor</strong>: Legen Sie einen <strong>weiteren</strong> Konstruktor an, der nur <i>firstname</i>, <i>lastname</i> übergeben bekommt.</li>
+    <li><input type="checkbox"><strong>Konstruktoren vereinfachen</strong>: Vermeiden Sie Code-Duplikate in Ihren Konstruktoren, indem diese sich gegenseitig aufrufen (siehe auch <a href="https://mhimstedt.github.io/prog/lecture/8/08.html#/section-2">Vorlesung 8 #21</a>). </li>
+    <li><input type="checkbox"><strong>print</strong>: Legen Sie eine Methode <i>print()</i> an, die alle Attribute strukturiert ausgeben soll.</li>
+    <li><input type="checkbox"><strong><i>Address</i>-Klasse definieren</strong>: Definieren Sie eine weitere Klasse <i>Address</i>, die Attribute <i>street</i>, <i>zipcode</i> und <i>location</i> enthalten soll. </strong></li>
+    <li><input type="checkbox"><strong><i>Address</i>-Klasse einsetzen</strong>: Ersetzen Sie die Attribute <i>street</i>, <i>zipcode</i> und <i>location</i> in der Klasse <i>Person</i> durch die neue <i>Address</i>-Klasse. </strong></li>
+    <li><input type="checkbox"><strong>Anpassungen für <i>Address</i></strong>: Passen Sie alle Konstruktoren und Methoden in <i>Person</i> dahingehend an, dass Sie korrekt mit der neuen <i>Address-</i>Klasse funktionieren. </li>
+    <li><input type="checkbox"><strong><i>Person</i>-Objekte anlegen</strong>: Legen Sie in der Main.java eine Person testweise an und lassen Sie sich die Daten mit der klasseneigenen <i>print</i>-Methode ausgeben.</li>
+</ul>
+
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise8-person', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Person.java">
+            </script>
+            <script type="plain/text" title="Address.java">
+            </script>
+            <script type="plain/text" title="Main.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+<h3>2 - Palindrome erkennen </h3>
+<p>Ein Palindrom ist ein Wort, das vorwärts wie rückwärts gleich gelesen wird, z.B. Otto, Ebbe, Hannah. </p>
+<p><strong>Aufgabe:</strong> Schreiben Sie eine Funktion <i>palindrom()</i>, die als Parameter einen String übergeben bekommt. Für diesen String soll überprüft werden, ob es sich um ein Palindrom handelt. Die Funktion soll true/false (boolean) zurückgeben, je nachdem ob ein Palindrom vorliegt oder nicht.</p>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise8-palindrom', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+<h2>⭐ Zusatzaufgaben</h2>
+<p><i>Hinweis: Für den Bonuspunkt reicht es, <strong>eine</strong> der folgenden Aufgaben zu lösen.</i></p>
+
+<h3>3 - Erweiterung der Ball-Simulation </h3>
+<p>Aufbauend auf Aufgabe 4 von <a href="https://mhimstedt.github.io/prog/exercise-7.html">Praktikum 7</a> wollen wir die Simulation unseres Balles erweitern. </p>
+
+<p><i>Hinweis: Sie sollten für diese Aufgabe zunächst Aufgabe 4 aus Praktikum 7 vollständig absolviert haben.</i></p>
+<p>Der Ball soll nun nicht mehr nur gerade herunterfallen, sondern bereits am Anfang schräg nach unten fallen. Beim Erreichen der Fensterränder soll der Ball entsprechend dem Winkel korrekt abprallen. Beachten Sie hierbei das geltende physikalische Gesetz <strong>Einfallswinkel = Ausfallswinkel</strong>.</p>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise8-ball-directional', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+<h3>4 - Stern-Klasse </h3>
+<p>Im <a href="https://mhimstedt.github.io/prog/exercise-2.html">Praktikum 2</a> haben wir uns in Aufgabe 5 (Zusatz) mit der Darstellung von Sternen beschäftigt. Passen Sie diese Implementierung hinsichtlich folgender Anforderungen an: </p>
+
+<ul>
+    <p><strong>Teilaufgaben:</strong></p>
+    <li><input type="checkbox"><strong>Darstellung exakt wie in Aufgabe 5 (Praktikum 5)</strong></li>
+    <li><input type="checkbox"><strong><i>Stern</i>-Klasse</strong>: Legen Sie eine <i>Stern</i>-Klasse an, die zwei (gleichseitige) Dreiecke als Attribute hat. </li>
+    <li><input type="checkbox"><strong>Konstruktor</strong>: Die <i>Stern</i>-Klasse soll einen Konstruktor erhalten, der lediglich den <strong>Mittelpunkt des Sterns</strong> erhält.</li>
+    <li><input type="checkbox"><strong>Ausgabe</strong>: Instanziieren Sie mehrere <i>Stern</i>-Objekte mit unterschiedlichen Mittelpunkten und geben Sie diese grafisch aus.</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise8-stern', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+
+</main>
+</body>
+</html>
