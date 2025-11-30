@@ -180,8 +180,6 @@
             {'id': 'exercise8-prep', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
             <script type="plain/text" title="Person.java">
             </script>
-            <script type="plain/text" title="Main.java">
-            </script>
 
             </iframe>
     </div>
@@ -196,11 +194,11 @@
 <ul>
     <li><input type="checkbox"><strong>Weiterer Konstruktor</strong>: Legen Sie einen <strong>weiteren</strong> Konstruktor an, der nur <i>firstname</i>, <i>lastname</i> übergeben bekommt.</li>
     <li><input type="checkbox"><strong>Konstruktoren vereinfachen</strong>: Vermeiden Sie Code-Duplikate in Ihren Konstruktoren, indem diese sich gegenseitig aufrufen (siehe auch <a href="https://mhimstedt.github.io/prog/lecture/8/08.html#/section-2">Vorlesung 8 #21</a>). </li>
-    <li><input type="checkbox"><strong>print</strong>: Legen Sie eine Methode <i>print()</i> an, die alle Attribute strukturiert ausgeben soll.</li>
+    <li><input type="checkbox"><strong>Methode <i>output</i></strong>: Legen Sie eine Methode <i>output()</i> an, die alle Attribute strukturiert ausgeben soll.</li>
     <li><input type="checkbox"><strong><i>Address</i>-Klasse definieren</strong>: Definieren Sie eine weitere Klasse <i>Address</i>, die Attribute <i>street</i>, <i>zipcode</i> und <i>location</i> enthalten soll. </strong></li>
     <li><input type="checkbox"><strong><i>Address</i>-Klasse einsetzen</strong>: Ersetzen Sie die Attribute <i>street</i>, <i>zipcode</i> und <i>location</i> in der Klasse <i>Person</i> durch die neue <i>Address</i>-Klasse. </strong></li>
     <li><input type="checkbox"><strong>Anpassungen für <i>Address</i></strong>: Passen Sie alle Konstruktoren und Methoden in <i>Person</i> dahingehend an, dass Sie korrekt mit der neuen <i>Address-</i>Klasse funktionieren. </li>
-    <li><input type="checkbox"><strong><i>Person</i>-Objekte anlegen</strong>: Legen Sie in der Main.java eine Person testweise an und lassen Sie sich die Daten mit der klasseneigenen <i>print</i>-Methode ausgeben.</li>
+    <li><input type="checkbox"><strong><i>Person</i>-Objekte anlegen</strong>: Legen Sie in der Main.java eine Person testweise an und lassen Sie sich die Daten mit der klasseneigenen <i>output</i>-Methode ausgeben.</li>
 </ul>
 
 
@@ -223,6 +221,11 @@
     </div>
 </div>
 
+
+
+<h2>⭐ Zusatzaufgaben</h2>
+<p><i>Hinweis: Für den Bonuspunkt reicht es, <strong>eine</strong> der folgenden Aufgaben zu lösen.</i></p>
+
 <h3>2 - Palindrome erkennen </h3>
 <p>Ein Palindrom ist ein Wort, das vorwärts wie rückwärts gleich gelesen wird, z.B. Otto, Ebbe, Hannah. </p>
 <p><strong>Aufgabe:</strong> Schreiben Sie eine Funktion <i>palindrom()</i>, die als Parameter einen String übergeben bekommt. Für diesen String soll überprüft werden, ob es sich um ein Palindrom handelt. Die Funktion soll true/false (boolean) zurückgeben, je nachdem ob ein Palindrom vorliegt oder nicht.</p>
@@ -242,35 +245,11 @@
     </div>
 </div>
 
-<h2>⭐ Zusatzaufgaben</h2>
-<p><i>Hinweis: Für den Bonuspunkt reicht es, <strong>eine</strong> der folgenden Aufgaben zu lösen.</i></p>
-
-<h3>3 - Erweiterung der Ball-Simulation </h3>
-<p>Aufbauend auf Aufgabe 4 von <a href="https://mhimstedt.github.io/prog/exercise-7.html">Praktikum 7</a> wollen wir die Simulation unseres Balles erweitern. </p>
-
-<p><i>Hinweis: Sie sollten für diese Aufgabe zunächst Aufgabe 4 aus Praktikum 7 vollständig absolviert haben.</i></p>
-<p>Der Ball soll nun nicht mehr nur gerade herunterfallen, sondern bereits am Anfang schräg nach unten fallen. Beim Erreichen der Fensterränder soll der Ball entsprechend dem Winkel korrekt abprallen. Beachten Sie hierbei das geltende physikalische Gesetz <strong>Einfallswinkel = Ausfallswinkel</strong>.</p>
-
-<div class="ide-container">
-    <div class="ide-inner">
-        <button class="fullscreenBtn" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
-                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
-            </svg>
-        </button>
-        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
-            {'id': 'exercise8-ball-directional', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
-            <script type="plain/text" title="Programm.java">
-            </script>
-            </iframe>
-    </div>
-</div>
-
-<h3>4 - Stern-Klasse </h3>
+<h3>3 - Stern-Klasse </h3>
 <p>Im <a href="https://mhimstedt.github.io/prog/exercise-2.html">Praktikum 2</a> haben wir uns in Aufgabe 5 (Zusatz) mit der Darstellung von Sternen beschäftigt. Passen Sie diese Implementierung hinsichtlich folgender Anforderungen an: </p>
 
 <ul>
-    <p><strong>Teilaufgaben:</strong></p>
+    <p><strong>Anforderungen:</strong></p>
     <li><input type="checkbox"><strong>Darstellung exakt wie in Aufgabe 5 (Praktikum 5)</strong></li>
     <li><input type="checkbox"><strong><i>Stern</i>-Klasse</strong>: Legen Sie eine <i>Stern</i>-Klasse an, die zwei (gleichseitige) Dreiecke als Attribute hat. </li>
     <li><input type="checkbox"><strong>Konstruktor</strong>: Die <i>Stern</i>-Klasse soll einen Konstruktor erhalten, der lediglich den <strong>Mittelpunkt des Sterns</strong> erhält.</li>
