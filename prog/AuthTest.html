@@ -2,11 +2,24 @@
 <html>
 <head>
     <title>Firebase Auth Test</title>
-    <!-- Firebase SDK laden -->
-    <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <h1>Login Test für gprog-5d6d0</h1>
+    <input type="email" id="email" placeholder="E-Mail">
+    <input type="password" id="password" placeholder="Passwort">
+    <button onclick="signIn()">Login</button>
+    <button onclick="signOut()">Logout</button>
+    <p id="status"></p>
+
+    <!-- Firebase SDKs laden -->
+    <!-- Stellen Sie sicher, dass Sie hier die korrekte Version verwenden, z.B. 9.x.x, 10.x.x oder die neueste -->
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
+
+    <!-- IHR EIGENER JAVASCRIPT-CODE KOMMT HIERHIN, NACH DEM LADEN DER SDKs -->
     <script>
         // Ihre Firebase-Konfiguration hier einfügen
+        // Diese Werte MÜSSEN SIE aus der Firebase Console kopieren!
         const firebaseConfig = {
                 apiKey: "AIzaSyACKGdU-5QQeYtkTuOB_Em4Aoo8rh9PAVk",
                 authDomain: "gprog-5d6d0.firebaseapp.com",
@@ -15,8 +28,9 @@
                 messagingSenderId: "996478483306",
                 appId: "1:996478483306:web:f0d86e4a90db05ad620313"
         };
-        firebase.initializeApp(firebaseConfig);
 
+        // Firebase initialisieren und Auth-Instanz abrufen
+        const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
         function signIn() {
@@ -45,13 +59,5 @@
             });
         }
     </script>
-</head>
-<body>
-    <h1>Login Test</h1>
-    <input type="email" id="email" placeholder="E-Mail">
-    <input type="password" id="password" placeholder="Passwort">
-    <button onclick="signIn()">Login</button>
-    <button onclick="signOut()">Logout</button>
-    <p id="status"></p>
 </body>
 </html>
