@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Auth Test</title>
+</head>
+<body>
+    <h1>Login Test für gprog-5d6d0</h1>
+    <input type="email" id="email" placeholder="E-Mail">
+    <input type="password" id="password" placeholder="Passwort">
+    <button onclick="signIn()">Login</button>
+    <button onclick="signOut()">Logout</button>
+    <p id="status"></p>
+
+    <!-- Firebase SDKs laden -->
+    <!-- Stellen Sie sicher, dass Sie hier die korrekte Version verwenden, z.B. 9.x.x, 10.x.x oder die neueste -->
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
+
+    <!-- IHR EIGENER JAVASCRIPT-CODE KOMMT HIERHIN, NACH DEM LADEN DER SDKs -->
+    <script>
+        // Ihre Firebase-Konfiguration hier einfügen
+        // Diese Werte MÜSSEN SIE aus der Firebase Console kopieren!
+        const firebaseConfig = {
+                apiKey: "AIzaSyACKGdU-5QQeYtkTuOB_Em4Aoo8rh9PAVk",
+                authDomain: "gprog-5d6d0.firebaseapp.com",
+                projectId: "gprog-5d6d0",
+                storageBucket: "gprog-5d6d0.firebasestorage.app",
+                messagingSenderId: "996478483306",
+                appId: "1:996478483306:web:f0d86e4a90db05ad620313"
+        };
+
+        // Firebase initialisieren und Auth-Instanz abrufen
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        function signIn() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Angemeldet!
+                    const user = userCredential.user;
+                    document.getElementById('status').innerText = `Erfolgreich angemeldet als: ${user.email}`;
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    document.getElementById('status').innerText = `Fehler beim Login: ${errorMessage}`;
+                    console.error("Login-Fehler:", errorCode, errorMessage);
+                });
+        }
+
+        function signOut() {
+            auth.signOut().then(() => {
+                document.getElementById('status').innerText = 'Abgemeldet.';
+            }).catch((error) => {
+                console.error("Logout-Fehler:", error);
+            });
+        }
+    </script>
+</body>
+</html>

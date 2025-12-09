@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>GProg Praktikum 9</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="exercises.css">
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 9: Klassen und Objekte III - Vererbung</h1>
+<p>In diesem Praktikum werden wir Klassen und Objekte weiter in Java praktisch anwenden und zusätzlich das Konzept der <i>Vererbung</i> einsetzen.</p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+<li>Vererbung sinnvoll einsetzen</li>
+<li>bestehende und eigene Klassen erweitern</li>
+</ul>
+<h2>🤔 Vorbereitung</h2>
+<p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. Diese sollen sicherstellen, dass Sie die gestellten Praktikumsaufgaben inhaltlich und zeitlich schaffen.</p>
+
+<p><strong><u>Unbedingt</u> vorbereiten bzw. mitbringen:</strong></p>
+<ul>
+    <li><input type="checkbox"><strong><i>Person</i>-Klasse</strong>: Bitte bringen Sie eine <strong>vollständige</strong> Lösung der entsprechenden Pflichtaufgaben von <a href="https://mhimstedt.github.io/prog/exercise-8.html">Praktikum 8</a> mit.</li>
+    <li><input type="checkbox"><strong><i>Point</i>-Klasse</strong>: Bitte bringen Sie eine <strong>vollständige</strong> Lösung der entsprechenden Pflichtaufgaben von <a href="https://mhimstedt.github.io/prog/exercise-7.html">Praktikum 7</a> mit.</li>
+</ul>
+
+<p>Im <a href="https://mhimstedt.github.io/prog/exercise-8.html">Praktikum 8</a> haben wir den Inhalt von <i>Person</i>-Objekten mit Hilfe einer eigenen <i>output</i>-Funktion implementiert. 
+In Java geht das sogar noch etwas eleganter: Jede Klasse verfügt über eine Methode <strong>toString()</strong>, die alle (bzw. alle gewünschten) Attribute einer Klasse ausgeben kann. Dazu müssen wir diese Methode überschreiben. Der folgende Code zeigt das anhand eines Beispiels:
+</p>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise9-prep1', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Main.java">
+TestPoint point = new TestPoint(100., 100.);
+println(point);
+            </script>
+            <script type="plain/text" title="TestPoint.java">
+class TestPoint {
+    double x;
+    double y;
+    
+    TestPoint(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    @Override
+    public String toString() {
+        // Sie entscheiden hier selbst, was Sie wie ausgeben möchten
+        // Rückgabetyp muss aber immer ein String sein
+        return("x: " + this.x + " | y: " + this.y);
+    }
+}
+            </script>
+
+            </iframe>
+    </div>
+</div>
+
+<p><strong>Aufgabe</strong>: Überschreiben Sie die Methode <i>toString</i> nun für Ihre eigene <i>Person</i>-Klasse: </p>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise9-prep2', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Main.java">
+// Zum Testen bitte einkommentieren:
+//Person person = new Person("Petra", "Mustermann");
+//println(person);
+            </script>
+            <script type="plain/text" title="Person.java">
+// Ihre Implementierung von Person
+            </script>
+
+            </iframe>
+    </div>
+</div>
+
+<p><strong>Bringen Sie bitte unbedingt eine <i>digitale</i> Lösung ihrer Vorbereitungen mit, damit Sie im Praktikum daran weiter arbeiten können. </strong></p>
+
+<h2>📝 Pflichtaufgaben</h2>
+<p>Bitte lösen Sie <strong>alle</strong> der folgenden Teilaufgaben mit JOE.</p>
+<h3>1 - Die <i>Student</i>-Klasse</h3>
+<p>In dieser Aufgabe soll eine neue Klasse <i>Student</i> angelegt werden. Studierende können aus Sicht der Informatik als eine <i>Spezialisierung</i> von Personen modelliert werden. Die Klasse <i>Person</i> (inkl. <i>Address</i>), die wir bereits im letzten Praktikum umgesetzt haben, soll hier wieder verwendet werden. Genauer gesagt soll die Klasse <i>Student</i> von der Klasse <i>Person</i> erben und zusätzlich die folgenden Attribute und Methoden besitzen: </p>
+<ul>
+    <li><input type="checkbox"><strong>studentID</strong>: Attribut vom Typ <i>String</i></li>
+    <li><input type="checkbox"><strong>studyProgram</strong>: Attribut vom Typ <i>String</i></li>
+    <li><input type="checkbox"><strong>enrollmentDate</strong>: Attribut vom Typ <i>Date</i>. Nutzen Sie dafür bitte die bereits zur Verfügung gestellte Klasse <i>Date</i> (siehe Date.java)</li>
+    <li><input type="checkbox"><strong>Konstruktor</strong>: Konstruktur, der alle genannten und ggf. weitere, notwendige Attribute als Parameter bekommt</li>
+    <li><input type="checkbox"><strong>Konstruktor (ohne Parameter)</strong>: Konstruktur, der keine Parameter bekommt und die Attribute mit Standardwerten initialisiert. Denken Sie daran, dafür bestehende Konstruktoren zu nutzen.</li>
+    <li><input type="checkbox"><strong>toString()</strong>: Methode, die alle Attribute strukturiert als String formatiert.</li>
+</ul>
+<strong>Hinweis: Denken Sie daran, dass bei Verwendung der <i>Student</i>-Klasse auch die Elternklasse <i>Person</i> korrekt initialisiert werden muss.</strong>
+    
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise9-person', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Person.java">
+
+            </script>
+            <script type="plain/text" title="Address.java">
+            </script>
+            <script type="plain/text" title="Student.java">
+            </script>
+            <script type="plain/text" title="Date.java">
+class Date {
+    int day;
+    int month;
+    int year;
+    
+    Date(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+    
+    Date() {
+        this(1, 1, 1970);
+    }
+
+    @Override
+    public String toString() {
+        return day + "." + month + "." + year;
+    }
+}
+            </script>
+            <script type="plain/text" title="Main.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+<h3>2 - Die <i>MyTriangle</i>-Klasse</h3>
+<p>Die in JOE integrierte Klasse <i>Triangle</i> kann Dreiecke initialisieren und ausgeben. Leider kann man über die bereitgestellten Konstruktoren keine Farbe übergeben und auch nicht steuern, ob das Dreieck sofort gezeichnet oder nur erstellt werden soll. Diese Einschränkungen wollen wir durch eine eigene Klasse <i>MyTriangle</i> als <strong>Erweiterung</strong> von <i>Triangle</i> beheben. Setzen Sie diese bitte um und beachten Sie dazu bitte die folgenden Anforderungen. </p>
+
+<p><strong>Anforderungen:</strong></p>
+<ul>
+    <li><input type="checkbox"><strong>Erweiterung</strong>: <i>MyTriangle</i> soll <i>Triangle</i> erweitern.</li>
+    <li><input type="checkbox"><strong>Attribute</strong>: <i>MyTriangle</i> soll keine eigenen Attribute besitzen.</li>
+    <li><input type="checkbox"><strong>Farbe</strong>: Die Farbe soll direkt im Konstruktor übergeben werden können. Nutzen Sie dafür bitte die Methoden der Elternklasse.</li>
+    <li><input type="checkbox"><strong>Sichtbarkeit</strong>: Der Konstruktor soll außerdem ermöglichen, dass die Figur nicht automatisch gezeichnet wird. Dafür übergeben Sie bitte eine Option <i>isVisible</i> als Parameter.</li>
+    <li><input type="checkbox"><strong><i>Point</i>-Objekte</strong>: Erstellen Sie bitte auch einen weiteren Konstruktor, der drei <i>Point</i>-Objekte als Eckpunkte (anstelle der 3 <i>double</i>-Koordinatenpaare von Triangle) akzeptiert. Nutzen Sie aber trotzdem die Koordinaten-Attribute von <i>Triangle</i>.
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise9-mytriangle', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="MyTriangle.java">
+            </script>
+            <script type="plain/text" title="Point.java">
+            </script>
+            <script type="plain/text" title="Main.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+<h2>⭐ Zusatzaufgaben</h2>
+<p><i>Hinweis: Für den Bonuspunkt reicht es, <strong>eine</strong> der folgenden Aufgaben zu lösen.</i></p>
+
+<h3>3 - Die Klasse <i>PointRGB</i> </h3>
+
+<p> Aufbauend auf der im <a href="https://mhimstedt.github.io/prog/exercise-7.html">Praktikum 7</a> entwickelten <i>Point</i>-Klasse sollen Sie nun eine <strong>PointRGB</strong>-Klasse entwickeln. 
+    Diese soll <i>Point</i> dahingehend erweitern, dass auch farbige Punkte erstellt werden können. Beachten Sie dazu die folgenden Anforderungen.
+</p>
+
+<ul>
+    <p><strong>Anforderungen:</strong></p>
+    <li><input type="checkbox"><strong><i>Point</i> erweitern</strong>: <i>PointRGB</i> soll <i>Point</i> erweitern.</li>
+    <li><input type="checkbox"><strong>Attribute</strong>: Definieren Sie keine Attribute, die bereits in der Elternklassen existieren.</li>
+    <li><input type="checkbox"><strong>Methoden ggf. überschreiben</strong>: Überlegen Sie, ob ggf. Methoden der Elternklasse überschrieben werden müssen.</li>
+    <li><input type="checkbox"><strong>Farbe</strong>: <i>PointRGB</i> soll das Attribut Farbe erhalten. Berücksichtigen Sie das auch beim Konstruktor.</li>
+    <li><input type="checkbox"><strong>Initialisierung</strong>: Initialisieren Sie im Konstruktor alle Attribute. Denken Sie auch an die Elternklasse <i>Point</i>.</li>
+    <li><input type="checkbox"><strong>Objekte erstellen</strong>: Initialisieren Sie mehrere Punkte der Klassen <i>Point</i> und <i>PointRGB</i>.</li>
+    <li><input type="checkbox"><strong>Distanz-Funktion</strong>: Prüfen Sie, ob die Distanz-Funktion auch zwischen <i>Point</i> und <i>PointRGB</i> funktioniert, ohne dass Sie diese anpassen.</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise9-pointrgb', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Point.java">
+            </script>
+            <script type="plain/text" title="PointRGB.java">
+            </script>
+            <script type="plain/text" title="Main.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+<h3>4 - Komplexe Figur zeichnen</h3>
+<p>In JOE gibt es mehrere eingebaute Grafik-Klassen. Einige davon haben wir bereits kennengelernt, u.a. Dreiecke (Triangle), Rechtecke (Square) und Kreise (Circle). 
+In dieser Aufgabe sollen Sie sich eine <strong>eigene komplexe Form</strong> überlegen, die aus mehreren Grundformen (u.a. Kreis, Dreieck, Viereck) besteht. Die Gesamtform soll mit JOE grafisch darstellt werden. Beachten Sie dazu die folgenden Anforderungen.   
+</p>
+
+<ul>
+    <p><strong>Anforderungen:</strong></p>
+    <li><input type="checkbox"><strong>Klasse</strong>: Definieren Sie eine Klasse für Ihre Form</li>
+    <li><input type="checkbox"><strong>Ursprung</strong>: Definieren Sie einen Ursprung für Ihre <strong>Gesamt-Form</strong>, z.B. den Mittelpunkt, Schwerpunkt, linke/obere Ecke - je nachdem, was für Ihre Form sinnvoll ist.</li>
+    <li><input type="checkbox"><strong>Anzahl Grundformen</strong>: Ihre komplexe Form besteht aus mind. 3 Grundformen, wobei mind. 2 verschiedene Formen eingesetzt werden sollen (z.B. Dreieck, Dreieck, Viereck).</li>
+    <li><input type="checkbox"><strong>Farbe</strong>: Die Farbe der Gesamt-Form soll konfigurierbar sein. </li>
+    <li><input type="checkbox"><strong>Sichtbarkeit</strong>: Ein Attribut soll den Sichtbarkeitstatus der Form speichern. Dieser soll bei der Initialsierung bereits übergeben werden. Die Form soll durch eine Funktion <i>setVisible(boolean isVisible)</i> sichtbar bzw. unsichtbar gemacht werden.</li>
+    <li><input type="checkbox"><strong>Konstrukor mit Parametern</strong>: Definieren Sie mind. einen Konstruktor, der alle Attribute initialisiert.</li>
+    <li><input type="checkbox"><strong>Konstrukor ohne Parameter</strong>: Definieren Sie einen Konstruktor, der keine Parameter bekommt und sorgen Sie dafür, dass trotzdem alle Attribute initialisiert werden. </li>
+    <li><input type="checkbox"><strong>Objekt anlegen</strong>: Legen Sie ein Objekt Ihrer Klasse in der Main.java an. Prüfen Sie das visuelle Ergebnis.</li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="400" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise9-complex-figure', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Main.java">
+            </script>
+            <script type="plain/text" title="ComplexFigure.java">
+            </script>
+            </iframe>
+    </div>
+</div>
+
+
+</main>
+</body>
+</html>
