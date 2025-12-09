@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Java IDE Embed</title>
+  <head>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const passedId = params.get("id") || "";
+    window.progLectureId = passedId;
+  </script>
+    
+</head>
+
+</head>
+<body>
+
+  <iframe class="ideFrame" width="1000" height="600" 
+    frameborder="0" allow="fullscreen" allowfullscreen
+    srcdoc="
+    <script>
+      window.jo_doc = window.frameElement.textContent;
+    </script>
+    <script src='https://mhimstedt.github.io/prog/includeIDE.js'></script>" >
+    {
+      'id': '${passedId}',
+      'speed': 1000,
+      'withBottomPanel': false ,
+      'withPCode': false ,
+      'withConsole': false ,
+      'withFileList': false ,
+      'withErrorList': false
+    }
+    <script type="plain/text" title="Poylgon.java">
+// x/y-Paare: x1,y1,x2,y2,...,xn,yn
+double[] points = { 100., 100., 100., 300., 300., 300., 
+    300., 100., 200., 25., 101., 101.
+};
+
+Polygon p = new Polygon(true, points); 
+p.move(100., 100.);
+p.scale(1.5); 
+    </script>
+    </iframe>
+
+
+</body>
+</html>
