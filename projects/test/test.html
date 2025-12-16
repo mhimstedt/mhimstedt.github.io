@@ -37,30 +37,38 @@
         <br>
         <h3>Aufgabe 1</h3>
         <p>
-            Mit Hilfe einer Java-Funktion soll die <strong>Quersumme</strong> einer ganzen Zahl bestimmt werden. Die Quersumme wird bestimmt,
-            indem die einzelnen Ziffern (Stellen) einer Zahl addiert werden, z.B. 
-            quersumme(123) soll 6 ergeben, quersumme(372) soll 12 ergeben. Die Funktion ist bereits implementiert, enthält aber Fehler. 
-            Korrigieren Sie bitte <strong>alle</strong> Fehler in der gegebenen Funktion (inkl. fehleranfälliger Code-Teile) und sorgen Sie dafür,
-            dass das gegebene Programm funktioniert.
+            Mit Hilfe einer Java-Funktion soll die <strong>Fakultät</strong> einer natürlichen Zahl <strong>n</strong> bestimmt werden. 
+            Die Fakultät bildet das Produkt aller natürlichen Zahlen bis zum Parameter <i>n</i>.
+
+            Beispiele: 
+            <ul>
+                <li>fakultaet(3) ist 1*2*3 = 6</li>
+                <li>fakultaet(4) ist 1*2*3*4 = 24</li>
+                <li>fakultaet(0) ist per Definition 1</li>
+            </ul>
+            Korrigieren Sie bitte <strong>alle</strong> Fehler in der gegebenen Funktion
+            (inkl. fehleranfälliger Code-Teile) und sorgen Sie dafür,dass das gegebene 
+            Programm funktioniert und korrekte Werte bestimmt.
         </p>
         <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
             'id': 'mockexam-1',
             'withBottomPanel': true,
             'enableFileAccess': true 
         }">
-            <script type="text/plain" title="Quersumme.java">
-double quersumme(zahl) {
-    zahl = Math.abs(zahl)
-    int summe = 0;
-    
-    while (zahl >= 0) 
-        summe = summe + zahl % 10;
-        zahl /= 10;
-    
-    return zahl;
-}
+            <script type="text/plain" title="Fakultaet.java">
+int fakultaet(int n) {
+    int ergebnis = 0;          
 
-println(quersumme(1234)); // Ergebnis sollte 10 sein
+    for (int i = 1; i < n) {  
+        ergebnis = ergebnis + i;   
+    }
+
+    return n;                   
+}                
+
+println(fakultaet(0)); // Ergebnis sollte 1 sein
+println(fakultaet(1)); // Ergebnis sollte 1 sein
+println(fakultaet(4)); // Ergebnis sollte 24 sein
 
             </script>
         </div>
@@ -71,35 +79,23 @@ println(quersumme(1234)); // Ergebnis sollte 10 sein
         <br>
         <h3>Aufgabe 2</h3>
         <p>
-            Erstellen Sie eine Klasse <strong>Point3D</strong>, die einen Punkt (x,y,z) im 3D-Raum beschreiben 
-            und von der gegebene <i>Point</i>-Klasse <strong>erben </strong> soll. Passen Sie Methoden der 
-            <i>Point</i>-Klasse in geeigneter Weise für <i>Point3D</i> an. Nutzen Sie für die Klasse <i>Point3D</i> 
-            bitte die Datei <i>Point3D.java</i>.
-            <br>
-            <strong>Hinweis: Definieren Sie nur die Attribute neu, die <i>Point</i> noch nicht hat.</strong>
+            Erstellen Sie eine Funktion <strong>min</strong>, die als Parameter ein <i>double</i>-Array erhält. 
+            Die <i>min</i>-Funktion soll den minimalen Wert des Arrays zurückgeben.
         </p>
         <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
             'id': 'mockexam-2',
             'withBottomPanel': true,
             'enableFileAccess': true 
         }">
-            <script type="text/plain" title="Point.java">
-class Point {
-    double x;
-    double y;
-        
-    Point(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-        
-    double distance(Point other) {
-        double dx = this.x - other.x;
-        double dy = this.y - other.y;
-        double dist = Math.sqrt(dx * dx + dy * dy);
-        return dist;
-    }
-}
+            <script type="text/plain" title="Program.java">
+/*
+ * Ihre Implementierung der min-Funktion
+*/
+
+double[] values = {3.4, 5.1, -2.1, 192., 0., 126.};
+double minValue = min(values);
+
+println("Minimum: " + minValue); // Ergebnis sollte -2.1 sein
             </script>
             <script type="text/plain" title="Point3D.java">
 
@@ -112,34 +108,39 @@ class Point {
         <br>
         <h3>Aufgabe 3</h3>
         <p>
-            Implementieren Sie bitte eine Funktion <i>sechsWuerfeln</i>, die das Spielen eines
-            Würfels so oft wiederholen soll, bis eine 6 gewürfelt wurde. Mit dem Parameter <i>maxVersuche</i>
-            soll eine maximale Anzahl von Wiederholungen vorgegeben werden. Wird diese erreicht, so soll das
-            Würfeln beendet werden, auch wenn noch keine 6 gewürfelt wurde.
+            Entwerfen Sie eine eigene Klasse <strong>Rechteck</strong>, die als Attribute die Breite,
+            Höhe sowie die Ursprungskoordinaten x und y bekommt (alle vom Typ <i>double</i>).
 
-            Geben Sie bitte die Anzahl Versuche zurück. Diese nutzt das Programm, um herauszufinden, ob eine
-            6 erfolgreich gewürfelt wurde oder nicht. Wenn die maximale Anzahl an Versuchen (maxVersuche) erreicht 
-            wurde, gibt das Programm eine Rückmeldung, dass keine 6 gewüfelt wurde (siehe Programm).
+            Beabeiten Sie die folgenden Teilaufgaben:
+            <ul>
+                <li>Definieren Sie einen Konstruktor, der alle Attribute korrekt initialisiert.</li>
+                <li>Definieren Sie einen Konstruktor, der keine Parameter erhält. Initialisieren Sie 
+                    alle Attribute sinnvoll.</li>
+                <li>Erstellen Sie eine Methode <strong>scale</strong>, die das gesamte Rechteck 
+                    entsprechend eines übergebenen <i>double</i>-Parameters <i>factor</i> skaliert 
+                    (Größe anpassen).</li>
+                <li>Erstellen Sie eine Methode <strong>draw</strong>, die das Rechteck mit Hilfe 
+                    der in JOE eingebauteten <i>Rectangle</i>-Klasse darstellt.</li>   
+            </ul>
 
         <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
             'id': 'mockexam-3',
             'withBottomPanel': true,
             'enableFileAccess': true 
         }">
-            <script type="text/plain" title="Wuerfeln.java">
-int sechsWuerfeln(int maxVersuche) {
-    // bitte implementieren
-}
+            <script type="text/plain" title="Main.java">
+Rechteck rechteck = new Rechteck();  // sollte funktionieren
 
-// gegebener Code-Teil
+// Rechteck im Punkt (300;300) mit Breite 100 und Höhe von 200
+Rechteck rechteck = new Rechteck(300., 300., 100., 200.); 
 
-int maxVersuche = 10;
-int versuche = sechsWuerfeln(maxVersuche);
-if(versuche < maxVersuche)
-    println("Du hast nach " + versuche + " Versuche(n) eine 6 gewürfelt.", Color.green); 
-else
-    println("Du hast nach " + versuche + " Versuche(n) keine 6 gewürfelt.", Color.red);
-
+rechteck.draw();
+SystemTools.pause(500.);
+rechteck.scale(2.0);
+rechteck.draw();    
+            </script>
+            <script type="text/plain" title="Rechteck.java">
+// Ihre Rechteck-Klasse
             </script>
         </div>
         <button id="save-button-task3">Aufgabe 3 senden</button>
