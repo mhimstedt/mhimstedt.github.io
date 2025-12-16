@@ -126,13 +126,13 @@ println("Minimum: " + minValue); // Ergebnis sollte -2.1 sein
             'enableFileAccess': true 
         }">
             <script type="text/plain" title="Main.java">
-Rechteck rechteck = new Rechteck();  // sollte funktionieren
+Rechteck rechteckStandard = new Rechteck();  // sollte funktionieren
 
 // Rechteck im Punkt (300;300) mit Breite 100 und Höhe von 200
 Rechteck rechteck = new Rechteck(300., 300., 100., 200.); 
 
 rechteck.draw();
-SystemTools.pause(500.);
+SystemTools.pause(500);
 rechteck.scale(2.0);
 rechteck.draw();    
             </script>
