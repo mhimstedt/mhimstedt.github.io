@@ -87,10 +87,14 @@ println(fakultaet(4)); // Ergebnis sollte 24 sein
             'withBottomPanel': true,
             'enableFileAccess': true 
         }">
-            <script type="text/plain" title="Program.java">
+            <script type="text/plain" title="MinArray.java">
 /*
  * Ihre Implementierung der min-Funktion
 */
+
+            </script>
+            <script type="text/plain" title="Main.java">
+// Testaufruf zum Validieren
 
 double[] values = {3.4, 5.1, -2.1, 192., 0., 126.};
 double minValue = min(values);
@@ -105,21 +109,11 @@ println("Minimum: " + minValue); // Ergebnis sollte -2.1 sein
         <br>
         <h3>Aufgabe 3</h3>
         <p>
-            Entwerfen Sie eine eigene Klasse <strong>Rechteck</strong>, die als Attribute die Breite,
-            Höhe sowie die Ursprungskoordinaten x und y bekommt (alle vom Typ <i>double</i>).
+            Entwerfen Sie ein Programm, dass das Ziehen von Lottozahlen ermöglicht. Dabei sollen 6
+            Zufallszahlen aus dem Intervall von 1 bis 49 gezogen werden. Die Zahlen dürfen nur einmal
+            vorkommen, d.h. es sind <strong>keine Wiederholungen von Zahlen</strong> erlaubt. Für die 6 Zufallszahlen 
+            soll ein <i>int</i>-Array verwendet werden, z.B. [45, 3, 1, 17, 33, 12] oder [19, 27, 2, 49, 37, 16]. 
         </p>
-            Beabeiten Sie die folgenden Teilaufgaben:
-            <ul>
-                <li>Definieren Sie einen Konstruktor, der alle Attribute korrekt initialisiert.</li>
-                <li>Definieren Sie einen Konstruktor, der keine Parameter erhält. Initialisieren Sie 
-                    alle Attribute sinnvoll.</li>
-                <li>Erstellen Sie eine Methode <strong>scale</strong>, die das gesamte Rechteck 
-                    entsprechend eines übergebenen <i>double</i>-Parameters <i>factor</i> skaliert 
-                    (Größe anpassen).</li>
-                <li>Erstellen Sie eine Methode <strong>draw</strong>, die das Rechteck mit Hilfe 
-                    der in JOE eingebauteten <i>Rectangle</i>-Klasse darstellt.</li>   
-            </ul>
-        <p>Prüfen Sie die Funktionsweise Ihrer Klasse und Methoden mit Hilfe des bereitgestellten Programm-Codes.</p>
 
         <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
             'id': 'mockexam-3',
@@ -127,18 +121,7 @@ println("Minimum: " + minValue); // Ergebnis sollte -2.1 sein
             'enableFileAccess': true 
         }">
             <script type="text/plain" title="Main.java">
-Rechteck rechteckStandard = new Rechteck();  // sollte funktionieren
-
-// Rechteck im Punkt (100;100) mit Breite 100 und Höhe von 200
-Rechteck rechteck = new Rechteck(100., 100., 150., 200.); 
-
-rechteck.draw();
-SystemTools.pause(500);
-rechteck.scale(2.0);
-rechteck.draw();    
-            </script>
-            <script type="text/plain" title="Rechteck.java">
-// Ihre Rechteck-Klasse
+// Ihre Implementierung 
             </script>
         </div>
         <button id="save-button-task3">Aufgabe 3 senden</button>
