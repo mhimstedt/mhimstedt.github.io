@@ -151,7 +151,7 @@
 <h2>🚀 Lernziele</h2>
 <p>Sie können:</p>
 <ul>
-<li>einfache Animationen in JOE umsetzen</li>
+<li>einfache Animationen umsetzen</li>
 <li>interaktiv auf Tastatureingaben reagieren</li>
 <li>erste kleine Spiele entwickeln</li>
 </ul>
@@ -171,7 +171,7 @@
                 <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
             </svg>
         </button>
-        <iframe class="ideFrame"srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
             {'id': 'exercise11-prep', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
             <script type="plain/text" title="MovingCircle.java">
 // Ihre MovingCircle-Klasse
@@ -183,8 +183,234 @@
     </div>
 </div>
 
+
 <h2>📝 Pflichtaufgaben</h2>
-<p>Die Aufgaben werden rechtzeitig bereitgestellt.</p>
+<p>Bitte lösen Sie <strong>alle</strong> der folgenden Teilaufgaben mit JOE. Da es sich hierbei um eine zusammenhängende Aufgabe handelt, 
+    schreiben Sie den Code für alle Aufgaben bitte in das folgende IDE-Fenster:</p>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise11-tetris', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Block.java">
+
+            </script>
+            <script type="plain/text" title="Tetris.java">
+class Tetris extends Actor {
+
+    Block activeBlock;  // das ist unser aktiver (beweglicher) Spielblock
+    
+    /* hier sollen die Spielblöcke landen, die 
+        * am Boden angekommen bzw. kollidiert sind (später, siehe Aufgabe 4)
+        * Der Gruppe können grafische Objekte dynamisch hinzugefügt werden.
+        */ 
+    Group passiveBlocks; 
+    
+    double blockSize; // die Größe unserer Spielblöcke
+    World world;   // World, um die Spielfeldgröße zu kontrollieren
+    double speed = 1; // Geschwindigkeit der Spielblöcke
+    
+    Tetris(int width, int height, double blockSize, double speed) {
+        this.passiveBlocks = new Group();
+        this.activeBlock = null;
+        
+        // TODO:
+        // ...
+    
+    }
+    
+    Tetris() {
+        this(400, 300, 80., 1.);
+    }
+    
+    void addBlock() {
+        if(this.activeBlock != null) {
+            // TODO: Fügen Sie den aktiven Block der Gruppe passiver Blöcke hinzu
+        }
+        // TODO: Initialisieren Sie einen neuen Block
+    }
+    
+    /* TODO:
+    @Override
+    void onKey... {
+        
+    }
+    */
+    
+}
+                 
+                 
+            </script>
+            <script type="plain/text" title="Main.java">
+
+println("Mit Leertaste starten.");
+new Tetris();
+                
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h3>1 - Der <i>Block</i></h3>
+<p>Wir starten zunächst einmal mit der Implementierung eines Spielblocks. Ausgangsbasis dafür sollen Rechtecke sein. </p>
+
+<strong>Teilaufgaben:</strong>
+<ul>
+    <li>Erstellen Sie unter <i>Block.java</i> eine Klasse <strong>Block</strong>, die die eingebaute <i>Rectangle</i>-Klasse erweitert. </li>
+    <li><i>Block</i> soll zunächst <strong>keine eigenen Attribute</strong> haben.</li>
+    <li>Der Konstruktor soll als Parameter <i>initX</i> sowie <i>blockSize</i>, beide vom Typ <i>double</i> erhalten. Die <i>blockSize</i> 
+        soll dabei die Höhe des rechteckigen Spielblocks definieren. Die Breite soll 50% der Höhe betragen. Der Parameter <i>initX</i> 
+        kennzeichnet die Startposition des Spielblocks. Dieser soll am oberen Fensterrand etwa mittig ausgerichtet sein.</li>
+    <li>Setzen Sie die Farbe des Blocks bitte zufällig. Dazu können Sie <i>Color.randomColor()</i> verwenden. </li>
+</ul>
+
+<i>Hinweis: Denken Sie bitte daran, dass Block von Rectangle erbt und Sie dementsprechend bitte keine Attribute/Methoden erneut definieren.</i>
+
+<h3>2 - Die <i>Tetris</i>-Klasse</h3>
+<p>Als nächstes implementieren wir nun die Spiellogik für Tetris. Schauen Sie sich bitte die Vorlage für die <strong>Tetris</strong>-Klasse in der 
+    Datei <i>Tetris.java</i> genauer an. Die Besonderheit ist hierbei, dass diese Klasse von <i>Actor</i> erbt (siehe Vorbereitung). Erweitern Sie 
+    die gegebene Klasse, sodass die folgenden Anforderungen erfüllt sind. Achten Sie auf die Hinweise im Programm-Code.</p>
+
+<strong>Anforderungen:</strong>
+<ul>
+    <li>Das Spiel soll durch Drücken der <i>Leertaste</i> gestartet werden.</li>
+    <li>Die Blöcke sollen mit den Cursortasten nach links, rechts und unten bewegt werden können.</li>    
+</ul>
+
+<h2>⭐ Zusatzaufgaben</h2>
+<p><i>Hinweis: Für den Bonuspunkt reicht es, <strong>eine</strong> der folgenden Aufgaben zu lösen.</i> 
+    <strong>Sie sollten den gegebenen Code im nächsten IDE-Fenster nur als Vorlage verwenden und in Ihre eigene Lösung aus Aufgabe 1+2 integrieren.</strong></p>
+
+<h3>3 - Blöcke fallen</h3>
+<p>In dieser Aufgabe wollen wir nun das automatische Herunterfallen der Blöcke implementieren - eine wohl zentrale Funktionalität für unser Tetris-Spiel. 
+    Setzen Sie dazu bitte die folgenden Anforderungen um. Achten Sie wieder auf Hinweise im gegebenen Programm-Code. 
+</p>
+
+<strong>Anforderungen:</strong>
+<ul>
+    <li>Überschreiben Sie die Methode <i>act</i> in der Klasse <i>Tetris</i>. </li>
+    <li>Vervollständigen Sie zunächst die Vorlage und integrieren Sie Ihre Lösung innerhalb der <i>act</i>-Methode der <i>Tetris</i>-Klasse.</li>
+    <li>Die Spielblöcke sollen nun automatisch (zyklisch) ihre y-Koordinate verändern, sodass sie nach unten fallen.</li>
+    <li>Sobald der aktive Spielblock am Boden angekommen ist, soll ein neuer (ohne Benutzeraktivität) initialisiert werden. </li>    
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise11-bonus1', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Program.java">
+/* Wir prüfen, ob das Spiel noch nicht zu Ende ist
+* und ein aktiver Block existiert
+*/
+if(!this.isGameOver && (this.activeBlock != null)) {
+    Block block = this.activeBlock;
+
+    // wir brauchen die y-Koordinate von block
+    double yCenter = ...
+    /* Aus Kompatibilitätsgründen speichern die 
+    * Grafik-Objekte immer den Mittelpunkt. 
+    * Wir müssen diesen noch zur unteren Kante des 
+    * Rechtecks verschieben. 
+    */
+    double yBottom = ...
+    
+    /* Wir müssen nun prüfen, ob yBottom innerhalb 
+    * des Spielfelds liegt: 
+    * Ja: y-Koordinate wird aktualisiert
+    * Nein: y nicht aktualisieren und einen neuen Block hinzufügen
+    */
+
+    if(...) {
+        // die Methode setY erlaubt es uns, 
+        // die y - Koordinate anzupassen
+        block.setY(...);
+    } else {
+        ...
+    }
+        
+}
+            </script>
+            <script type="plain/text" title="Main.java">
+// Initialisieren von MovingCircle-Objekten
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h3>4 - Kollisionen und Blöcke rotieren </h3>
+<p>In dieser Aufgabe sollen Sie Ihr Spiel dahingehend erweitern, dass neue Spielblöcke auch erzeugt werden, sobald der aktive
+    Spielblock mit einem anderen kollidiert. Schauen Sie sich dazu die Vorlage an und versuchen Sie diese mit Hilfe der
+    Tipps in Ihr Spiel zu integrieren.
+</p>
+
+<strong>Anforderungen:</strong>
+<ul>
+    <li>Sobald der aktive Spielblock einen anderen trifft, soll sich dieser nicht weiter bewegen. Ein neuer Spielblock soll
+        automatisch initialisiert werden.
+    </li>
+    <li>Blöcke lassen sich um 90° entgegen dem Uhrzeigersinn drehen (siehe <i>rotate</i>-Methode). </li>
+</ul>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'exercise11-bonus', 'speed': 1000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+            <script type="plain/text" title="Programm.java">
+/* Kollisionen erkennen
+* Sie können die Methode getCollidingShapes (Block) aufrufen, 
+* um zu überprüfen, ob diese mit den anderen Blöcken kollidiert.
+*/
+Shape[] collisionObjects = ... 
+
+/* Wenn das Array collisionObjects nicht leer ist,
+* heißt das, dass es Kollisionen gegeben hat.
+* Nutzen Sie das aus, um ihre Routine zur Erzeugung
+* neuer Blöcke zu starten.
+* 
+* Wenn mehr als eine Kollision stattfindet, ist übrigens
+* ein guter Zeitpunkt, um das Spiel zu beenden (System.exit(0))
+*/
+if(...) {
+    addBlock();
+} 
+
+
+/* Rotation von Blöcken
+* Wenn Sie die Blöcke rotieren, funktioniert vermutlich 
+* Ihre Erkennung des unteren Spielfeldrands nicht mehr 
+* korrekt, da wir ja keine quadratische Blöcke haben.
+* 
+* Hierfür können Sie einen kleinen Trick ausnutzen:
+* Fügen Sie der Liste mit den passiven Blöcken einfach
+* eine schwarze Linie (am Boden) hinzu (am besten direkt
+* im Konstruktor). Somit führt jede Kollision mit der 
+* Bodenlinie dazu, dass neue Blöcke
+* initialisiert werden.
+* 
+* Alternativ müsste man den Winkel (getAngle) des Blockes
+* auswerten.
+*/
+
+               
+            </script>
+        </iframe>
+    </div>
+</div>
 
 </main>
 </body>
