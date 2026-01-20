@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="11_files/libs/clipboard/clipboard.min.js"></script>
-<script src="11_files/libs/quarto-html/tabby.min.js"></script>
-<script src="11_files/libs/quarto-html/popper.min.js"></script>
-<script src="11_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="11_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="11_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="11_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="swt-projekt_files/libs/clipboard/clipboard.min.js"></script>
+<script src="swt-projekt_files/libs/quarto-html/tabby.min.js"></script>
+<script src="swt-projekt_files/libs/quarto-html/popper.min.js"></script>
+<script src="swt-projekt_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="swt-projekt_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="swt-projekt_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="swt-projekt_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.24">
 
-  <title>quarto-input9c8cb53ee61342e1</title>
+  <title>swt-projekt</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="11_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="11_files/libs/revealjs/dist/reveal.css">
-  <link rel="stylesheet" href="https://mhimstedt.github.io/prog/exercises.css">
+  <link rel="stylesheet" href="swt-projekt_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="swt-projekt_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -29,12 +28,12 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="11_files/libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
+  <link rel="stylesheet" href="swt-projekt_files/libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
   <link rel="stylesheet" href="styles.css">
-  <link href="11_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="11_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="11_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="11_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="swt-projekt_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="swt-projekt_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="swt-projekt_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="swt-projekt_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -129,282 +128,89 @@
 
 
 <section>
-<section id="animationen" class="title-slide slide level1 center">
-<h1>Animationen</h1>
+<section id="codelab---swt-projekt" class="title-slide slide level1 center">
+<h1>&lt;/&gt; CodeLab - SWT-Projekt</h1>
+
+</section>
+<section id="betreuung" class="slide level2">
+<h2>Betreuung</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="img/animation.png" class="quarto-figure quarto-figure-center" width="900"></p>
+<p><img data-src="img/SWTP-people.png" class="quarto-figure quarto-figure-center" width="900"></p>
 </figure>
 </div>
 </section>
-<section id="animation-grundidee" class="slide level2">
-<h2>Animation – Grundidee</h2>
+<section id="motivation" class="slide level2">
+<h2>Motivation</h2>
 <ul>
-<li class="fragment">Animation = zeitliche Veränderung von Grafikobjekten<br>
-</li>
-<li class="fragment">Objekte besitzen Zustände (Position, Richtung, Aussehen)</li>
-<li class="fragment">Zustände werden regelmäßig aktualisiert</li>
-<li class="fragment">Darstellung erfolgt fortlaufend auf dem Bildschirm</li>
-<li class="fragment">Ziel: flüssige, kontinuierliche Bewegung</li>
+<li>Grundlagen Programmierung in ITD</li>
+<li>Barrieren zum Programmierenlernen abbauen</li>
+<li>Motivation durch Spaß am Programmieren</li>
 </ul>
 </section>
-<section id="zeitbasierte-animation" class="slide level2">
-<h2>Zeitbasierte Animation</h2>
-<ul>
-<li class="fragment">Animation benötigt eine wiederkehrende Ausführung</li>
-<li class="fragment">Bewegungen laufen auch ohne Benutzereingaben</li>
-<li class="fragment">Zeit ist zentraler Steuerfaktor</li>
-<li class="fragment">Bildwiederholrate beeinflusst Wahrnehmung</li>
-<li class="fragment">Gleichmäßige Updates → flüssige Animation</li>
-</ul>
+<section id="umgebung-online-ide" class="slide level2">
+<h2>Umgebung: Online-IDE</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/online-ide.png" class="quarto-figure quarto-figure-center" width="900"></p>
+</figure>
+</div>
 </section>
-<section id="game-loop" class="slide level2">
-<h2>🎮 Game Loop</h2>
-<ul>
-<li class="fragment">Zentrale Endlosschleife des Programms</li>
-<li class="fragment">Besteht aus drei Phasen:
-<ul>
-<li class="fragment">Eingaben verarbeiten</li>
-<li class="fragment">Zustand aktualisieren (Update)</li>
-<li class="fragment">Grafik zeichnen (Render)</li>
-</ul></li>
-<li class="fragment">Läuft kontinuierlich</li>
-<li class="fragment">Blockiert nicht auf Benutzereingaben</li>
-</ul>
-</section>
-<section id="update-vs.-rendering" class="slide level2">
-<h2>Update vs.&nbsp;Rendering</h2>
-<ul>
-<li class="fragment"><strong>Update</strong>
-<ul>
-<li class="fragment">Berechnet neue Objektzustände</li>
-<li class="fragment">Logik, Bewegung, Kollisionen</li>
-</ul></li>
-<li class="fragment"><strong>Rendering</strong>
-<ul>
-<li class="fragment">Zeichnet aktuellen Zustand</li>
-<li class="fragment">Keine Logikberechnungen</li>
-</ul></li>
-<li class="fragment">Trennung sorgt für Stabilität</li>
-<li class="fragment">Wichtig für saubere Animationen</li>
-</ul>
-</section>
-<section id="bildrate-und-zeitsteuerung" class="slide level2">
-<h2>⏱️ Bildrate und Zeitsteuerung</h2>
-<ul>
-<li class="fragment">Animation erfolgt in Frames</li>
-<li class="fragment">Feste Bildrate, z. B. 30 Frames/Sekunde
-<ul>
-<li class="fragment">Frames per Second = FPS</li>
-</ul></li>
-<li class="fragment">Hohe FPS → flüssigere Bewegung
-<ul>
-<li class="fragment">stellt aber auch höhere Anforderungen an Hardware</li>
-</ul></li>
-<li class="fragment">Schwankende FPS können ruckeln</li>
-<li class="fragment">Zeitsteuerung beeinflusst Genauigkeit</li>
-</ul>
-</section>
-<section id="zeitmodelle-im-game-loop" class="slide level2">
-<h2>⏱️ Zeitmodelle im Game Loop</h2>
-<ul>
-<li class="fragment">Fester Zeitschritt
-<ul>
-<li class="fragment">Updates in konstanten Intervallen</li>
-<li class="fragment">Vorhersagbares Verhalten</li>
-</ul></li>
-<li class="fragment">Variabler Zeitschritt
-<ul>
-<li class="fragment">Update abhängig von vergangener Zeit</li>
-<li class="fragment">Flexibler, aber weniger stabil</li>
-</ul></li>
-</ul>
-</section>
-<section id="kombiniertes-zeitmodell" class="slide level2">
-<h2>⏱️ Kombiniertes Zeitmodell</h2>
-<ul>
-<li class="fragment">Update mit festem Zeitschritt</li>
-<li class="fragment">Render mit variabler Frequenz</li>
-<li class="fragment">Kombination aus Stabilität und Glätte</li>
-<li class="fragment">Häufig in Spielen eingesetzt</li>
-<li class="fragment">Gute Kontrolle über Animation</li>
-</ul>
-</section>
-<section id="interpolation" class="slide level2">
-<h2>Interpolation</h2>
-<ul>
-<li class="fragment">Überbrückt Zeit zwischen Updates</li>
-<li class="fragment">Berechnet Zwischenzustände</li>
-<li class="fragment">Erhöht visuelle Glätte</li>
-<li class="fragment">Besonders wichtig bei fixem Update</li>
-<li class="fragment">Betrifft nur Darstellung, nicht Logik</li>
-</ul>
-</section>
-<section class="slide level2">
-
-</section></section>
-<section>
-<section id="animation-mit-java-in-joe" class="title-slide slide level1 center">
-<h1>Animation mit Java in JOE</h1>
-
-</section>
-<section class="slide level2">
-
-<ul>
-<li class="fragment">alle Grafikobjekte erben von <code>Actor</code>-Klasse
-<ul>
-<li class="fragment">u.a. Rectangle, Polygon, Triangle</li>
-</ul></li>
-<li class="fragment">Jedes Objekt besitzt eine <code>act()</code>-Methode
-<ul>
-<li class="fragment"><code>act()</code> wird automatisch aufgerufen</li>
-</ul></li>
-<li class="fragment">Default: 30 FPS</li>
-<li class="fragment">Grundlage für Objektanimation</li>
-</ul>
-</section>
-<section id="die-act-methode" class="slide level2">
-<h2>Die <code>act()</code>-Methode</h2>
-<ul>
-<li class="fragment">Wird vom Framework gesteuert</li>
-<li class="fragment">Enthält Animations- und Bewegungslogik</li>
-<li class="fragment">Entwickler überschreiben die Methode</li>
-<li class="fragment">Zustandsänderungen pro Frame</li>
-<li class="fragment">Keine direkte Zeichenlogik</li>
-</ul>
-</section>
-<section id="typische-aufgaben-in-act" class="slide level2">
-<h2>Typische Aufgaben in <code>act()</code></h2>
-<ul>
-<li class="fragment">Position verändern</li>
-<li class="fragment">Geschwindigkeit anwenden</li>
-<li class="fragment">Richtungen anpassen</li>
-<li class="fragment">Zustände wechseln</li>
-<li class="fragment">Einfache Kollisionen prüfen</li>
-</ul>
-</section>
-<section id="beispiel-für-act" class="slide level2">
-<h2>⌨️ Beispiel für <code>act()</code></h2>
-
-  <div class="ide-container">
-    <div class="ide-inner">
-        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1100" height="600" frameborder="0">
-            {'id': 'animation-rectangle', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
-            <script type="plain/text" title="Programm.java">
+<section id="beispiel-für-vorlesung" class="slide level2">
+<h2>⌨️ Beispiel für Vorlesung</h2>
+<div class="ide-container">
+  <div class="ide-inner">
+      <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1100" height="600" frameborder="0">
+          {'id': 'animation-rectangle', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
+          <script type="plain/text" title="Programm.java">
 new World(1000, 1000);
 new RotatingRectangle(300, 400, 400, 200);
 
 // Eine Schleife wie `while(true)` wird hier nicht gebraucht
 
 class RotatingRectangle extends Rectangle {
-    
-    public void act() {
-      rotate(2);
-    }
+  
+  public void act() {
+    rotate(2);
+  }
 
 }
-            </script>
-        </iframe>
-    </div>
+          </script>
+      </iframe>
   </div>
+</div>
 
 </section>
-<section id="anforderungen-an-animationscode" class="slide level2">
-<h2>📋 Anforderungen an Animationscode</h2>
-<ul>
-<li class="fragment">Keine Endlosschleifen in <code>act()</code></li>
-<li class="fragment">Kurze, schnelle Berechnungen</li>
-<li class="fragment">Zustandsänderung pro Aufruf</li>
-<li class="fragment">Trennung von Logik und Darstellung</li>
-<li class="fragment">Anpassung an feste Update-Frequenz</li>
-</ul>
+<section id="beispiel-für-praktikum" class="slide level2">
+<h2>⌨️ Beispiel für Praktikum</h2>
+<p><img data-src="img/exercise-example.png"></p>
+<p><a href="https://mhimstedt.github.io/prog/exercise-9.html"></a></p>
 </section>
-<section class="slide level2">
+<section id="tech-stack" class="slide level2">
+<h2>Tech Stack</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/SWTP-Codelab_Techstack.png" class="quarto-figure quarto-figure-center" width="900"></p>
+</figure>
+</div>
+</section>
+<section id="ziele" class="slide level2">
+<h2>🚀 Ziele</h2>
+<ul>
+<li>aus iFrame-Lösung zur Lernplattform</li>
+<li>Plattformunabhängigkeit
+<ul>
+<li>Laptop, Desktop
+<ul>
+<li>MacOS, Linux, Windows</li>
+<li>gängige Browser</li>
+</ul></li>
+<li>Tablet: iOS, Android</li>
+</ul></li>
+<li>Studierende können von überall programmieren</li>
+</ul>
 
 </section></section>
-<section>
-<section id="tastatur-steuerung" class="title-slide slide level1 center">
-<h1>⌨️ Tastatur-Steuerung</h1>
-
-</section>
-<section id="tastatur-ereignisse-in-joe" class="slide level2">
-<h2>Tastatur-Ereignisse in JOE</h2>
-<ul>
-<li class="fragment">Tastatur-Eingaben sind <strong>ereignisgesteuert</strong></li>
-<li class="fragment">Methoden reagieren auf bestimmte Tastaturaktionen</li>
-<li class="fragment">Übergabe der betroffenen Taste als <code>String</code></li>
-<li class="fragment">Ereignis-Handler werden überschrieben</li>
-</ul>
-</section>
-<section class="slide level2">
-
-<ul>
-<li class="fragment"><code>onKeyDown(String key)</code>
-<ul>
-<li class="fragment">wenn Taste <code>key</code> gerade <strong>heruntergedrückt</strong> wurde</li>
-</ul></li>
-<li class="fragment"><code>onKeyUp(String key)</code>
-<ul>
-<li class="fragment">wenn Taste <code>key</code> gerade <strong>losgelassen</strong> wurde</li>
-</ul></li>
-<li class="fragment"><code>onKeyTyped(String key)</code>
-<ul>
-<li class="fragment">wenn <code>key</code> angeschlagen (heruntergedrückt + losgelassen) wurde</li>
-</ul></li>
-<li class="fragment">Unterschied <code>onKeyUp</code> und <code>onKeyTyped</code>:
-<ul>
-<li class="fragment">beim längeren Halten einer Taste können viele <code>OnKeyTyped</code>-Ereignisse ausgelöst werden, aber nur ein <code>OnKeyUp</code>-Ereignis</li>
-</ul></li>
-</ul>
-</section>
-<section id="beispiel-für-tastatur-aktionen" class="slide level2">
-<h2>⌨️ Beispiel für Tastatur-Aktionen</h2>
-
-  <div class="ide-container">
-    <div class="ide-inner">
-        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1100" height="600" frameborder="0">
-            {'id': 'animation-rectangle', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
-            <script type="plain/text" title="Programm.java">
-new World(1000, 1000);
-new RotatingTriangle();
-
-class RotatingTriangle extends Triangle {
-
-    public RotatingTriangle() {
-      super(450, 600, 550, 600, 500, 300);
-    }
-
-    public void onKeyDown(String key) {
-      switch(key) {
-          case Key.ArrowLeft : rotate(20); break;
-          case Key.ArrowRight : rotate(-20); break;
-      }
-    }
-
-}
-            </script>
-        </iframe>
-    </div>
-  </div>
-
-</section></section>
-<section id="zusammenfassung" class="title-slide slide level1 center">
-<h1>✅ Zusammenfassung</h1>
-<div class="columns">
-<div class="column" style="width:85%;">
-<ul>
-<li class="fragment">Animation basiert auf Zeit und Wiederholung</li>
-<li class="fragment">Game Loop ist zentrale Steuerung</li>
-<li class="fragment">Trennung von Update und Rendering ist entscheidend</li>
-<li class="fragment"><code>act()</code> ermöglicht objektbezogene Animation</li>
-<li class="fragment">Saubere Zeitsteuerung → flüssige Grafik</li>
-<li class="fragment">🚀 <strong>Mehr dazu im nächsten Praktikum</strong></li>
-</ul>
-</div><div class="column" style="width:15%;">
-<p><img data-src="img/clock.png" class="quarto-figure quarto-figure-center" style="width:75.0%"> <img data-src="img/summary.jpg" style="width:100.0%"></p>
-</div></div>
-
-</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
@@ -413,19 +219,19 @@ class RotatingTriangle extends Triangle {
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="11_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="swt-projekt_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="11_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="11_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="11_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="11_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="11_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="swt-projekt_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="swt-projekt_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="swt-projekt_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="swt-projekt_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="swt-projekt_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="11_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="11_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="11_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="11_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="swt-projekt_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="swt-projekt_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="swt-projekt_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="swt-projekt_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
