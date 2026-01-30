@@ -1,6 +1,6 @@
 //let base = "https://embed1.learnj.de/include/";
-//let base = "https://mhimstedt.github.io/prog/";
-let base = "http://localhost:8000/";
+let base = "https://mhimstedt.github.io/prog/";
+
 
 let scripts = [
     base + 'online-ide-embedded.css'
