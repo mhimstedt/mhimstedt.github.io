@@ -159,7 +159,7 @@
 
 <p><strong>Aufgaben:</strong></p>
 <ul>
-    <li><input type="checkbox"><strong>Zugriffsmodifizierer</strong>: Bitte lesen Sie noch einmal, wofür diese gebraucht werden und wie sie genutzt werden, siehe <a href="https://slides.com/blackbill/deck-fd4aad">Vorlesung #1</a></li>
+    <li><input type="checkbox"><strong>Zugriffsmodifizierer</strong>: Bitte lesen Sie noch einmal, wofür diese gebraucht werden und wie sie genutzt werden, siehe <a href="https://slides.com/blackbill/deck-fd4aad">Vorlesung #1</a>.</li>
     <li><input type="checkbox"><strong><i>Person</i>-Klasse</strong>: Im GProg-Praktikum haben wir bereits die <i>Person</i>-Klasse (Attribute: firstname, lastname; optional: address usw.) implementiert. Bitte bringen Sie diese mit bzw. bereiten Sie diese vor.</li>
 </ul>
 
@@ -197,7 +197,7 @@ Bearbeiten Sie dazu bitte die folgenden Teilaufgaben.</p>
         vor unbefugten (direkten) Zugriff von außerhalb der Klasse ab. Bedenken Sie dabei bitte schon, dass diese Klasse auch als
         Basisklasse (Elternklasse) für weitere Klassen dienen soll. </li>
      <li><input type="checkbox"><strong>Getter/Setter-Methoden</strong>: Definieren Sie für die Attribute bitte geeignete <i>get</i>- und
-        <i>set-Methoden</i> (siehe auch: <a href="https://slides.com/blackbill/deck-fd4aad#/7">Vorlesung #1:7</a></li>
+        <i>set-Methoden</i> (siehe auch: <a href="https://slides.com/blackbill/deck-fd4aad#/7">Vorlesung #1:7</a>).</li>
 </ul>
 
 <div class="ide-container">
@@ -216,8 +216,8 @@ Bearbeiten Sie dazu bitte die folgenden Teilaufgaben.</p>
 
 Person person = new Person("Petra", "Musterfrau");
 
-// person.lastname = "Mustermann";  ❌ Das sollte nicht mehr funktionieren
-// person.setLastname("Mustermann"); ✅ Das sollte funktionieren
+// person.lastname = "Mustermann";  // ❌ Das sollte nicht mehr funktionieren
+// person.setLastname("Mustermann"); // ✅ Das sollte funktionieren
 
                 
             </script>
@@ -261,11 +261,13 @@ Person person = new Person("Petra", "Musterfrau");
 
 Student student = new Student("Petra", "Musterfrau", "281931");
 
-// student.lastname = "Mustermann";  ❌ Das sollte nicht mehr funktionieren
-// student.setLastname("Mustermann"); ✅ Das sollte funktionieren
+println(student);
 
-// student.getId(); ✅ Das sollte funktionieren
-// student.getFirstname(); ✅ Das sollte funktionieren
+// student.lastname = "Mustermann";  // ❌ Das sollte nicht mehr funktionieren
+student.setLastname("Mustermann"); // ✅ Das sollte funktionieren
+
+println(student.getId()); // ✅ Das sollte funktionieren
+println(student.getLastname()); // ✅ Das sollte funktionieren
                 
             </script>
         </iframe>
@@ -275,11 +277,15 @@ Student student = new Student("Petra", "Musterfrau", "281931");
 <h2>⭐ Zusatzaufgabe (1 Bonuspunkt)</h2>
 
 <h3>3 - <i>VisibleCircle</i>-Klasse</h3>
-<p>Sie kennen aus GProg schon die Grafikklasse <i>Circle</i>. Diese zeichnet einen Kreis mit einem Mittelpunkt, der als Parameter übergeben wird. 
- Die Klasse bietet bereits eine <i>set</i>-Methode zum Setzen der x- bzw. y-Koordinaten. Leider wird dabei aber nicht überprüft, ob diese 
- Mittelpunkt-Koordinaten auch im sichtbaren Bereich liegt. Erstellen Sie eine neue Klasse <i>VisibleCircle</i>, die von <i>Circle</i> erbt, allerdings
- (im Gegensatz zu <i>Circle</i>) prüfen soll, ob der Kreis noch vollständig im sichtbaren Bereich (siehe <i>World</i>) liegt. Überlegen Sie sich bitte
- ein Konzept, das diese Anforderung umsetzt.</p>
+<p>Sie kennen aus GProg schon die Grafikklasse <i>Circle</i>. Diese zeichnet einen Kreis mit geg. Mittelpunkt und Radius, die als Parameter übergeben werden. 
+    Die Klasse bietet bereits eine <i>set</i>-Methode zum Setzen der x- bzw. y-Koordinaten. Leider wird dabei aber nicht überprüft, ob diese 
+    Mittelpunkt-Koordinaten auch im sichtbaren Bereich liegt. Erstellen Sie eine neue Klasse <i>VisibleCircle</i>, die von <i>Circle</i> erbt, allerdings
+    (im Gegensatz zu <i>Circle</i>) prüfen soll, ob der Kreis noch vollständig im sichtbaren Bereich (siehe <i>World</i>) liegt. Überlegen Sie sich bitte
+    ein Konzept, das diese Anforderung umsetzt.</p>
+
+ <p><i>Hinweis: Bedenken Sie auch, dass die Klasse VisibleCircle auch dafür sorgen soll, dass Kreise vollständig sichtbar sind, wenn bereits 
+    fehlerhafte Koordinaten bei der Ininitialisierug (Instanziierung) angegeben werden. Denken Sie auch an den Konstruktor ohne Argumente. 
+</i></p>
 
 <div class="ide-container">
     <div class="ide-inner">
@@ -295,12 +301,14 @@ Student student = new Student("Petra", "Musterfrau", "281931");
             </script>
             <script type="plain/text" title="Main.java">
 
-Circle circle = new Circle();
-VisibleCircle visCircle = new VisibleCircle();
+Circle circle = new Circle(200, 200, 50);
+VisibleCircle visCircle = new VisibleCircle(0, 0, 50);
+visCircle.setFillColor(Color.red);
 
-// circle.setX(2000.); ❌ Kreis sollte (eigentlich) nicht mehr sichtbar sein
-// visCircle.setX(2000.); ✅ Der Kreis sollte im sichtbaren Bereich bleiben (ursprüngliche Position)
-                
+SystemTools.pause(1000);
+circle.setX(2000.); // ❌ Kreis sollte (eigentlich) nicht mehr sichtbar sein
+println(visCircle.setX(2000.)); // ✅ Der Kreis sollte im sichtbaren Bereich bleiben (ursprüngliche Position)
+                        
             </script>
         </iframe>
     </div>
