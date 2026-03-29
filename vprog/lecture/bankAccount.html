@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Java IDE Embed</title>
+  <head>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const passedId = params.get("id") || "";
+    window.progLectureId = passedId;
+  </script>
+    
+</head>
+
+</head>
+<body>
+
+  <iframe class="ideFrame" width="1000" height="600" 
+    frameborder="0" allow="fullscreen" allowfullscreen
+    srcdoc="
+    <script>
+      window.jo_doc = window.frameElement.textContent;
+    </script>
+    <script src='https://mhimstedt.github.io/prog/includeIDE.js'></script>" >
+    {
+      'id': '${passedId}',
+      'speed': 1000,
+      'withBottomPanel': true ,
+      'withPCode': false ,
+      'withConsole': false ,
+      'withFileList': true ,
+      'withErrorList': true
+    }
+    <script type="plain/text" title="BankAccount.java">
+class BankAccount {
+  private Person holder;  // Kontoinhaber
+  private String iban;
+  private int balance; // Kontostand (Einheit: Cent)
+
+  /* Hinweis: Kontostand (balance) sollte 
+    * initial 0 sein und daher hier nicht als 
+    * Parameter übergeben werden
+    */
+  BankAccount(Person holder, String iban) {
+      this.holder = holder;
+      this.iban = iban;
+      this.balance = 0; 
+  }
+  
+  public int getBalance() {
+      return this.balance;
+  }
+
+  // ⚠️ setBalance ist nicht sinnvoll
+
+  public Person getHolder() {
+      return this.holder;
+  }
+
+  public void setHolder(Person newHolder) {
+      this.holder = newHolder;
+  }
+
+  public String getIban() {
+      return this.iban;
+  }
+
+  /* ⚠️ setIban erschein auch nicht sinnvoll
+    *  Hier würde man vermutlich eher ein 
+    *  neues Konto anlegen.
+    */
+
+    /* 💡 Änderungen am Kontostand (balance)
+    *  sollten über Ein-/Auszahlungen erfolgen.
+    */
+
+  // für Auszahlungen (engl. to withdraw)
+  public boolean withdraw(int amount) {
+      // ✅ Prüfen, ob Kontostand ausreicht
+      if(this.balance >= amount) {
+        this.balance -= amount;
+        return true;
+      }
+      return false;
+  }
+
+  // für Einzahlungen (engl. to deposit)
+  public void deposit(int amount) {
+      // ℹ️ Einzahlen sollte (für positive Beträge) immer klappen
+      if(amount >= 0) {
+        this.balance += amount;
+      }
+  }
+
+}
+    </script>
+    <script type="plain/text" title="Person.java">
+class Person {
+    String firstname;
+    String lastname;
+
+    Person(String firstname, String lastname) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
+    Person() {
+        this("Petra","Musterfrau");
+    }
+}
+    </script>
+
+    <script type="plain/text" title="Main.java">
+// Wir legen einen Kontoinhaber an
+Person holder = new Person("Johnny", "Cash");
+// ... und das passende Konto dazu 
+BankAccount account = new BankAccount(holder, "DE561929484828358432");
+
+println("Kontoinformationen:" );
+println(account); 
+
+// account.balance += 1000;  // ❌ Das klappt zum Glück nicht mehr
+println("Zahle 10 Euro ein!");
+account.deposit(1000); // ✅ Änderungen am Kontostand über Methoden
+
+println("Kann ich 20 Euro abheben? ");
+boolean isSuccessFull = account.withdraw(2000);
+
+if(isSuccessFull) {
+    println("Ja");
+} else {
+    println("Nein.");
+    println("Warum nicht?");
+    println("Kontostand: " + account.getBalance()/100 + " Euro");
+    println("Darum 😜");
+}
+      
+    </script>
+
+  </iframe>
+
+
+</body>
+</html>
