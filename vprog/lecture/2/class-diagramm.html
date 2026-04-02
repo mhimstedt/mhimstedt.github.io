@@ -31,8 +31,41 @@
       'withFileList': true ,
       'withErrorList': true
     }
-    <script type="plain/text" title="Main.java">
+    <script type="plain/text" title="Fahrzeug.java">
+class Fahrzeug {
+  private String modell;
+
+  public Fahrzeug(String modell) {
+    this.modell = modell;
+  }
+
+  public String getModell() {
+    return this.modell;
+  }
+}
     </script>
+    <script type="plain/text" title="Auto.java">
+class Auto extends Fahrzeug {
+  private int kmStand;
+
+  public Auto(String modell, int kmStand) {
+      super(modell);
+      this.kmStand = kmStand;
+  }
+
+  public int getKmStand() {
+      return this.kmStand;
+  }
+}
+    </script>
+    <script type="plain/text" title="Main.java">
+Fahrzeug fahrzeug = new Fahrzeug("Superfast");
+Auto auto = new Auto("Superfast", 10000);
+println(fahrzeug.getModell());
+println(auto.getKmStand());
+    </script>
+
+
     </iframe>
 
 
