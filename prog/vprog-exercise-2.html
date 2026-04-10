@@ -187,10 +187,6 @@
 │+ setPhone(phone : String): void               │
 └───────────────────────────────────────────────┘
 </pre>
-
-<p>
-    <i>Hinweis: Bitte implementieren Sie alle Setter/Getter wie in der Vorlesung eingeführt.</i>
-</p>
 <div class="ide-container">
     <div class="ide-inner">
         <button class="fullscreenBtn" type="button">
@@ -207,16 +203,216 @@
 // Testen Sie Ihre Person-Klasse
 
 Person person = new Person("Petra", "Musterfrau", 
-                "Mönkhofer Weg 239A 23562 Lübeck", 
+                new Address("Mönkhofer Weg 239A 23562 Lübeck"), 
                 "+494513005001");
             </script>
         </iframe>
     </div>
 </div>
 
+
 <h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
 
-<p>Wir werden uns mit der Umsetzung eines <strong>Sportverein</strong>-Modells in Java-Code beschäftigen.</p>
+<p>
+    In den folgenden Aufgaben werden wir sukzessive ein geg. Modell eines 
+    <strong>Sportvereins</strong> in Java-Code umsetzen. 
+</p>
+<h3>1 - <i>Address</i>-Klasse</h3>
+<p>
+    Die Adresse wird in der aktuellen Implementierung der Klasse <i>Person</i> unstrukturiert 
+    in einem String abgelegt, was einige Nachteile mit sich bringt, u.a.: 
+    <ol>
+        <li>Überprüfung auf Vollständigkeit gestaltet sich schwierig</li>
+        <li>Filtern auf bspw. Orte erfordert Volltextsuche (in Adresse)</li>
+    </ol>
+
+    Aus diesem Grund werden wir in den folgenden Teilaufgaben eine eigene Klasse
+    für Adressen implementieren.
+</p>
+
+<p><strong>Teilaufgaben:</strong></p>
+<ul>
+    <li><input type="checkbox"><strong><i>Address</i>-Klasse</strong>: Erzeugen Sie eine neue Klasse 
+        für Adressen, die alle notwendigen Daten strukturiert erfässt und aus <i>Person</i> 
+        herauszieht. Implementieren Sie die Klasse entsprechend dem gegebenen Klassendiagramm.
+    </li>
+     <li><input type="checkbox"><strong>Anpassung der <i>Person</i>-Klasse</strong>: 
+        Passen Sie Ihre <i>Person</i>-Klasse aus der Vorbereitungsaufgabe dahingehend an,
+        dass für die Adresse nun auch die neue <i>Address</i>-Klasse verwendet wird 
+        (siehe Klassendiagramm).
+    </li>
+    <li><input type="checkbox"><strong>Wahl der Datentypen</strong>: Überlegen Sie, warum für Postleitzahl 
+        <i>(zipCode)</i> und Hausnummer <i>(houseNumber)</i>der Datentyp <i>String</i> 
+        verwendet wird. Reicht es aus, die Telefonnummer von <i>Person</i> als <i>String</i>
+        zu modellieren? Diskutieren Sie.
+    </li>
+</ul>
+
+<pre>
+┌───────────────────────────────────────────────┐  ┌─────────────────────────────────────────────────┐
+│Person                                         │  │Address                                          │
+├───────────────────────────────────────────────┤  ├─────────────────────────────────────────────────┤
+│# firstName : String                           │  │- street : String                                │
+│# lastName : String                            │  │- houseNumber : String                           │
+│# address : Address                            │  │- zipCode : String                               │
+│# phone: String                                │  │- location : String                              │
+├───────────────────────────────────────────────┤  ├─────────────────────────────────────────────────┤
+│+ Person(firstName : String, lastName : String,│  │+ Address(street : String, houseNumber : String, │
+│  address : Address, phone : String)           │  │  zipCode : String, location : String)           │
+│+ Person()                                     │  │+ Address()                                      │
+│+ getFirstName() : String                      │  │+ getStreet() : String                           │
+│+ setFirstName(firstName : String) : void      │  │+ setStreet(street : String) : void              │
+│+ getLastName() : String                       │  │+ getHouseNumber() : String                      │
+│+ setLastName(lastName : String) : void        │  │+ setHouseNumber(houseNumber : String) : void    │
+│+ getAddress(): Address                        │  │+ getZipCode() : String                          │
+│+ setAddress(address : Address): void          │  │+ setZipCode(zipCode : String) : void            │
+│+ getPhone(): String                           │  │+ getLocation() : String                         │
+│+ setPhone(phone : String): void               │  │+ setLocation(location : String) : void          │
+└───────────────────────────────────────────────┘  └─────────────────────────────────────────────────┘
+</pre>
+
+<strong>Achten Sie darauf, dass alle Anforderungen (u.a. Modifizierer, Namen) exakt 
+    umgesetzt werden.</strong> 
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'vprog-exercise2-address', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': true}
+            <script type="plain/text" title="Person.java">
+
+            </script>
+            <script type="plain/text" title="Address.java">
+
+            </script>
+            <script type="plain/text" title="Main.java">
+
+// Test Ihrer Person-/Address-Klassen: Bitte nicht verändern!
+Person person = new Person("Petra", "Musterfrau", 
+                new Address("Mönkhofer Weg", "239A", "23562", "Lübeck"), 
+                "+494513005001");
+
+println(person);
+                
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h3>2 - Spezialisierungen</h3>
+<p>
+    Unser Modell vom <strong>Sportverein</strong> enthält wichtige Spezialisierungen unserer 
+    <i>Person</i>-Klasse. Diese sollen im späteren Verlauf konkrete Rollen des Vereins abbilden. 
+    Bearbeiten Sie dazu die folgenden Teilaufgaben.
+</p>
+
+<strong>Teilaufgaben:</strong>
+<ul>
+    <li><input type="checkbox"><strong><i>Member</i>-Klasse</strong>: Erstellen Sie eine 
+        Klasse <i>Member</i> (Mitglied), die von Person erbt gemäß des geg. Klassendiagramms. 
+        <i>Die Date-Klasse ist bereits vorgegeben.</i>
+    </li>
+    <li><input type="checkbox"><strong><i>Player</i>-Klasse</strong>: Erstellen Sie eine 
+        Klasse <i>Player</i> (Spieler:in), die von Member erbt gemäß des geg. Klassendiagramms.
+    </li>
+    <li><input type="checkbox"><strong><i>Trainer</i>-Klasse</strong>: Erstellen Sie eine 
+        Klasse <i>Trainer</i> (Trainer:in), die von Member erbt gemäß des geg. Klassendiagramms.
+    </li>       
+</ul>
+
+<img src="club.svg" alt="Klassendiagramm vom Verein">
+
+<p>
+    <strong>Achten Sie darauf, dass alle Anforderungen (u.a. Modifizierer, Namen) exakt 
+    umgesetzt werden.</strong> 
+</p>
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'vprog-exercise2-club', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': true}
+            <script type="plain/text" title="Date.java">
+class Date {
+
+    private int day;
+    private int month;
+    private int year;
+
+    public Date(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    // Setter 
+    public void setDate(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+}
+
+            </script>
+            
+            <script type="plain/text" title="Person.java">
+// Bitte ihre Person-Klasse übernehmen
+            </script>
+            <script type="plain/text" title="Member.java">
+// Ihre Implementierung der Member-Klasse
+            </script>
+            <script type="plain/text" title="Trainer.java">
+// Ihre Implementierung der Trainer-Klasse
+            </script>
+            <script type="plain/text" title="Player.java">
+// Ihre Implementierung der Player-Klasse
+            </script>
+            <script type="plain/text" title="Main.java">
+
+Trainer trainer = new Trainer("Bernd", "Berkhahn",
+                              new Address("Birkenweg", "94a", "80336", "München"),
+                              "+491728483248641", 
+                              "214412",
+                              new Date(1,1,2014),
+                              "Superschwimmerinnen");
+
+Player player = new Player("Isabel", "Gose", 
+                            new Address("Sanddornweg", "123", "10178", "Berlin"),
+                            "+4917584832914641", 
+                            "514412",
+                            new Date(1,1,2020),
+                            "Superschwimmerinnen");
+
+println(trainer);
+println(player);
+
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h2>⭐ Zusatzaufgabe (1 Bonuspunkt)</h2>
+
+Wird rechtzeitig freigeschaltet.
 
 </main>
 </body>
