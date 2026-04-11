@@ -203,7 +203,7 @@
 // Testen Sie Ihre Person-Klasse
 
 Person person = new Person("Petra", "Musterfrau", 
-                new Address("Mönkhofer Weg 239A 23562 Lübeck"), 
+                "Mönkhofer Weg 239A 23562 Lübeck", 
                 "+494513005001");
             </script>
         </iframe>
@@ -324,7 +324,7 @@ println(person);
     </li>       
 </ul>
 
-<img src="club.svg" alt="Klassendiagramm vom Verein">
+<img src="club.svg" width="600" alt="Klassendiagramm vom Verein">
 
 <p>
     <strong>Achten Sie darauf, dass alle Anforderungen (u.a. Modifizierer, Namen) exakt 
@@ -410,9 +410,94 @@ println(player);
     </div>
 </div>
 
-<h2>⭐ Zusatzaufgabe (1 Bonuspunkt)</h2>
+<h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
 
-Wird rechtzeitig freigeschaltet.
+<p>
+    Den Bonuspunkt erhalten Sie, wenn Sie <strong>eine Aufgabe vollständig</strong> lösen und
+    im Praktikum vorstellen.
+</p>
+
+<h3>3 - Erweiterungen für den <i>Sportverein</i></h3>
+<p>
+    Unsere Implementierung des Modells vom <i>Sportverein</i> ist noch an vielen 
+    Stellen ausbaufähig. Lösen Sie bitte die folgenden Teilaufgaben, die unsere Implementierung
+    robuster und komfortabler machen werden.
+</p>
+
+<strong>Teilaufgaben:</strong>
+<ul>
+    <li><input type="checkbox"><strong><i>Date</i>-Klasse erweitern</strong>: Erstellen Sie 
+        einen Konstruktor ohne Parameter. Nutzen Sie in diesem Fall das aktuelle Datum zur
+        Initialisierung. Passen Sie die geg. <i>Date</i>-Klasse dahingehend an, dass nur gültige Daten angegeben werden können (Tag, Monat, 
+        Jahr korrekt). Achten Sie darauf, dass das sowohl für die Initialisierung als auch das 
+        Verändern über <i>Setter</i> gilt. Denken Sie auch daran, Code möglichst wiederzuverwenden
+        und nicht an verschiedenen Stellen zu duplizieren. 
+    </li>
+    <li><input type="checkbox"><strong><i>Employee</i>-Klasse</strong>: Erstellen Sie eine 
+        Klasse <i>Employee</i> (Mitarbeiter:in). Anforderungen finden Sie im geg. Klassendiagramm.
+        Die Attribute <i>startDate</i> und <i>endDate</i> beziehen sich auf Vertragsbeginn und ggf.
+        ein Vertragsende (befristeter Vertrag). Für unbefristete Verträge initialisieren Sie bitte 
+        entsprechende Objekte mit <i>null</i> für <i>endDate</i>.
+    </li>
+    <li><input type="checkbox"><strong><i>BoardMember</i>-Klasse</strong>: Erstellen Sie eine 
+        Klasse <i>BoardMember</i> (Vorstand). Anforderungen finden Sie im geg. Klassendiagramm.
+        <i>startDate</i> und <i>endDate</i> bitte analog zu <i>Employee</i> verwenden.  
+    </li>       
+</ul>
+
+<img src="club-extended.svg" width="900" alt="Klassendiagramm (erweitert) vom Verein">
+
+<p>
+    <strong>Sie können die Anpassungen gern direkt im Code-Fenster der vorherigen 
+        Aufgabe lösen. Denken Sie daran, den Stand vorher abzuspeichern.</strong>
+</p>
+<h3>4 - Die <i>equal</i>-Methode</h3>
+
+<p>
+    <i>Hinweis: Diese Aufgabe ist unabhängig von UML-Klassendiagrammen und dem vorgestellten Modell.</i>
+</p>
+
+<p>
+    Es soll eine Funktion <strong>equal</strong> implementiert werden, die ein <i>int</i>-Array 
+    übergeben bekommt, das potenziell Duplikate (=gleiche Zahl mehrmals) enthalten kann. Beachten 
+    Sie dabei die folgenden Anforderungen.
+</p>
+<strong>Anforderungen:</strong>
+<ul>
+    <li><input type="checkbox"><strong>Übergabe- und Rückgabeparameter</strong>: 
+        Es soll ein <i>int</i>-Array übergeben und auch ein <i>int</i>-Array zurückgegeben werden.
+    </li>
+    <li><input type="checkbox"><strong>Duplikate filtern</strong>: Elemente (=Zahlen), 
+        die mehrfach vorkommen, sollen herausgefiltert werden. Zurückgegeben werden sollen die
+        Elemente nur einmal, auch wenn diese im übergebenen Array mehrfach vorkommen.
+    </li>
+    <li><input type="checkbox"><strong>Nur Arrays</strong>: Es sind nur Arrays sowie 
+        die eingebauten primitiven Datentypen (int, double, char usw.) erlaubt - keine 
+        anderen Datenstrukturen. 
+    </li>       
+</ul>
+
+<p>
+    <strong>Beispielaufruf:</strong> equal([1,2,2,3,4,4,5,6]) ➡️ [1,2,3,4,5,6]
+</p>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'vprog-exercise2-equal', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': true}
+            <script type="plain/text" title="Main.java">
+// Ihre equal-Funktion:
+// ...
+
+            </script>
+        </iframe>
+    </div>
+</div>
 
 </main>
 </body>
