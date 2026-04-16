@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>CG1 Sternenhimmel</title>
+
+  <link rel="stylesheet" href="build/glslEditor.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #111;
+      color: #eee;
+    }
+
+    .section {
+      padding: 40px;
+      border-bottom: 1px solid #333;
+    }
+
+    .task {
+      max-width: 800px;
+      margin-bottom: 20px;
+    }
+
+    .editor {
+      height: 400px;
+    }
+
+    h2 {
+      color: #6cf;
+    }
+  </style>
+</head>
+<body>
+  <h1>Einführung in Shader-Programmierung</h1>
+  <h2>Ziel: Darstellung eines Sternenhimmels</h2>
+  <h2>Vorbereitung</h2>
+  <p>Die folgenden Aufgaben setzen voraus, dass Sie die zugehörigen 
+     Vorbereitungsaufgaben vollständig abgeschlossen haben: 
+     <a href="https://mhimstedt.github.io/cg/prep/cg-introduction-1.html">Materialien zur Vorbereitung</a>
+  </p>
+  
+  <h2>Aufgaben</h2>
+
+  <p>
+    In diesem Praktikum wollen wir einen Sternenhimmel als Fragment-Shader implementieren.
+    Dieser soll aus vielen, kleinen hellen Punkten (=weiß) auf schwarzem Untergrund
+    bestehen. Außerdem wollen wir einen 
+    <a href="https://de.wikipedia.org/wiki/Szintillation_(Astronomie)">Szintillationseffekt</a>
+    ("Flackern" von Sternen) simulieren.
+  </p>
+  <p>
+    Die folgenden Teilaufgaben leiten Sie sukzessive zum Ziel. Ihre Lösungen können Sie in 
+    der untenstehenden Online-IDE implementieren und live testen.
+  </p>
+        einem schwarzen Hintergrund. 
+        Beachten Sie dabei folgende <strong>Anforderungen</strong>:
+          <ul>
+            <li>Die Sterne sollen zufällig verteilt sein</li>
+
+          </ul>
+        Hinweise:
+
+  <!-- Aufgabe 1 -->
+  <div class="section">
+    <div class="task">
+      <h3>Aufgabe 1</h3>
+      <p>
+        Starte zunächst mit einem einfachen monochromen Verlauf: 
+      </p>
+      <pre>
+          vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+          gl_FragColor = vec4(vec3(uv.x), 1.0);
+      </pre>
+
+    </div>
+
+    <div id="editor1" class="editor"></div>
+  </div>
+
+  <!-- Aufgabe 2 -->
+  <div class="section">
+    <div class="task">
+      <h2>Aufgabe 2: Simulation von Szintillationen</h2>
+      <p>
+        Wenn Sie längere Zeit Sterne beobachten, ist Ihnen sicherlich schon aufgefallen, 
+        dass diese z.T. "flackern". Dieser Effekt entsteht u.a. durch Lichtbrechungen 
+        (ausgehend von den Sternen) in der Erdatmosphäre und wird in der Astronomie als 
+        <a href="https://de.wikipedia.org/wiki/Szintillation_(Astronomie)">Szintillationen</a>
+        bezeichnet. Erweitern Sie Ihre Implementierung nun um diesen Effekt. Es ist an dieser 
+        Stelle ausreichend, wenn Sie ein zeitgleiches (synchrones) "Flackern" aller Sterne 
+        umsetzen.  
+      </p>
+    </div>
+
+    <div id="editor2" class="editor"></div>
+  </div>
+
+  <script src="build/glslEditor.js"></script>
+  <script>
+    // Editor 1
+    new GlslEditor('#editor1', {
+      canvas_size: 400,
+      theme: 'monokai',
+      fragment: `
+precision mediump float;
+
+void main() {
+    vec2 st = gl_FragCoord.xy / vec2(400.0, 400.0);
+    gl_FragColor = vec4(vec3(st.x), 1.0);
+}
+`
+    });
+
+    // Editor 2
+    new GlslEditor('#editor2', {
+      canvas_size: 400,
+      theme: 'monokai',
+      fragment: `
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform float u_time;
+
+void main() {
+    vec2 st = gl_FragCoord.xy / vec2(400.0, 400.0);
+    float y = sin(st.x * 10.0 + u_time);
+    gl_FragColor = vec4(vec3(y * 0.5 + 0.5), 1.0);
+}
+`
+    });
+  </script>
+
+</body>
+</html>
