@@ -360,10 +360,225 @@ Member member = new Member("Isabel","Gose",
 
 <h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
 
-🚧 Aufgaben werden rechtzeitig online gestellt. 
+<h3>Objektbeziehungen für Vereinsmodell</h3>
+<p>
+    Im letzten Praktikum haben wir bereits mit der Implementierung eines Modells 
+    für einen <i>Sportverein</i> begonnen. Dieses werden wir jetzt durch weitere Klassen
+    sowie <strong>Objektbeziehungen</strong> erweitern. Das erweiterte Modell finden Sie
+    im folgenden Klassendiagramm. Achten Sie darauf, dass Sie Beziehungstypen und 
+    Multiplizitäten so umsetzen, wie es im Klassendiagramm dargestellt ist. 
+</p>
 
+<strong>Hinweise:</strong>
+<ul>
+    <li><input type="checkbox">Die <strong><i>Team</i>-Klasse ist neu</strong>. Diese
+        müssen Sie ergänzen. Achten Sie darauf, dass es im Vergleich zum vorherigen Modell
+        einige Änderungen gibt.
+    </li>
+    <li><input type="checkbox">Die <strong><i>Employee</i> und <i>BoardMember</i>-Klasse</strong> 
+        werden erst bei den <strong>Zusatzaufgaben</strong> umgesetzt. Diese setzen voraus, 
+        dass Sie die Zusatzaufgabe der letzten Woche bereits gelöst haben (siehe Hinweise 
+        bei der Zusatzaufgabe). 
+    </li>
+    <li><input type="checkbox">Achten Sie unbedingt darauf, die <strong>korrekten 
+        Verbindungstypen (so wie im geg. Klassendiagramm) umzusetzen.</strong>. Hierzu gibt
+        es Beispiele in der 
+        <a href="https://slides.com/blackbill/klassendiagramme-4236e2/fullscreen#/10">Vorlesung 3 (#11-13)</a>.
+    </li>       
+</ul>
 
+<img src="club-with-relations.svg" width="90%" alt="Klassendiagramm">
 
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'vprog-exercise3-prep', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Club.java">
+// Ihre Club-Klasse
+            </script>
+            <script type="plain/text" title="Address.java">
+                class Address {
+   private String street;
+   private String houseNumber;
+   private String zipCode;
+   private String location;
+
+   public Address(String street, String houseNumber, String zipCode, String location) {
+      this.street = street;
+      this.houseNumber = houseNumber;
+      this.zipCode = zipCode;
+      this.location = location;
+   }
+   
+   public Address() {
+      this("", "", "", "");
+   }
+   
+   public String getStreet() {
+      return this.street;
+   }
+
+   public String getHouseNumber() {
+      return this.houseNumber;
+   }
+
+   public String getZipCode() {
+      return this.zipCode;
+   }
+
+   public String getLocation() {
+      return this.location;
+   }
+
+   public void setStreet(String street) {
+      this.street = street;
+   }
+
+   public void setHouseNumber(String houseNumber) {
+      this.houseNumber = houseNumber;
+   }
+
+   public void setZipCode(String zipCode) {
+      this.zipCode = zipCode;
+   }
+
+   public void setLocation(String location) {
+      this.location = location;
+   }
+
+}
+            </script>
+            <script type="plain/text" title="Date.java">
+class Date {
+
+    private int day;
+    private int month;
+    private int year;
+
+    public Date(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    // Setter 
+    public void setDate(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+}
+            </script>
+            <script type="plain/text" title="Person.java">
+class Person {
+   protected String firstName;
+   protected String lastName;
+   protected Address address;
+   protected String phone;
+
+   public Person(String firstName, String lastName, Address address, String phone) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.address = address;
+      this.phone = phone;
+   }
+
+   public Person() {
+      this("", "", new Address(), "");
+   }
+   
+   public String getFirstName() {
+      return this.firstName;
+   }
+
+   public String getLastName() {
+      return this.lastName;
+   }
+
+   public Address getAddress() {
+      return this.address;
+   }
+
+   public String getPhone() {
+      return this.phone;
+   }
+
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
+
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
+   }
+
+   public void setAddress(Address address) {
+      this.address = address;
+   }
+
+   public void setPhone(String phone) {
+      this.phone = phone;
+   }
+}
+            </script>
+            <script type="plain/text" title="Team.java">
+
+            </script>
+            <script type="plain/text" title="Member.java">
+class Member extends Person {
+   protected String id;
+   protected Date joinDate;
+
+   public Member(String firstName, String lastName,
+      Address address, String phone,
+      String id, Date joinDate) {
+      
+      super(firstName, lastName, address, phone);
+      this.id = id;
+      this.joinDate = joinDate;
+   }
+
+   public String getId() {
+      return this.id;
+   }
+
+   public Date getJoinDate() {
+      return this.joinDate;
+   }
+
+}
+            </script>
+            <script type="plain/text" title="Main.java">
+Club club = new Club("Superswim e.V.", new Date(1,1,1901));
+Member member = new Member("Isabel","Gose",
+                            new Address("Sanddornweg", "123", "10178", "Berlin"),
+                            "+4917584832914641", 
+                            "514412",
+                            new Date(1,1,2020));
+            </script>
+        </iframe>
+    </div>
+</div>
+
+<h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
+
+🚧 Diese werden zeitnah freigeschaltet.
 </main>
 </body>
 </html>
