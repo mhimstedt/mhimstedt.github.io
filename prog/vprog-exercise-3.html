@@ -171,7 +171,7 @@
     </li>
 </ul>
 
-<img src="club-member-prep.svg" width="400" alt="Klassendiagramm">
+<img src="club-member-prep.svg" width="600" alt="Klassendiagramm">
 
 <div class="ide-container">
     <div class="ide-inner">
@@ -183,10 +183,10 @@
         <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
             {'id': 'vprog-exercise3-prep', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
             <script type="plain/text" title="Club.java">
-// Ihre Club-Klasse
+
             </script>
             <script type="plain/text" title="Address.java">
-                class Address {
+class Address {
    private String street;
    private String houseNumber;
    private String zipCode;
@@ -346,13 +346,20 @@ class Member extends Person {
 }
             </script>
             <script type="plain/text" title="Main.java">
-Club club = new Club("Superswim e.V.", new Date(1,1,1901));
-Member member = new Member("Isabel","Gose",
-                            new Address("Sanddornweg", "123", "10178", "Berlin"),
-                            "+4917584832914641", 
-                            "514412",
-                            new Date(1,1,2020));
-            </script>
+Club club = new Club("Superswim e.V.", new Date(1, 1, 1901));
+Member[] members = new Member[1];
+
+members[0] = new Member("Isabel", "Gose",
+   new Address("Sanddornweg", "123", "10178", "Berlin"),
+   "+4917584832914641", 
+   "514412",
+   new Date(1, 1, 2020)); 
+
+// Verbindungen herstellen!
+
+// ...
+
+            </script>       
         </iframe>
     </div>
 </div>
@@ -375,19 +382,17 @@ Member member = new Member("Isabel","Gose",
         müssen Sie ergänzen. Achten Sie darauf, dass es im Vergleich zum vorherigen Modell
         einige Änderungen gibt.
     </li>
-    <li><input type="checkbox">Die <strong><i>Employee</i> und <i>BoardMember</i>-Klasse</strong> 
-        werden erst bei den <strong>Zusatzaufgaben</strong> umgesetzt. Diese setzen voraus, 
-        dass Sie die Zusatzaufgabe der letzten Woche bereits gelöst haben (siehe Hinweise 
-        bei der Zusatzaufgabe). 
-    </li>
     <li><input type="checkbox">Achten Sie unbedingt darauf, die <strong>korrekten 
-        Verbindungstypen (so wie im geg. Klassendiagramm) umzusetzen.</strong>. Hierzu gibt
+        Verbindungstypen (so wie im geg. Klassendiagramm) umzusetzen</strong>. Hierzu gibt
         es Beispiele in der 
         <a href="https://slides.com/blackbill/klassendiagramme-4236e2/fullscreen#/10">Vorlesung 3 (#11-13)</a>.
+    </li>
+    <li><input type="checkbox">Verbindungen herstellen in der <strong><i>Main</i>.java</strong>: In der Main.java finden Sie ein Aufruf-Beispiel
+        des Modells. Stellen Sie <strong>alle</strong> notwendigen Verbindungen zwischen den Klassen her.  
     </li>       
 </ul>
 
-<img src="club-with-relations.svg" width="90%" alt="Klassendiagramm">
+<img src="club-with-relations.svg" width="600" alt="Klassendiagramm">
 
 <div class="ide-container">
     <div class="ide-inner">
@@ -397,12 +402,12 @@ Member member = new Member("Isabel","Gose",
             </svg>
         </button>
         <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
-            {'id': 'vprog-exercise3-prep', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            {'id': 'vprog-exercise3-main', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
             <script type="plain/text" title="Club.java">
-// Ihre Club-Klasse
+
             </script>
             <script type="plain/text" title="Address.java">
-                class Address {
+class Address {
    private String street;
    private String houseNumber;
    private String zipCode;
@@ -537,9 +542,6 @@ class Person {
    }
 }
             </script>
-            <script type="plain/text" title="Team.java">
-
-            </script>
             <script type="plain/text" title="Member.java">
 class Member extends Person {
    protected String id;
@@ -564,14 +566,57 @@ class Member extends Person {
 
 }
             </script>
-            <script type="plain/text" title="Main.java">
-Club club = new Club("Superswim e.V.", new Date(1,1,1901));
-Member member = new Member("Isabel","Gose",
-                            new Address("Sanddornweg", "123", "10178", "Berlin"),
-                            "+4917584832914641", 
-                            "514412",
-                            new Date(1,1,2020));
+            <script type="plain/text" title="Player.java">
+class Player extends Member {
+
+   public Player(String firstName, String lastName,
+      Address address, String phone, String id, 
+      Date joinDate) {
+      super(firstName, lastName, address, phone,
+         id, joinDate);
+   }
+}
             </script>
+            <script type="plain/text" title="Trainer.java">
+class Trainer extends Member {
+
+   public Trainer(String firstName, String lastName,
+      Address address, String phone, String id, 
+      Date joinDate) {
+      super(firstName, lastName, address, phone,
+         id, joinDate);
+   }
+}
+            </script>
+            <script type="plain/text" title="Team.java">
+
+            </script>
+            <script type="plain/text" title="Main.java">
+Club club = new Club("Superswim e.V.", new Date(1, 1, 1901));
+
+Team[] teams = new Team[1];
+teams[0] = new Team("Superschwimmerinnen");;
+
+Trainer[] trainers = new Trainer[1];
+trainers[0] = new Trainer("Bernd", "Berkhahn",
+   new Address("Birkenweg", "94a", "80336", "München"),
+   "+491728483248641", 
+   "214412",
+   new Date(1, 1, 2014),
+   );
+          
+Player[] players = new Player[1]; 
+players[0] = new Player("Isabel", "Gose",
+   new Address("Sanddornweg", "123", "10178", "Berlin"),
+   "+4917584832914641", 
+   "514412",
+   new Date(1, 1, 2020)); 
+
+// Zuordnungen herstellen
+
+// ...
+            </script>
+            
         </iframe>
     </div>
 </div>
