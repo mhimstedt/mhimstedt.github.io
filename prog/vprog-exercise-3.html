@@ -623,7 +623,194 @@ players[0] = new Player("Isabel", "Gose",
 
 <h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
 
-🚧 Diese werden zeitnah freigeschaltet.
+<img src="https://mhimstedt.github.io/prog/club-with-relations_Bonus.svg" width="600" alt="Klassendiagramm">
+
+<p>
+    Im letzten Praktikum haben wir bereits die zusätzliche Klasse <strong>BoardMember</strong> (Vorstand) 
+    angelegt (siehe Bonusaufgabe <a href="https://mhimstedt.github.io/prog/vprog-exercise-2.html">Praktikum 2</a>). 
+    Sollten Sie diese noch nicht umgesetzt haben, legen Sie bitte zunächst noch eine neue Klasse <i>BoardMember</i> 
+    entsprechend dem geg. Klassendiagramm an. 
+</p>
+<p>
+   Die Klasse <i>BoardMember</i> soll nun zusätzlich an den <i>Club</i> (Verein) gebunden werden. Überlegen Sie sich,
+   wie Sie die im geg. Klassendiagramm dargestellte Verbindung zwischen den beiden Klassen herstellen können. 
+   Schauen Sie sich ggf. auch nochmal das Vorlesungbeispiel an: 
+   <a href="https://slides.com/blackbill/klassendiagramme-4236e2/fullscreen#/12">Vorlesung 2 #13</a>.
+   Erstellen Sie bitte selbst ein einfaches Beispiel zur Demonstration der Verbindung in der <i>Main.java</i>.
+</p>
+<p>
+   <i>Hinweis: Nutzen Sie insbesondere die Multiplizität aus, um es sich in der Implementierung etwas
+      einfacher zu machen. Nehmen Sie fiktive Datumsangaben für <i>startDate</i> und <i>endDate</i>
+      von BoardMember an. 
+   </i>
+</p>
+
+<div class="ide-container">
+    <div class="ide-inner">
+        <button class="fullscreenBtn" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="white">
+                <path d="https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg" />
+            </svg>
+        </button>
+        <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" width="1000" height="200" frameborder="0" allow="fullscreen" allowfullscreen>
+            {'id': 'vprog-exercise3-bonus', 'speed': 1000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': false}
+            <script type="plain/text" title="Club.java">
+// Ihre Club-Klasse
+            </script>
+            <script type="plain/text" title="Team.java">
+class Team {
+
+}               
+            </script>
+            <script type="plain/text" title="Address.java">
+class Address {
+   private String street;
+   private String houseNumber;
+   private String zipCode;
+   private String location;
+
+   public Address(String street, String houseNumber, String zipCode, String location) {
+      this.street = street;
+      this.houseNumber = houseNumber;
+      this.zipCode = zipCode;
+      this.location = location;
+   }
+   
+   public Address() {
+      this("", "", "", "");
+   }
+   
+   public String getStreet() {
+      return this.street;
+   }
+
+   public String getHouseNumber() {
+      return this.houseNumber;
+   }
+
+   public String getZipCode() {
+      return this.zipCode;
+   }
+
+   public String getLocation() {
+      return this.location;
+   }
+
+   public void setStreet(String street) {
+      this.street = street;
+   }
+
+   public void setHouseNumber(String houseNumber) {
+      this.houseNumber = houseNumber;
+   }
+
+   public void setZipCode(String zipCode) {
+      this.zipCode = zipCode;
+   }
+
+   public void setLocation(String location) {
+      this.location = location;
+   }
+
+}
+            </script>
+            <script type="plain/text" title="Date.java">
+class Date {
+
+    private int day;
+    private int month;
+    private int year;
+
+    public Date(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    // Setter 
+    public void setDate(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+}
+            </script>
+<script type="plain/text" title="Person.java">
+class Person {
+   protected String firstName;
+   protected String lastName;
+   protected Address address;
+   protected String phone;
+
+   public Person(String firstName, String lastName, Address address, String phone) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.address = address;
+      this.phone = phone;
+   }
+
+   public Person() {
+      this("", "", new Address(), "");
+   }
+   
+   public String getFirstName() {
+      return this.firstName;
+   }
+
+   public String getLastName() {
+      return this.lastName;
+   }
+
+   public Address getAddress() {
+      return this.address;
+   }
+
+   public String getPhone() {
+      return this.phone;
+   }
+
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
+
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
+   }
+
+   public void setAddress(Address address) {
+      this.address = address;
+   }
+
+   public void setPhone(String phone) {
+      this.phone = phone;
+   }
+}
+            </script>
+            <script type="plain/text" title="BoardMember.java">
+// Ihre BoardMember-Implementierung
+            </script>
+            <script type="plain/text" title="Main.java">
+// eigenes Beispiel
+
+
+            </script>
+            
+        </iframe>
+    </div>
+</div>
+
 </main>
 </body>
 </html>
