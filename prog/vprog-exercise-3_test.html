@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>VProg Praktikum 3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="exercises.css">
+    <link rel='stylesheet' type='text/css' media='screen' href='./online-ide-embedded.css'>
+    <script type="module" crossorigin src="./online-ide-embedded.js"></script>
+
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 3: Implementierung von Objektbeziehungen</h1>
+<p>In diesem Praktikum wollen wir lernen, wie <i>Objektbeziehungen</i> aus Klassendiagrammen
+    in Java umgesetzt werden können.</p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+<li>Klassenbeziehungen aus Klassendiagrammen korrekt und vollständig ablesen</li>
+<li>Klassenbeziehungen eines geg. Klassendiagramms in Java implementieren</li>
+<li>Multiplizitäten von Klassenbeziehungen korrekt umsetzen</li>
+</ul>
+<h2>🤔 Vorbereitung</h2>
+<p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. Diese sollen sicherstellen, dass Sie die gestellten Praktikumsaufgaben inhaltlich und zeitlich schaffen.</p>
+
+<p><strong>Aufgaben:</strong></p>   
+<ul>
+    <li><input type="checkbox"><strong>Objektbeziehungen</strong>: Bitte lesen Sie noch einmal, wofür diese gebraucht werden und wie sie genutzt werden (siehe <a href="https://slides.com/blackbill/klassendiagramme-4236e2/fullscreen">Vorlesung 3</a>).</li>
+    <li><input type="checkbox"><strong>Klasse <i>Club</i></strong>: Implementieren Sie Klasse <i>Club</i> (engl. Verein), die als Basis für unseren Sportverein dienen soll. 
+        Anforderungen an die Implementierung können Sie dem geg. Klassendiagramm entnehmen.
+    </li>
+     <li><input type="checkbox"><strong>Beziehung <i>Club</i>-<i>Member</i></strong>:
+        Bitte implementieren Sie die Beziehung der Klassen <i>Club</i> und <i>Member</i>, so wie
+        es im geg. Klassendiagramm dargestellt ist.
+    </li>
+</ul>
+
+<img src="club-member-prep.svg" width="600" alt="Klassendiagramm">
+
+<div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-3-prep',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+            <script type="plain/text" title="Club.java">
+
+            </script>
+            <script type="plain/text" title="Address.java">
+class Address {
+   private String street;
+   private String houseNumber;
+   private String zipCode;
+   private String location;
+
+   public Address(String street, String houseNumber, String zipCode, String location) {
+      this.street = street;
+      this.houseNumber = houseNumber;
+      this.zipCode = zipCode;
+      this.location = location;
+   }
+   
+   public Address() {
+      this("", "", "", "");
+   }
+   
+   public String getStreet() {
+      return this.street;
+   }
+
+   public String getHouseNumber() {
+      return this.houseNumber;
+   }
+
+   public String getZipCode() {
+      return this.zipCode;
+   }
+
+   public String getLocation() {
+      return this.location;
+   }
+
+   public void setStreet(String street) {
+      this.street = street;
+   }
+
+   public void setHouseNumber(String houseNumber) {
+      this.houseNumber = houseNumber;
+   }
+
+   public void setZipCode(String zipCode) {
+      this.zipCode = zipCode;
+   }
+
+   public void setLocation(String location) {
+      this.location = location;
+   }
+
+}
+            </script>
+            <script type="plain/text" title="Date.java">
+class Date {
+
+    private int day;
+    private int month;
+    private int year;
+
+    public Date(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    // Setter 
+    public void setDate(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+}
+            </script>
+            <script type="plain/text" title="Person.java">
+class Person {
+   protected String firstName;
+   protected String lastName;
+   protected Address address;
+   protected String phone;
+
+   public Person(String firstName, String lastName, Address address, String phone) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.address = address;
+      this.phone = phone;
+   }
+
+   public Person() {
+      this("", "", new Address(), "");
+   }
+   
+   public String getFirstName() {
+      return this.firstName;
+   }
+
+   public String getLastName() {
+      return this.lastName;
+   }
+
+   public Address getAddress() {
+      return this.address;
+   }
+
+   public String getPhone() {
+      return this.phone;
+   }
+
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
+
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
+   }
+
+   public void setAddress(Address address) {
+      this.address = address;
+   }
+
+   public void setPhone(String phone) {
+      this.phone = phone;
+   }
+}
+            </script>
+            <script type="plain/text" title="Member.java">
+class Member extends Person {
+   protected String id;
+   protected Date joinDate;
+
+   public Member(String firstName, String lastName,
+      Address address, String phone,
+      String id, Date joinDate) {
+      
+      super(firstName, lastName, address, phone);
+      this.id = id;
+      this.joinDate = joinDate;
+   }
+
+   public String getId() {
+      return this.id;
+   }
+
+   public Date getJoinDate() {
+      return this.joinDate;
+   }
+
+}
+            </script>
+            <script type="plain/text" title="Main.java">
+Club club = new Club("Superswim e.V.", new Date(1, 1, 1901));
+Member[] members = new Member[1];
+
+members[0] = new Member("Isabel", "Gose",
+   new Address("Sanddornweg", "123", "10178", "Berlin"),
+   "+4917584832914641", 
+   "514412",
+   new Date(1, 1, 2020)); 
+
+// Verbindungen herstellen!
+
+// ...
+
+            </script>       
+</div>
+
+
+<h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
+
+<h3>Objektbeziehungen für Vereinsmodell</h3>
+<p>
+    Im letzten Praktikum haben wir bereits mit der Implementierung eines Modells 
+    für einen <i>Sportverein</i> begonnen. Dieses werden wir jetzt durch weitere Klassen
+    sowie <strong>Objektbeziehungen</strong> erweitern. Das erweiterte Modell finden Sie
+    im folgenden Klassendiagramm. Achten Sie darauf, dass Sie Beziehungstypen und 
+    Multiplizitäten so umsetzen, wie es im Klassendiagramm dargestellt ist. 
+</p>
+
+<strong>Hinweise:</strong>
+<ul>
+    <li><input type="checkbox">Die <strong><i>Team</i>-Klasse ist neu</strong>. Diese
+        müssen Sie ergänzen. Achten Sie darauf, dass es im Vergleich zum vorherigen Modell
+        einige Änderungen gibt.
+    </li>
+    <li><input type="checkbox">Achten Sie unbedingt darauf, die <strong>korrekten 
+        Verbindungstypen (so wie im geg. Klassendiagramm) umzusetzen</strong>. Hierzu gibt
+        es Beispiele in der 
+        <a href="https://slides.com/blackbill/klassendiagramme-4236e2/fullscreen#/10">Vorlesung 3 (#11-13)</a>.
+    </li>
+    <li><input type="checkbox">Verbindungen herstellen in der <strong><i>Main</i>.java</strong>: In der Main.java finden Sie ein Aufruf-Beispiel
+        des Modells. Stellen Sie <strong>alle</strong> notwendigen Verbindungen zwischen den Klassen her.  
+    </li>       
+</ul>
+
+<img src="club-with-relations.svg" width="600" alt="Klassendiagramm">
+
+<div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-3-main',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+            <script type="plain/text" title="Club.java">
+
+            </script>
+            <script type="plain/text" title="Address.java">
+class Address {
+   private String street;
+   private String houseNumber;
+   private String zipCode;
+   private String location;
+
+   public Address(String street, String houseNumber, String zipCode, String location) {
+      this.street = street;
+      this.houseNumber = houseNumber;
+      this.zipCode = zipCode;
+      this.location = location;
+   }
+   
+   public Address() {
+      this("", "", "", "");
+   }
+   
+   public String getStreet() {
+      return this.street;
+   }
+
+   public String getHouseNumber() {
+      return this.houseNumber;
+   }
+
+   public String getZipCode() {
+      return this.zipCode;
+   }
+
+   public String getLocation() {
+      return this.location;
+   }
+
+   public void setStreet(String street) {
+      this.street = street;
+   }
+
+   public void setHouseNumber(String houseNumber) {
+      this.houseNumber = houseNumber;
+   }
+
+   public void setZipCode(String zipCode) {
+      this.zipCode = zipCode;
+   }
+
+   public void setLocation(String location) {
+      this.location = location;
+   }
+
+}
+            </script>
+            <script type="plain/text" title="Date.java">
+class Date {
+
+    private int day;
+    private int month;
+    private int year;
+
+    public Date(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    // Setter 
+    public void setDate(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+}
+            </script>
+            <script type="plain/text" title="Person.java">
+class Person {
+   protected String firstName;
+   protected String lastName;
+   protected Address address;
+   protected String phone;
+
+   public Person(String firstName, String lastName, Address address, String phone) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.address = address;
+      this.phone = phone;
+   }
+
+   public Person() {
+      this("", "", new Address(), "");
+   }
+   
+   public String getFirstName() {
+      return this.firstName;
+   }
+
+   public String getLastName() {
+      return this.lastName;
+   }
+
+   public Address getAddress() {
+      return this.address;
+   }
+
+   public String getPhone() {
+      return this.phone;
+   }
+
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
+
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
+   }
+
+   public void setAddress(Address address) {
+      this.address = address;
+   }
+
+   public void setPhone(String phone) {
+      this.phone = phone;
+   }
+}
+            </script>
+            <script type="plain/text" title="Member.java">
+class Member extends Person {
+   protected String id;
+   protected Date joinDate;
+
+   public Member(String firstName, String lastName,
+      Address address, String phone,
+      String id, Date joinDate) {
+      
+      super(firstName, lastName, address, phone);
+      this.id = id;
+      this.joinDate = joinDate;
+   }
+
+   public String getId() {
+      return this.id;
+   }
+
+   public Date getJoinDate() {
+      return this.joinDate;
+   }
+
+}
+            </script>
+            <script type="plain/text" title="Player.java">
+class Player extends Member {
+
+   public Player(String firstName, String lastName,
+      Address address, String phone, String id, 
+      Date joinDate) {
+      super(firstName, lastName, address, phone,
+         id, joinDate);
+   }
+}
+            </script>
+            <script type="plain/text" title="Trainer.java">
+class Trainer extends Member {
+
+   public Trainer(String firstName, String lastName,
+      Address address, String phone, String id, 
+      Date joinDate) {
+      super(firstName, lastName, address, phone,
+         id, joinDate);
+   }
+}
+            </script>
+            <script type="plain/text" title="Team.java">
+
+            </script>
+            <script type="plain/text" title="Main.java">
+Club club = new Club("Superswim e.V.", new Date(1, 1, 1901));
+
+Team[] teams = new Team[1];
+teams[0] = new Team("Superschwimmerinnen");;
+
+Trainer[] trainers = new Trainer[1];
+trainers[0] = new Trainer("Bernd", "Berkhahn",
+   new Address("Birkenweg", "94a", "80336", "München"),
+   "+491728483248641", 
+   "214412",
+   new Date(1, 1, 2014),
+   );
+          
+Player[] players = new Player[1]; 
+players[0] = new Player("Isabel", "Gose",
+   new Address("Sanddornweg", "123", "10178", "Berlin"),
+   "+4917584832914641", 
+   "514412",
+   new Date(1, 1, 2020)); 
+
+// Zuordnungen herstellen
+
+// ...
+            </script>
+</div>
+
+<h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
+
+<img src="https://mhimstedt.github.io/prog/club-with-relations_Bonus.svg" width="600" alt="Klassendiagramm">
+
+<p>
+    Im letzten Praktikum haben wir bereits die zusätzliche Klasse <strong>BoardMember</strong> (Vorstand) 
+    angelegt (siehe Bonusaufgabe <a href="https://mhimstedt.github.io/prog/vprog-exercise-2.html">Praktikum 2</a>). 
+    Sollten Sie diese noch nicht umgesetzt haben, legen Sie bitte zunächst noch eine neue Klasse <i>BoardMember</i> 
+    entsprechend dem geg. Klassendiagramm an. 
+</p>
+<p>
+   Die Klasse <i>BoardMember</i> soll nun zusätzlich an den <i>Club</i> (Verein) gebunden werden. Überlegen Sie sich,
+   wie Sie die im geg. Klassendiagramm dargestellte Verbindung zwischen den beiden Klassen herstellen können. 
+   Schauen Sie sich ggf. auch nochmal das Vorlesungbeispiel an: 
+   <a href="https://slides.com/blackbill/klassendiagramme-4236e2/fullscreen#/12">Vorlesung 2 #13</a>.
+   Erstellen Sie bitte selbst ein einfaches Beispiel zur Demonstration der Verbindung in der <i>Main.java</i>.
+</p>
+<p>
+   <i>Hinweis: Nutzen Sie insbesondere die Multiplizität aus, um es sich in der Implementierung etwas
+      einfacher zu machen. Nehmen Sie fiktive Datumsangaben für <i>startDate</i> und <i>endDate</i>
+      von BoardMember an. 
+   </i>
+</p>
+<div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-3-bonus',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+            <script type="plain/text" title="Club.java">
+// Ihre Club-Klasse
+            </script>
+            <script type="plain/text" title="Team.java">
+class Team {
+
+}               
+            </script>
+            <script type="plain/text" title="Address.java">
+class Address {
+   private String street;
+   private String houseNumber;
+   private String zipCode;
+   private String location;
+
+   public Address(String street, String houseNumber, String zipCode, String location) {
+      this.street = street;
+      this.houseNumber = houseNumber;
+      this.zipCode = zipCode;
+      this.location = location;
+   }
+   
+   public Address() {
+      this("", "", "", "");
+   }
+   
+   public String getStreet() {
+      return this.street;
+   }
+
+   public String getHouseNumber() {
+      return this.houseNumber;
+   }
+
+   public String getZipCode() {
+      return this.zipCode;
+   }
+
+   public String getLocation() {
+      return this.location;
+   }
+
+   public void setStreet(String street) {
+      this.street = street;
+   }
+
+   public void setHouseNumber(String houseNumber) {
+      this.houseNumber = houseNumber;
+   }
+
+   public void setZipCode(String zipCode) {
+      this.zipCode = zipCode;
+   }
+
+   public void setLocation(String location) {
+      this.location = location;
+   }
+
+}
+            </script>
+            <script type="plain/text" title="Date.java">
+class Date {
+
+    private int day;
+    private int month;
+    private int year;
+
+    public Date(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    // Setter 
+    public void setDate(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+}
+            </script>
+<script type="plain/text" title="Person.java">
+class Person {
+   protected String firstName;
+   protected String lastName;
+   protected Address address;
+   protected String phone;
+
+   public Person(String firstName, String lastName, Address address, String phone) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.address = address;
+      this.phone = phone;
+   }
+
+   public Person() {
+      this("", "", new Address(), "");
+   }
+   
+   public String getFirstName() {
+      return this.firstName;
+   }
+
+   public String getLastName() {
+      return this.lastName;
+   }
+
+   public Address getAddress() {
+      return this.address;
+   }
+
+   public String getPhone() {
+      return this.phone;
+   }
+
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
+
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
+   }
+
+   public void setAddress(Address address) {
+      this.address = address;
+   }
+
+   public void setPhone(String phone) {
+      this.phone = phone;
+   }
+}
+            </script>
+            <script type="plain/text" title="BoardMember.java">
+// Ihre BoardMember-Implementierung
+            </script>
+            <script type="plain/text" title="Main.java">
+// eigenes Beispiel
+
+
+            </script>
+</div>
+
+</main>
+</body>
+</html>
