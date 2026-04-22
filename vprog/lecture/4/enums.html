@@ -32,7 +32,16 @@
       'withErrorList': true
     }
     <script type="plain/text" title="Main.java">
+enum State {
+   RUNNING, 
+   IDLE
+}
 
+State state = State.RUNNING;
+println(state);
+
+state = State.IDLE; 
+println(state);
     </script>
 
   </iframe>
