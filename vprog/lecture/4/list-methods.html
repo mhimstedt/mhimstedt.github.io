@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Java IDE Embed</title>
+  <head>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const passedId = params.get("id") || "";
+    window.progLectureId = passedId;
+  </script>
+    
+</head>
+
+</head>
+<body>
+
+  <iframe class="ideFrame" width="1000" height="600" 
+    frameborder="0" allow="fullscreen" allowfullscreen
+    srcdoc="
+    <script>
+      window.jo_doc = window.frameElement.textContent;
+    </script>
+    <script src='https://mhimstedt.github.io/prog/includeIDE.js'></script>" >
+    {
+      'id': '${passedId}',
+      'speed': 1000,
+      'withBottomPanel': true ,
+      'withPCode': false ,
+      'withConsole': false ,
+      'withFileList': true ,
+      'withErrorList': true
+    }
+    <script type="plain/text" title="Main.java">
+class Page {    
+    // Keine Verbindung zu Book
+}
+
+class Book {
+   private Page[] pages;
+
+   public Book(int numPages) {
+      this.pages = new Page[numPages];
+
+      for (int i = 0; i < numPages; i++) {
+         this.pages[i] = new Page();
+      }
+   }
+}
+
+Book book = new Book(521);
+    </script>
+
+  </iframe>
+
+
+</body>
+</html>
