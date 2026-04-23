@@ -42,24 +42,30 @@
     <div class="task">
       <ol>
         <li>
-          Starte zunächst mit einem einfachen monochromen Verlauf. 
+          Starten Sie zunächst mit einem einfachen monochromen (=Graustufen) Verlauf. 
           Dazu können Sie die Variable <code>uv</code> (vom Typ vec2)
           anlegen. Lesen Sie dann die x- und y-Koordinaten von 
           <code>gl_FragCoord</code> ein. Normalisieren Sie diesen 
           auf den Wertebereich <code>[0,1]</code> unter Zuhilfenahme
           der Uniform-Variablen <code>u_resolution</code> (auch x und y).
           Sie können das direkt als Vektoroperationen (Einzeiler)
-          implementieren.
+          implementieren. 
+          <br>
+          <img src="./img/cg1_1.png" width="400px"> 
         </li>
         <li>
           Der Verlauf ist aktuell entlang der x-Achse sichtbar. 
           Passen Sie den Code so an, dass der Verlauf 
           <strong>entlang der y-Achse</strong> dargestellt wird. 
+          <br>
+          <img src="./img/cg1_2.png" width="400px">
         </li>
         <li>
           Erzeugen Sie nun einen diagonalen Verlauf, indem Sie 
           die x- und y-Komponenten kombinieren <code>v = x + y</code>.
           Verwenden Sie den Vektor <code>v</code> als Farbkomponente.
+          <br>
+          <img src="./img/cg1_3.png" width="400px">
         </li>
         <li>
           Verwenden Sie nun anstelle der Summe aus <code>x + y</code> für
@@ -67,19 +73,25 @@
           <code>dot</code>. Als Parameter sollte der gesamte Vektor 
           <code>uv</code> sowie ein zwei <code>vec2</code>-Vektor übergeben 
           werden. Nutzen Sie hierfür einfach zwei <code>float</code>-Zahlen.
+          <br>
+          <img src="./img/cg1_4.png" width="400px">
         </li>
         <li>
           Wenn Sie auf die numerischen <code>float</code>-Parameter innerhalb 
           der Klammern klicken, können Sie die Variablen interaktiv verändern.
           Spielen Sie ein bisschen damit herum und beobachten Sie, was sich
           an der Ausgabe verändert.
+          <br>
+          <img src="./img/cg1_5.png" width="400px">
         </li>
         <li>
-          Bisher besteht unsere Farbwertberechnung nur als lineare Operationen.
+          Bisher besteht unsere Farbwertberechnung nur aus linearen Operationen.
           Das wollen wir jetzt ändern. Um ein wenig Nichtlinearität in Spiel 
           zu bringen, können wir eine trigonometrische Funktion (z.B. 
           <code>sin</code>) verwenden. Passen Sie die Berechnung von 
           <code>v</code> dementsprechend an.
+          <br>
+          <img src="./img/cg1_6.png" width="400px">
         </li>
         <li>
           Echte Zufallswerte haben wir bisher noch nicht erzeugt. Wir werden nun
@@ -90,6 +102,8 @@
           <code>fract</code> (abgeleitet von engl. fractional). Letztere 
           übernimmt nur den Nachkommateil einer Gleitkommazahl (z.B. fract(4.2) -> 0.2). 
           Schauen Sie sich das Ergebnis an. Was stellen Sie fest? 
+          <br>
+          <img src="./img/cg1_7.png" width="400px">
         </li>
         <li>
           Lagern Sie den Teil zur Bestimmung von <code>v = ... </code> nun in eine eigene
@@ -97,12 +111,15 @@
           Integrieren Sie die Funktion in ihrer <code>main</code> und stellen Sie das 
           gleiche Ergebnis wie in der vorhergehenden Teilaufgabe her.
         </li>
+        
         <li>
           Sie können jetzt Funktion <code>rand</code> nutzen, um Sterne zu zeichnen. 
           Multiplizieren Sie dazu <code>uv</code> mit bspw. 100.0 und runden Sie den 
           Wert mittels <code>floor</code> bzw. <code>ceil</code>.
           Wir sollten nun ein wunderschönes Zufallsmuster sehen, die aber leider noch
           keinen Anscheinen von Sternen wecken. Haben Sie Geduld! 
+          <br>
+          <img src="./img/cg1_9.png" width="400px">
         </li>
         <li>
           Wir haben nun ein sehr feines Muster erzeugt. Wir müssen dieses große Muster
@@ -112,16 +129,20 @@
           anderenfalls <code>1</code>. Wählen Sie als Schwellwert einen Parameter nahe 1 
           (z.B. 0.99). Probieren Sie es aus und lassen Sie sichvom Ergebnis (hoffentlich) 
           überraschen! 
+          <br>
+          <img src="./img/cg1_10.png" width="400px">
         </li>
+          
         <li>
-          <strong>Zuguterletzt</strong> wollen wir noch den o.g. **Szintillationseffekt** integrieren. 
+          <strong>Zuguterletzt</strong> wollen wir noch den o.g. <strong>Szintillationseffekt</strong> integrieren. 
           Dazu können wir in <code>gl_FragColor</code> die Uniform-Variable <code>u_time</code>
           in Kombination mit einer Funktion, die unsere Werte in regelmäßigen 
           (wiederkehrenden!) Abständen anpasst. Machen Sie sich Gedanken, wie das funktionieren könnte. 
           <i>Tipp: Diese mathematische Funktion haben wir heute schon benutzt. Die Zeit 
             kann einfach Parameter dieser Funktion werden. 
-          </i> 
-
+          </i>
+          <br> 
+          <img src="./img/cg1_11.gif" width="400px">
         </li>
       </ol>
       <p>
