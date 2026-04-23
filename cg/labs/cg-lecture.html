@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Shader Playground</title>
+
+  <link rel="stylesheet" href="build/glslEditor.css">
+
+  <style>
+    li {
+      margin-bottom: 20px;
+    }
+  </style>
+  
+</head>
+<body>
+  
+  <div id="cg1" class="editor"></div>
+
+  <div style="height: 300px;"></div>
+
+  <script src="build/glslEditor.js"></script>
+  <script>
+    // Editor 1
+    new GlslEditor('#cg1', {
+      canvas_size: 400,
+      theme: 'monokai',
+      canvas_draggable: true,
+      canvas_resizeable: true,
+      frag: `precision mediump float;
+
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+
+void main() {
+    vec2 uv = gl_FragCoord.xy/u_resolution.xy;
+
+    gl_FragColor = vec4(vec3(1.), 1.0);
+}`
+    });
+
+  </script>
+
+</body>
+</html>
