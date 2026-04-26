@@ -149,15 +149,15 @@
 <body>
   
 <main class="ex-content">
-<h1>Praktikum 4: Implementierung von Objektbeziehungen II</h1>
+<h1>Praktikum 4: Listen und Implementierung von Objektbeziehungen II</h1>
 <p>In diesem Praktikum wollen wir die Umsetzung von <i>Objektbeziehungen</i> 
     in Java weiter vertiefen.</p>
 <h2>🚀 Lernziele</h2>
 <p>Sie können:</p>
 <ul>
-<li>Kompositionen korrekt implementieren</li>
-<li>Prüfungen von Kardinalitäten umsetzen</li>
-<li>Die Datenstruktur <i>Liste</i> zielführend einsetzen</li>
+    <li>Kompositionen korrekt implementieren</li>
+    <li>Prüfungen von Multiplizitäten umsetzen</li>
+    <li>Die Datenstruktur <i>Liste</i> zielführend einsetzen</li>
 </ul>
 <h2>🤔 Vorbereitung</h2>
 <p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. 
@@ -196,11 +196,151 @@
 
 <h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
 
-🚧 Aufgaben werden rechtzeitig freigeschaltet.
+<img src="club_p4.svg" width="600" alt="Klassendiagramm">
+
+<h3>1 - Weiterentwicklung vom <i>Verein</i>-Modell</h3>
+<p>
+    In dieser Aufgabe werden wir unser Modell vom <i>Verein</i> noch weiter entwickeln. Dafür
+    ist Ihnen ein aktualisiertes UML-Klassendiagramm gegeben. <strong>Die Änderungen sind 
+    bewusst hervorgehoben. </strong> Es ist zu empfehlen, Ihre Lösung aus dem vorgehenden 
+    Praktikum hier zu laden und diese dann zu editieren. Bearbeiten Sie bitte folgende Teilaufgaben.
+
+</p>
+
+<p><strong>Aufgaben:</strong></p>   
+<ul>
+    <li> 
+        <input type="checkbox"><strong>Neue Klasse <i>Equipment</i></strong>: Erstellen Sie eine 
+        neue Klasse <i>Equipment</i>. Schauen Sie sich genau an, wie diese in Verbindung zum 
+        <i>Club</i> steht. Setzen Sie das entsprechend um. 
+    </li>
+    <li> 
+        <input type="checkbox"><strong>Listen anstelle von Arrays</strong>: Für den Produktiveinsatz 
+        unserer Software sind dynamische Datenstrukturen von hoher Bedeutung. Ersetzen Sie bitte 
+        Arrays durch Listen in Ihrer aktuellen Implementierung. Aufgrund der erhöhten Flexibilität 
+        von Listen erwarten nun auch einige Methoden einzelne Objekte anstelle von kompletten Arrays. 
+        Prüfen Sie das Klassendiagramm gründlich dahingehend. 
+    </li>
+    <li> 
+        <input type="checkbox"><strong><i>add</i>- und <i>remove</i>-Methoden</strong>: Unser bisheriges
+        Modell unterstützte noch keine dynamischen Anpassungen. Wir mussten immer Arrays extern instanziieren
+        und in bspw. Club, Teams diese vollständig ersetzen. Das ist dank Listen nun flexibler. Setzen Sie
+        bitte sowohl <i>add()</i>- als auch <i>remove()</i>-Methoden in den jeweiligen Fachklassen mit 
+        Container-Datenstrukturen (=Listen) um. 
+    </li>
+    <li>
+        <input type="checkbox"><strong>Anpassungen für <i>1..*</i>-Beziehungen</strong>: Bisher haben 
+        wir <i>1..*</i>-Beziehungen noch nicht streng umgesetzt. Das aktuelle Modell sieht nun entsprechende 
+        Anpassungen in den Konstruktoren vor. <strong>Denken Sie auch daran, dass diese Bedingung nicht durch 
+        das Entfernen von Beziehungen (<i>remove</i>) verletzt werden darf</strong>. 
+        <i>Hinweis: Sie sollten im Konstruktor prüfen, ob notwendige Parameter (z.B. Team) übergeben
+            und nicht null sind. In diesem Fall können Sie im Konstruktor mittels 
+            <code>throw new Exception()</code> das (ungültige) Anlegen des Objekts verhindern. 
+        </i> 
+    </li>
+    <li>
+        <input type="checkbox"><strong>Testobjekte anlegen</strong>: Erzeugen Sie bitte selbstständig 
+        in der <i>Main.java</i> Testobjekte. Legen Sie <strong>einen Club, zwei Teams, 
+            einen Trainer (für beide Teams), je Team zwei Player</strong> zum Testen an. Prüfen Sie bitte auch, 
+            ob bspw. Ihre <i>1..*</i>-Beziehungen korrekt erhalten werden (durch Entfernen von Player usw.). 
+    </li>
+</ul>
+
+<p><strong>Laden Sie bitte Ihr Modell vom vorhergehenden Praktikum und bearbeiten Sie es hier weiter.</strong></p>
+
+<div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-4-club',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+    <script type="plain/text" title="Main.java">
+
+    </script>
+        
+</div>
+
 
 <h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
 
-🚧 Aufgaben werden rechtzeitig freigeschaltet.
+<h3>2 - Ausbaupotenziale des <i>Verein</i>-Modells</h3>
+
+    <p> 
+        Wir haben nun ein kleines Modell eines Sportvereins implementiert. Überlegen Sie sich bitte
+        selbstständig, welche Potenziale es noch gibt. Sehen Sie noch Probleme? Wenn ja, wie ließen
+        sich diese ggf. beheben. <strong>Seien Sie hier gern kreativ!</strong>  
+    </p>
+    <p>
+        Diese Aufgabe ist bewusst etwas offener gestaltet. Es wird aber erwartet dass Sie 
+        <strong>mindestens einen</strong> der folgende Punkte <strong>umfassend</strong> vorbereiten 
+        und auch auch erklären/diskutieren können:
+        <ul>
+            <li><strong>Beziehungstypen</strong>: Sind diese aus Ihrer Sicht alle gut modelliert 
+                bzw. umgesetzt? Nehmen Sie gern ein konkretes Beispiel und setzen Sie dieses in Java um. 
+                <i>Notwendige Änderungen am Diagramm können Sie gern auszugsweise handschriftlich
+                    ergänzen. Sie brauchen nicht das gesamte Diagramm aktualisieren.</i>
+            </li>
+            <li>
+                <strong>Weitere Fachklassen</strong>: Könnten Teile der aktuellen Klassen ausgelagert/zusammengefasst
+                werden oder weitere Beziehungen ergänzt werden? Fehlt Ihnen zur Modellierung eines Sportvereins
+                etwas Wichtiges? Wenn ja, erstellen Sie bitte auch ein erstes Konzept und bringen Sie erste
+                Implementierungen mit.
+            </li>
+        </ul>
+    </p>
+
+    <p>
+        Ergänzen Sie Ihre Ideen gern hier (Speichern und Laden der vorhergehenden Aufgabe) 
+        oder fügen Sie es direkt im vorhergehenden IDE-Fenster hinzu.
+    </p>
+
+    <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-4-club-extensions',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+
+         </script>            
+    </div>
+
+<h3>3 - <i>unique</i>-Methode für Listen</h3>
+
+    <p>
+        <i>Hinweis: Diese Aufgabe ist unabhängig von UML-Klassendiagrammen und dem vorgestellten Modell.
+        </i>
+    </p>
+
+    <p>
+        Es soll eine Funktion <strong>equal</strong> implementiert werden, die eine <i>Integer</i>-Liste 
+        übergeben bekommt, die potenziell Duplikate (=gleiche Zahl mehrmals) enthalten kann. Beachten 
+        Sie dabei die folgenden Anforderungen. 
+    </p>
+    <strong>Anforderungen:</strong>
+    <ul>
+        <li><input type="checkbox"><strong>Übergabe- und Rückgabeparameter</strong>: 
+            Es soll eine <i>Integer</i>-Liste übergeben und auch wieder zurückgegeben werden.
+        </li>
+        <li><input type="checkbox"><strong>Duplikate filtern</strong>: Elemente (=Zahlen), 
+            die mehrfach vorkommen, sollen herausgefiltert werden. Zurückgegeben werden sollen die
+            Elemente nur einmal, auch wenn diese in der übergebenen Liste mehrfach vorkommen.
+        </li>  
+    </ul>
+
+    <p>
+        <strong>Beispielaufruf:</strong> equal([1, 4, 2, 4, 3, 1, 4, 5, 6, 2]) ➡️ [1, 4, 2, 3, 5, 6]
+        <i>(Hinweis: Es handelt sich um eine exemplarische Liste, kein Array)</i>
+    </p>
+
+
+    <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-4-unique-list',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+
+         </script>            
+    </div>
 
 </main>
 </body>
