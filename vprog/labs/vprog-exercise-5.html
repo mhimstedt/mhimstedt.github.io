@@ -259,34 +259,40 @@
     <script type="plain/text" title="Date.java">
 class Date {
 
-private int day;
-private int month;
-private int year;
+   private int day;
+   private int month;
+   private int year;
 
-public Date(int day, int month, int year) {
-    this.day = day;
-    this.month = month;
-    this.year = year;
-}
+   public Date(int day, int month, int year) {
+      this.day = day;
+      this.month = month;
+      this.year = year;
+   }
 
-public int getDay() {
-    return day;
-}
+   public int getDay() {
+      return day;
+   }
 
-public int getMonth() {
-    return month;
-}
+   public int getMonth() {
+      return month;
+   }
 
-public int getYear() {
-    return year;
-}
+   public int getYear() {
+      return year;
+   }
 
-// Setter 
-public void setDate(int day, int month, int year) {
-    this.day = day;
-    this.month = month;
-    this.year = year;
-}
+    // Setter 
+   public void setDate(int day, int month, int year) {
+      this.day = day;
+      this.month = month;
+      this.year = year;
+   }
+    
+   public String toString() {
+      String dayStr = day > 9 ? "" + day : "0" + day;
+      String monthStr = day > 9 ? "" + day : "0" + day;
+      return dayStr + "." + monthStr + "." + year; 
+   }
 }
     </script>        
 </div>
