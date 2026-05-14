@@ -4,34 +4,184 @@
   <meta charset="utf-8">
   <title>CG3 Polarlichter</title>
 
-  <link rel="stylesheet" href="build/glslEditor.css">
-
   <style>
+    body {
+      background-color: #000;
+      color: #fff;
+    }
+
+    a {
+      color: #6dff8f;
+    }
+
+    a:visited {
+      color: #5ce6a8;
+    }
+
+    a:hover,
+    a:focus {
+      color: #9dffbf;
+    }
+
+    img {
+      border: 1px solid #fff;
+      box-sizing: border-box;
+    }
+
     li {
       margin-bottom: 20px;
+    }
+
+    li > strong {
+      display: block;
+      margin-bottom: 0.35em;
     }
   </style>
   
 </head>
 <body>
-  <h1>Rauschen und raumzeitliche Farbveränderungen</h1>
-  <h2>Ziel: Darstellung von Polarlichtern</h2>
-  <p>
-    In diesem Praktikum wollen wir Verläufe darstellen, die sich räumlich,  
-    zeitlich und in ihrer Farbe verändern. 
-    Damit wollen wir Polarlichter simulieren. 
-    Das Ergebnis soll dann in etwa wie die folgende Grafik aussehen: <br>
-    <img src="./img/cg3_result.gif" width="400px">
+  <h1>Raumzeitliche Farbveränderungen</h1>
+  <h2>Ziel: Erste Darstellung von Polarlichtern</h2>
+  <p class="with-float-figure">
+    In diesem Praktikum wollen wir Verläufe darstellen, die sich räumlich,
+    zeitlich und in ihrer Farbe verändern.
+    Damit wollen wir Polarlichter simulieren.
+    Das Ergebnis soll dann in etwa wie die folgende Grafik aussehen:
+    <br>
+    <img src="img/cg3_result.gif" width="400px">
   </p>
 
   <h2>Vorbereitung</h2>
   <p>Die folgenden Aufgaben setzen voraus, dass Sie die zugehörigen 
      Vorlesungmaterialien vollständig durchgearbeitet haben: 
-     <a href="https://slides.com/blackbill/cg-vorlage/fullscreen">Vorlesung 4 (Rauschen)</a>
+     <ul>
+      <li>
+        <a href="https://slides.com/blackbill/cg1-einfuhrung/fullscreen">
+          Vorlesung 3 (Beispiele)</a>
+      </li>
+      <li>
+        <a href="https://slides.com/blackbill/cg-vorlage/fullscreen">
+          Vorlesung 4 (Rauschen)</a>
+      </li>
+     </ul>
   </p>
   
   <h2>Aufgaben</h2>
   
-  <p>🚧 Die Aufgaben werden zeitnah bereitgestellt. </p>
+  <p>
+    Die folgenden Teilaufgaben leiten Sie sukzessive zum Ziel. Ihre Lösungen können Sie in 
+    diesem <a href="https://editor.thebookofshaders.com">Editor</a> interaktiv entwickeln und
+    testen.
+  </p>
+
+  <ol>
+    <li><strong>Nachthimmel</strong>
+      Legen Sie einen dunklen Hintergrund an, der zunächst den
+      gesamten Canvas bedeckt. Initialisieren Sie in der main-Funktion die 
+      Variable uv so, dass jeder Pixel eine positionsabhängige 2D-Koordinate im 
+      Bereich [-1, 1] erhält. Dazu müssen Sie den Wertebereich
+      von [0, 1] auf [-1, 1] transformieren.
+      <br>
+      <img src="./img/cg3_1.png" width="400px">
+    </li>
+    <li><strong>Farbverlauf</strong>
+      Erzeugen Sie mit Hilfe der Sinusfunktion einen 
+      eindimensionalen Farbverlauf. Legen Sie für Amplitude 
+      und Frequenz bitte schon Parameter fest. Variieren Sie 
+      Amplitude, Frequenz und Farbe, sodass Sie den
+      folgenden Verlauf erhalten:     
+      <br> 
+      <img src="./img/cg3_2.png" width="400px">
+    </li>
+    <li><strong>Zeitlich veränderlicher Farbverlauf</strong>
+
+      Nutzen Sie die Uniform-Variable <i>u_time</i> in Kombination
+      mit der Sinusfunktion, um einen zeitlich veränderlichen Verlauf 
+      zu simulieren. Beziehen Sie die Zeit (<i>u_time</i>) mit als 
+      Parameter ein (siehe auch: 
+      <a href="https://slides.com/blackbill/cg1-einfuhrung/fullscreen#/13">Beispiel</a>). 
+      <br>
+      <img src="./img/cg3_3.gif" width="400px"> 
+    </li>
+    
+    <li><strong>Überlagern von Farbverläufen</strong>
+      Um unseren Polarlichtern etwas näher zu kommen, wollen wir nun 
+      mehrere Sinusfunktionen überlagern. Addieren Sie dazu die Funktionswerte
+      von drei Sinusfunktionen, die alle die Zeit <i>t</i> verwenden aber unterschiedliche 
+      Parameter nutzen, z.B.:
+      <math display="block">
+        <mi>sin</mi><mo>(</mo><mi>x</mi><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><mi>t</mi><msub><mi>b</mi><mn>1</mn></msub><mo>)</mo>
+        <mo>+</mo>
+        <mi>sin</mi><mo>(</mo><mi>x</mi><msub><mi>a</mi><mn>2</mn></msub><mo>-</mo><mi>t</mi><msub><mi>b</mi><mn>2</mn></msub><mo>)</mo>
+        <mo>+</mo>
+        <mi>sin</mi><mo>(</mo><mi>x</mi><msub><mi>a</mi><mn>3</mn></msub><mo>+</mo><mi>t</mi><msub><mi>b</mi><mn>3</mn></msub><mo>)</mo>
+    </math>
+
+      Für <code>x</code> müssen Sie die entsprechenden Koordinaten von <i>gl_FragCoord</i>
+      verwenden. Das Ergebnis sollte in etwa so aussehen:
+      <br>
+      <img src="./img/cg3_4.gif" width="400px">
+    </li>
+    <li><strong>Wellenförmiger Verlauf</strong>
+      Aktuell haben wir noch ein Streifenmuster. 
+      <a href="https://commons.wikimedia.org/wiki/Aurora#/media/File:Aurora_borealis_over_Eielson_Air_Force_Base,_Alaska.jpg"> Polarlichter </a>
+      breiten sich aber eher wellenförmig am Himmel aus. Diesem Effekt wollen wir nun etwas näher kommen,
+      indem wir eine sinus-förminge Schwingung zur x-Koordinate (gl_FragCoord) addieren. Verwenden Sie 
+      als Parameter für die <i>sin</i>-Funktion die gewichtete y-Koordinate sowie die Zeit, ebenfalls 
+      gewichtet. Für die Gewichte bieten sich Werte zwischen bspw. 1.0-5.0 an. Der Funktionswert (von <i>sin</i>)
+      sollte dann erneut mit einem Faktor zwischen 0.0-1.0 gewichtet werden. Variieren Sie die 
+      Gewichtungsparameter und beobachten Sie den Effekt. Sie sollten in etwa folgende Darstellung 
+      erreichen:
+      <br>
+      <img src="./img/cg3_5.gif" width="400px">
+    </li>
+    <li><strong>Verlauf über mehrere Dimensionen</strong>
+      Wir simulieren unsere Polarlichter bisher nur in einer Dimension (x). Bitte erweitern Sie 
+      den Effekt nun auch auf die zweite Dimension (y). Sie müssen dazu den Effekt der vorhergehenden Aufgabe
+      auch auf die y-Koordinate anwenden, allerdings unter Nutzung der x-Koordinate (als Parameter) sowie der
+      Kosinusfunktion (<i>cos</i>) anstelle der Sinusfunktion. Gewichten Sie die x-Koordinate sowie die 
+      Zeit wieder - nehmen Sie hierfür aber etwas andere Werte als in der vorhergehenden Aufgabe. Beobachten 
+      Sie das Ergebnis genau - der Effekt ist nur relativ klein. Sie sollten in etwa folgende Ausgabe erhalten:
+      <br>
+      <img src="./img/cg3_6.gif" width="400px">
+    </li>
+    <li><strong>Verlauf mit Farbvariation über Zeit</strong>
+      Polarlichter stellen häufig auch unterschiedliche Farben dar, was aus physikalischer Sicht 
+      vor allem auch mit den Anteilen von Stickstoff- und Sauerstoffmoleküle (und weiteren Faktoren) 
+      zusammenhängt (siehe auch: <a href="https://de.wikipedia.org/wiki/Polarlicht#Farben">Wikipedia</a>).
+      Diesen Effekt wollen wir nun auch simulieren. Verwenden Sie dazu die bereits eingeführte 
+      <a href="https://thebookofshaders.com/glossary/?search=mix">mix</a>-Funktion. 
+      Wählen Sie hier für die ersten Parameter zwei geeignete Farben, z.B. grün und violett
+      oder auch rot. Der dritte Parameter sollte eine variable 
+      Größe zwischen 0..1 sein, da diese als Gewicht für die Farbinterpolation verwendet wird. 
+      Dafür können Sie bspw. die x- bzw. y-Koordinate (gl_FragCoord) nutzen. Es sind aber auch 
+      alternative Ansätze möglich. Versuchen Sie auch durch Gewichte (Multiplikation) 
+      und Offsets (Addition), das Ergebnis zu beeinflussen. Seien Sie hier gern kreativ 🎨!  
+      <br>
+      <img src="./img/cg3_7.gif" width="400px">
+    </li>
+    <li><strong>Weichere Übergänge erzeugen und Farbsättigung vermeiden</strong>
+      Aktuell sieht man noch z.T. relativ starke Übergänge. An einigen Stellen können 
+      auch Farbsättigungen auftreten, wodurch Pixel weiß dargestellt werden. 
+      Diesen Effekt können Sie bspw. mit der Funktion 
+      <a href="https://thebookofshaders.com/glossary/?search=smoothstep">smoothstep</a>
+      abschwächen. Das Ergebnis könnte dann in etwa wie folgt aussehen:
+      <br>
+      <img src="./img/cg3_8.gif" width="400px">
+    </li>
+    <li><strong>Polarlichter auf Horizont begrenzen</strong>
+      Begrenzen Sie bitte Polarlichter auf eine Horizontgrenze, denn diese sollen 
+      nicht den gesamten Canvas, sondern nur den Himmel bedecken. Das Ergebnis 
+      könnte in etwa so aussehen:
+      <br>
+      <img src="./img/cg3_result.gif" width="400px">
+    </li>
+  </ol>
+  <br>
+  <p>
+    <strong>Herzlichen Glückwunsch! Sie haben es geschafft - 
+      wir kommen unserem Polarlicht-Nachthimmel immer näher 😀! </strong>
+  </p>
+
 </body>
 </html>
