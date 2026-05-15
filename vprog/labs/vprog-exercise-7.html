@@ -175,22 +175,29 @@
 
 <ul>
         <li>
-            <strong>onMouseDown(int key)</strong><br>
+            <strong>onMouseDown(double x, double y, int key)</strong><br>
             Wird aufgerufen, wenn sich der Mauszeiger über dem Objekt befindet und eine Maustaste heruntergedrückt wurde.
             <br><em>key == 0</em>: linke Taste, <em>key == 2</em>: rechte Taste.
         </li>
         <li>
-            <strong>onMouseUp(int key)</strong><br>
+            <strong>onMouseUp(double x, double y, int key)</strong><br>
             Wird aufgerufen, wenn sich der Mauszeiger über dem Objekt befindet und eine Maustaste losgelassen wurde.
             <br><em>key == 0</em>: linke Taste, <em>key == 2</em>: rechte Taste.
         </li>
         <li>
-            <strong>onMouseEnter()</strong><br>
+            <strong>onMouseEnter(double x, double y)</strong><br>
             Wird aufgerufen, wenn der Mauszeiger sich in das Objekt hineinbewegt.
         </li>
         <li>
-            <strong>onMouseLeave()</strong><br>
+            <strong>onMouseLeave(double x, double y)</strong><br>
             Wird aufgerufen, wenn der Mauszeiger sich aus dem Objekt herausbewegt.
+        </li>
+        <li>
+            <strong>onMouseMove(double x, double y)</strong>
+            Wenn das Objekt den Fokus hat und das dabei die Maus bewegt wird.
+        </li>
+        <li>
+
         </li>
     </ul>
 
