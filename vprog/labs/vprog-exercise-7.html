@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>VProg Praktikum 7</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="exercises.css">
+    <link rel='stylesheet' type='text/css' media='screen' href='./online-ide-embedded.css'>
+    <script type="module" crossorigin src="./online-ide-embedded.js"></script>
+    
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 7: Schnittstellen für grafische Objekte</h1>
+<p>In diesem Praktikum wollen wir die Implementierung und den Einsatz 
+    von <i>Schnittstellen</i> insbesondere bei grafischen Objekten erlernen. </p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+    <li>Schnittstellen für grafische Objekte einsetzen</li>
+    <li>Lösungen finden, um Schnittstellen effektiv umzusetzen.</li>
+</ul>
+<h2>🤔 Vorbereitung</h2>
+<p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. 
+   Diese sollen sicherstellen, dass Sie die gestellten Praktikumsaufgaben inhaltlich und zeitlich schaffen.
+</p>
+
+<img src="draggableRectangle.gif" width="400" alt="draggable Rectangle">
+<p>
+    Wir werden in diesem Praktikum grafischen  
+    Objekten dank Schnittstellen inviduelles Verhalten ermöglichen.
+    Konkret wollen wir die in der IDE bereits integrierten Objekte wie 
+    <i>Rectangle</i> oder <i>Circle</i> <strong>verschiebbar</strong>
+    (=draggable) machen. In JOE gibt es für die Reaktion auf Mausaktivitäten 
+    die folgenden Methoden:
+</p>
+
+<ul>
+        <li>
+            <strong>onMouseDown(int key)</strong><br>
+            Wird aufgerufen, wenn sich der Mauszeiger über dem Objekt befindet und eine Maustaste heruntergedrückt wurde.
+            <br><em>key == 0</em>: linke Taste, <em>key == 2</em>: rechte Taste.
+        </li>
+        <li>
+            <strong>onMouseUp(int key)</strong><br>
+            Wird aufgerufen, wenn sich der Mauszeiger über dem Objekt befindet und eine Maustaste losgelassen wurde.
+            <br><em>key == 0</em>: linke Taste, <em>key == 2</em>: rechte Taste.
+        </li>
+        <li>
+            <strong>onMouseEnter()</strong><br>
+            Wird aufgerufen, wenn der Mauszeiger sich in das Objekt hineinbewegt.
+        </li>
+        <li>
+            <strong>onMouseLeave()</strong><br>
+            Wird aufgerufen, wenn der Mauszeiger sich aus dem Objekt herausbewegt.
+        </li>
+    </ul>
+
+<p><strong>Aufgaben:</strong></p>   
+<ul>
+    <li><input type="checkbox"><strong>Schnittstellen</strong>: 
+      Bitte lesen Sie noch einmal, wie diese in Java definiert und genutzt werden 
+      (siehe <a href="https://slides.com/blackbill/klassendiagramme/fullscreen">Vorlesung 7</a>).
+   </li>
+     <li><input type="checkbox"><strong>Maus-Ereignisse</strong>: Schauen Sie sich bitte an, 
+        welche Methoden grafische Objekte wie <i>Rectangle</i>in JOE haben, um auf Mauseingaben 
+        zu reagieren (siehe oben).      
+    </li>
+    <li><input type="checkbox"><strong>MyRectangle</strong>-Klasse: Erstellen Sie 
+        eine Klasse <strong>MyRectangle</strong>, die von <i>Rectangle</i> erbt. 
+        Überschreiben Sie alle Methoden, die auf Maus-Aktivitäten reagieren (siehe oben)
+        und geben Sie darin mit <i>println</i> den Namen des Events aus (z.B. <i>onMouseLeave</i>).
+        Untersuchen Sie, wann welche Ereignisse durch Mausbewegungen ausgelöst werden.   
+    </li>
+</ul>
+
+      <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-7-prep',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+
+         </script>
+                
+      </div>
+</div>
+
+
+
+<h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
+
+🚧 Die Aufgaben werden rechtzeitig bereitgestellt. 
+
+</main>
+</body>
+</html>
