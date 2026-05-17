@@ -155,8 +155,9 @@
 <h2>🚀 Lernziele</h2>
 <p>Sie können:</p>
 <ul>
-    <li>Schnittstellen für grafische Objekte einsetzen</li>
-    <li>Lösungen finden, um Schnittstellen effektiv umzusetzen.</li>
+    <li>Schnittstellen für grafische Objekte definieren und verwenden</li>
+    <li>Lösungen finden, um Schnittstellen effektiv umzusetzen</li>
+    <li>Maus-Ereignisse in JOE zielgerichtet einsetzen</li>
 </ul>
 <h2>🤔 Vorbereitung</h2>
 <p>Bitte bearbeiten Sie die folgenden Aufgaben <strong>vor Ihrem Praktikumstermin</strong>. 
@@ -169,7 +170,7 @@
     Objekten dank Schnittstellen inviduelles Verhalten ermöglichen.
     Konkret wollen wir die in der IDE bereits integrierten Objekte wie 
     <i>Rectangle</i> oder <i>Circle</i> <strong>verschiebbar</strong>
-    (=draggable) machen. In JOE gibt es für die Reaktion auf Mausaktivitäten 
+    (<i>=draggable</i>) machen. In JOE gibt es für die Reaktion auf Mausaktivitäten 
     die folgenden Methoden:
 </p>
 
@@ -196,9 +197,6 @@
             <strong>onMouseMove(double x, double y)</strong>
             Wenn das Objekt den Fokus hat und das dabei die Maus bewegt wird.
         </li>
-        <li>
-
-        </li>
     </ul>
 
 <p><strong>Aufgaben:</strong></p>   
@@ -208,7 +206,7 @@
       (siehe <a href="https://slides.com/blackbill/klassendiagramme/fullscreen">Vorlesung 7</a>).
    </li>
      <li><input type="checkbox"><strong>Maus-Ereignisse</strong>: Schauen Sie sich bitte an, 
-        welche Methoden grafische Objekte wie <i>Rectangle</i>in JOE haben, um auf Mauseingaben 
+        welche Methoden grafische Objekte wie <i>Rectangle</i> in JOE haben, um auf Mauseingaben 
         zu reagieren (siehe oben).      
     </li>
     <li><input type="checkbox"><strong>MyRectangle</strong>-Klasse: Erstellen Sie 
@@ -231,11 +229,181 @@
       </div>
 </div>
 
+<img src="draggableRectangle.svg" width="600" alt="Klassendiagramm">
+<p>
+    <strong>Beachten Sie bitte, dass die Klasse <i>Rectangle</i> nur die 
+    für die Aufgaben relevanten Attribute/Methoden enthält. </strong>
+    Beachten, Sie auch dass <i>centerX</i> und <i>centerY</i> für alle 
+    grafischen Objekte in JOE genutzt werden. Ein Rechteck initialisieren Sie 
+    aber mit der oberen, linken Ecke. Das müssen Sie unbedingt beachten, wenn 
+    Sie auf diese Attribute zugreifen. 
+    Die Klasse <i>Rectangle</i> erbt bereits viele der angegebenen Methoden/Attribute. 
+    Der Vollständigkeit halber kann man sich gern dieses Klassendiagramm ansehen:
+    <a href="https://www.learnj.de/lib/exe/fetch.php?cache=&media=api:documentation:grafik:pasted:20210628-202033.png">learnJ-Doku</a>
 
+</p>
 
 <h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
 
-🚧 Die Aufgaben werden rechtzeitig bereitgestellt. 
+<h3>Die <i>Draggable</i>-Schnittstelle</h3>
+
+<p>
+    In dieser Aufgabe werden wir die <i>Draggable</i>-Schnittstelle definieren, 
+    mit deren Hilfe grafische Objekte auf dem Canvas (=Zeichenfläche) verschoben werden können. 
+    Exemplarisch werden wir die <i>DraggableRectangle</i>-Klasse definieren, die <i>Draggable</i>
+    implementiert, sodass wir Rechtecke verschieben können. Beachten Sie dazu bitte das geg. 
+    Klassendiagramm (<strong>Fettgedruckte Attribute/Methoden: nur für Bonusaufgabe)</strong>, 
+    das eingangs geg. grafische Beispiel sowie die folgenden Teilaufgaben. 
+</p>
+
+<p><strong>Teilaufgaben:</strong></p>   
+<ul>
+    <li>
+        <input type="checkbox"><strong><i>Draggable</i>-Schnittstelle</strong>: 
+        Definieren Sie bitte die Schnittstelle <i>Draggable</i> entsprechend dem 
+        gegebenen Klassendiagramm.
+   </li>
+   <li>
+        <input type="checkbox"><strong><i>DraggableRectangle</i>-Klasse</strong>:
+        Erstellen Sie eine <i>DraggableRectangle</i>-Klasse, die von <i>Rectangle</i> 
+        erben soll und <i>Draggable</i> implementiert. 
+   </li>
+   <li>
+        <input type="checkbox"><strong>Weißer Rahmen</strong>: 
+        <i>DraggableRectangle</i> sollen einen weißen Rahmen bekommen, damit diese 
+        eindeutig erkennbar sind (siehe Animation oben).
+   </li>
+    <li>
+        <input type="checkbox"><strong>Maus-Ereignisse</strong>: 
+        Überlegen Sie sich zunächst genau, welche Maus-Ereignisse Sie brauchen, 
+        um ein Rechteck verschieben zu können. Überschreiben Sie diese Methoden.     
+    </li>
+    <li>
+        <input type="checkbox"><strong>Zustände</strong>: Implementieren Sie den 
+        Enum <i>DraggableState</i>, der die Zustände <i>READY</i>, <i>DRAGGING</i>,
+        <i>RESETTING</i> haben soll. Beim Instanziieren eines <i>DraggableRectangle</i>
+        soll sich das Objekt zunächst im Zustand <i>READY</i> befinden. 
+    </li>
+        <input type="checkbox"><strong>Position verändern</strong>: Sobald ein 
+        <i>DraggableRectangle</i> gedrückt (siehe Maus-Aktivitäten) wird, soll die 
+        Position entsprechend der Mausbewegung geändert werden (siehe auch: Animation ganz oben).
+        Der Zustand des Rechtecks soll sich beim Verschieben zu <i>DRAGGING</i> ändern.
+        Wenn der Vorgang abgeschlossen ist (Maus losgelassen), soll sich der Zustand 
+        wieder zu <i>HOVERING</i> bzw. beim Verlassen des Objekts zu <i>READY</i> ändern. 
+        <strong>Nutzen Sie die Methoden <i>super.startTrackingEveryMouseMovement()</i>,
+        um ein sauberes Verfolgen der Bewegung zu ermöglichen. </strong>
+        Nach dem Verschieben sollten Sie das mit Hilfe der Methode 
+        <i>super.stopTrackingEveryMouseMovement()</i> wieder rückgängig machen.
+    <li><input type="checkbox"><strong>Cursor verändern mit <i>switchCursor</i></strong>: 
+        Je nach Zustand des Rechtecks, sollen unterschiedliche Cursor dargestellt werden. 
+        Beim Überfahren (Hovering) eines <i>DraggableRectangle</i> soll ein 👆-Cursor 
+        erscheinen. Sobald es anklickt wird und die Maustaste 
+        festgehalten wird, soll ein Zieh-Cursor angezeigt werden. 
+        <strong>Beispiele für alle 3 Cursor-Varianten finden Sie in der <i>CursorDemo.java</i> 
+        unten </strong>. Setzen Sie den Wechsel des Cursors in der <i>switchCursor</i>-Methode um.
+    </li>
+    <li>
+        <input type="checkbox"><strong>Liste anlegen</strong>:
+        Legen Sie in der <i>Main.java</i> eine Liste an, die sowohl <i>Rectangle</i>
+        als auch <i>DraggableRectangle</i> enthält. Geben Sie den Rechtecken unterschiedlichen
+        Positionen und Größen. Stellen Sie mit Hilfe einer <i>foreach</i>-Schleife alle 
+        Rechtecke der Liste dar.
+    </li>
+</ul>
+
+      <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-7-main',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+
+         </script>
+         <script type="plain/text" title="CursorDemo.java">
+class RectangleDemo extends Rectangle {
+   public RectangleDemo();
+
+   public void cursorDemo() {
+      String[] symbols = { "default", "pointer", 
+         "grabbing", "not-allowed"
+      };
+       
+      for (String symbol : symbols) {
+         println("Showing " + symbol);
+         getWorld().setCursor(symbol);
+         SystemTools.pause(2000);
+      } 
+      getWorld().setCursor("default");
+      
+   }
+}
+
+RectangleDemo demoObject = new RectangleDemo();
+
+demoObject.cursorDemo(); 
+         </script>
+                
+      </div>
+
+
+<h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
+
+<h3>2 - Ablagebereiche für Objekte</h3>
+
+    <p> 
+        Bis jetzt können wir <i>DraggableRectangle</i>-Objekte bewegen (=drag)
+        und überall im Zeichenfeld ablegen (=drop). Wir wollen unsere Implementierung 
+        jetzt um Ablagebereiche (=drop area) erweitern. Diese sollen ermöglichen, 
+        dass <i>DraggableRectangle</i>-Objekte nur dort abgelegt werden können. 
+        Beachten Sie bei der Umsetzung bitte die <strong>fettgedruckten Attribute 
+        und Methoden im Klassendiagramm</strong> sowie folgende Anforderungen.
+
+    </p>
+    <p><strong>Anforderungen:</strong>
+        <ul>
+            <li>
+                <input type="checkbox">Definieren Sie mit einem Rechteck (Rectangle)
+                einen Ablagebereich, den Sie dem Konstruktor von <i>DraggableRectangle</i>
+                übergeben (drop area). 
+            </li>
+            <li>
+                <input type="checkbox">Implementieren Sie die Methode <i>isInsideDropArea</i>,
+                die prüfen soll, ob sich das <i>DraggableRectangle</i> aktuell 
+                <strong>vollständig innerhalb des Ablagebereichs</strong> befindet. 
+            </li>
+            <li>
+                <input type="checkbox">Der Maus-Cursor soll außerhalb des Ablagebereichs 
+                den Anwender:innen deutlich zeigen, dass ein Ablegen nicht möglich ist 🚫  
+                (siehe: Cursor-Symbole oben). 
+            </li>
+            <li>
+                <input type="checkbox">Wenn ein Ablegen des <i>DraggableRectangle</i>
+                nicht möglich ist, soll dieses an die ursprüngliche Position (bevor 
+                Objekt verschoben wurde) zurückgesetzt werden. 
+            </li>
+             <li>
+                 <input type="checkbox"><strong>Optional 🌟</strong>: 
+                Animieren Sie das Zurücksetzen des Rechtecks, in dem dieses 
+                langsam auf dem kürzesten Weg (Linie) zum Ursprung (initialX/initialY) zurückgeführt wird. 
+                Setzen Sie den Zustand des <i>DraggableRectangles</i> während des Zurücksetzen
+                bitte auf <i>RESETTING</i>.
+            </li>
+        </ul>
+    
+    <p>
+        Ergänzen Sie Ihre Ideen gern hier (Speichern und Laden der vorhergehenden Aufgabe) 
+        oder fügen Sie es direkt im vorhergehenden IDE-Fenster hinzu.
+    </p>
+
+    <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-7-bonus',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+
+         </script>            
+    </div>
 
 </main>
 </body>
