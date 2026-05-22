@@ -3,27 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Java IDE Embed</title>
-  <head>
   <script>
     const params = new URLSearchParams(window.location.search);
     const passedId = params.get("id") || "";
     window.progLectureId = passedId;
-  </script>
-    
-</head>
 
-</head>
-<body>
-
-  <iframe class="ideFrame" width="1000" height="600" 
-    frameborder="0" allow="fullscreen" allowfullscreen
-    srcdoc="
-    <script>
-      window.jo_doc = window.frameElement.textContent;
-    </script>
-    <script src='https://mhimstedt.github.io/prog/includeIDE.js'></script>" >
-    {
-      'id': '${passedId}',
+    const ideConfig = `{
+      'id': '${passedId.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}',
       'speed': 1000,
       'withBottomPanel': true ,
       'withPCode': false ,
@@ -33,10 +19,27 @@
     }
     <script type="plain/text" title="Main.java">
 
-    </script>
+    <\/script>`;
 
-  </iframe>
+    const ideSrcdoc = `<script>
+      window.jo_doc = window.frameElement.textContent;
+    <\/script>
+    <script src='https://mhimstedt.github.io/prog/includeIDE.js'><\/script>`;
 
-
+    window.addEventListener("DOMContentLoaded", () => {
+      const iframe = document.createElement("iframe");
+      iframe.className = "ideFrame";
+      iframe.width = "1000";
+      iframe.height = "600";
+      iframe.setAttribute("frameborder", "0");
+      iframe.allow = "fullscreen";
+      iframe.allowFullscreen = true;
+      iframe.srcdoc = ideSrcdoc;
+      iframe.textContent = ideConfig;
+      document.body.appendChild(iframe);
+    });
+  </script>
+</head>
+<body>
 </body>
 </html>
