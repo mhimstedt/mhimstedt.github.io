@@ -162,17 +162,202 @@
 </ul>
 <h2>🤔 Vorbereitung</h2>
 <p>
-    Dieses Mal gibt es keine Vorbereitungsaufgaben. Bitte schließen Sie die vorherigen Praktikumsaufgaben ab.
+    Dieses Mal gibt es <strong>keine Vorbereitungsaufgaben</strong>. Bitte schließen Sie die vorherigen Praktikumsaufgaben ab.
 </p>
-
 
 <h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
 
-🚧 Die Aufgaben werden rechtzeitig bereitgestellt. 
+<img src="fahrzeug-v1.svg" width="800" alt="Klassendiagramm Fahrzeuge">
 
-<h2>📝 Bonusaufgaben (1 Bonuspunkt)</h2>
+<h3>1 - <i>Fahrzeug</i>-Klassen definieren</h3>
 
-🚧 Die Aufgaben werden rechtzeitig bereitgestellt. 
+<p>
+    Setzen Sie bitte das Klassendiagramm so wie gegeben in Java-Code um. 
+    <strong>Beachten Sie bitte unbedingt die folgenden Hinweise:</strong>
+    <ul>
+        <li>
+            Sie können alle Klassen ausnahmweise der Einfachheit halber in 
+            eine Datei schreiben (<i>Fahrzeuge.java</i>).
+        </li>
+        <li>
+            Wie im Klassendiagramm dargestellt, haben die Klassen bis auf 
+            die (zu überladene) <i>toString</i>-Methode <strong>bewusst
+            keine weiteren Attribute und Methoden.</strong> 
+        </li>
+    </ul>
+</p>
+
+<p><strong>Teilaufgaben</strong>:</p>
+
+<ul>
+    <li><input type="checkbox">
+        <strong>Klassen</strong>: Setzen Sie bitte alle Klassen entsprechend dem Klassendiagramm um.
+    </li>
+    <li><input type="checkbox">
+        <strong><i>toString</i>-Methode</strong>: Überschreiben Sie für jede Klasse die <i>toString</i>-Methode
+        und geben Sie den Namen der Fahrzeugklasse als <i>String</i> zurück, z.B. "Motorrad".  
+    </li>
+    <li><input type="checkbox">
+        <strong>Liste mit Fahrzeugen</strong>: Erstellen Sie in der <i>Main.java</i> eine 
+        <strong>gemeinsame Liste</strong> für alle Fahrzeuge. Fügen Sie dieser Liste exemplarisch 
+        von jedem Fahrzeugtyp ein Objekt hinzu. 
+    </li>
+    <li><input type="checkbox">
+        <strong>Ausgabe der Fahrzeuge</strong>: Geben Sie alle Fahrzeuge der Liste mit einer 
+        <i>foreach</i>-Schleife aus.
+    </li> 
+</ul>
+
+      <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-8-1',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+
+         </script>
+         <script type="plain/text" title="Fahrzeuge.java">
+// Der Einfachheit halber dürfen Sie ausnahmweise alle Fahrzeugklassen definieren
+         </script>
+                
+      </div>
+
+<h3>2 - Type-Casting für <i>Fahrzeuge</i></h3>
+
+<p>
+    In dieser Aufgabe werden wir den Einsatz von Type-Casting bei Objekten konkret anhand 
+    unserer <i>Fahrzeug</i>-Klassen üben. Bearbeiten Sie dazu bitte die folgenden Teilaufgaben.
+</p>
+
+<p><strong>Teilaufgaben:</strong></p>
+
+<ul>
+    <li><input type="checkbox">
+        Kopieren Sie bitte ihre Fahrzeuge.java von Aufgabe 1.
+    </li>
+    <li><input type="checkbox">
+        <strong>Fehler korrigieren:</strong> Die <i>Main.java</i> verwendet unsere 
+        Fahrzeug-Klassen. Dabei sind einige Fehler aufgetreten. Finden und beheben Sie diese bitte, 
+        insofern dies möglich ist.
+        <i>Denken Sie daran, dass es auch Laufzeitfehler geben kann.</i>
+    </li>
+</ul>
+
+<div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-8-2',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+/* Bitte zunächst die Fahrzeug-Klassen aus Aufgabe 1 in 
+ * Fahrzeuge.java kopieren. 
+ * Finden Sie dann alle Fehler im Code und beheben Sie 
+ * diese, insodern das möglich ist. */
+
+// A2.1
+Fahrzeug fahrzeug = new EBike();
+fahrzeug.laden();    // Downcast fehlt
+
+// A2.2
+EBike eBike = fahrzeug; // Downcast fehlt
+
+// A2.3
+fahrzeug = null;
+VerbrennerAuto verbrenner = new Auto();
+verbrenner.tanken();
+
+// A2.4
+EAuto verbrenner = new VerbrennerAuto();
+Auto auto = verbrenner;
+auto.tanken();
+
+// A2.5
+Fahrrad fahrrad = (Fahrrad) fahrzeug;
+eBike = fahrrad;
+
+// A2.6
+List<Auto> autos = new ArrayList<>();
+
+autos.add(new EAuto());
+autos.add(new EAuto());
+
+for (Auto auto : autos) {
+   fahrzeug.laden();
+}
+
+// A2.7
+autos.add(new VerbrennerAuto());
+
+for (Auto auto : autos) {
+   fahrzeug.laden();
+}
+         </script>
+         <script type="plain/text" title="Fahrzeuge.java">
+// Kopieren Sie bitte Ihre Implementierung aus Aufgabe 1 hierher. 
+         </script>
+                
+      </div>
+
+<h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
+
+<h3>3 - Zusätzliche Schnittstellen für <i>Fahrzeuge</i></h3>
+
+    <img src="fahrzeug-v2.png" width="800" alt="Klassendiagramm Fahrzeuge V2">
+    <p> 
+        Wir erweitern unsere <i>Fahrzeug</i>-Klassen nun um weitere Schnittstellen, 
+        die spezifische Fähigkeiten der Fahrzeuge umsetzen sollen. Bearbeiten Sie dazu 
+        bitte die folgenden Teilaufgaben.
+    </p>
+    <p><strong>Teilaufgaben:</strong>
+        <ul>
+            <li>
+                <input type="checkbox">Kopieren Sie zunächst Ihre bestehenden 
+                <i>Fahrzeug</i>-Klassen aus Aufgabe 1 in <i>Fahrzeuge.java</i>. 
+            </li>
+            <li>
+                <input type="checkbox"><strong>Schnittstellen definieren</strong>:
+                Definieren Sie die hinzugekommenden Schnittstellen  aus dem 
+                Klassendiagramm in der <i>Fahrzeuge.java</i> und passen Sie ggf. 
+                die bestehenden Klassen entsprechend an.  
+            </li>
+            <li>
+                <input type="checkbox">Legen Sie bitte eine <strong>gemeinsame
+                    Liste für <i>alle</i> Fahrzeuge</strong> an (siehe Aufgabe 1).
+            </li>
+            <li>
+                <input type="checkbox">Erstellen Sie eine <i>foreach</i>-Schleife,
+                die dafür sorgt, dass alle <strong>aufladbaren</strong> Fahrzeuge 
+                geladen werden. 
+            </li>
+            <li>
+                <input type="checkbox">Legen Sie nun eine weitere gemeinsame Liste 
+                    allerdings <strong>nur für alle <i>aufladbaren</i> Fahrzeuge </strong> an.
+            </li>
+            <li>
+                <input type="checkbox">Kopieren Sie nun (<i>foreach</i>-Schleife) alle 
+                <strong>aufladbaren</strong> Fahrzeuge ihrer urspünglichen Liste in diese 
+                neue Liste für aufladbare Fahrzeuge. 
+            </li>
+            <li>
+                <input type="checkbox">Sorgen Sie dafür, dass wieder alle Fahrzeuge der neuen 
+                Liste (aufladbare Fahrzeuge) geladen werden. 
+                <i>Geht das dieses Mal einfacher? </i>
+            </li>
+        </ul>
+    
+
+    <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-8-bonus',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+
+         </script>
+        <script type="plain/text" title="Fahrzeuge.java">
+/* Passen Sie Ihre Implementierungen aus Aufgabe 1 hier an. */
+         </script>                 
+    </div>
 
 </main>
 </body>
