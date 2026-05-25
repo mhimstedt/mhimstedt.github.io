@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>VProg Praktikum 8</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="exercises.css">
+    <link rel='stylesheet' type='text/css' media='screen' href='./online-ide-embedded.css'>
+    <script type="module" crossorigin src="./online-ide-embedded.js"></script>
+    
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 8: Type-Casting</h1>
+<p>
+    In diesem Praktikum wollen wir den Einsatz von <i>Type-Casting</i> in Java üben. 
+</p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+    <li>Type-Casting für Objekte zielgerichtet anwenden</li>
+    <li>Down-Casting sicher einsetzen</li>
+    <li>Typische Probleme beim Type-Casting erkennen und lösen</li>
+</ul>
+<h2>🤔 Vorbereitung</h2>
+<p>
+    Dieses Mal gibt es <strong>keine Vorbereitungsaufgaben</strong>. Bitte schließen Sie die vorherigen Praktikumsaufgaben ab.
+</p>
+
+<h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
+
+<img src="fahrzeug-v2.png" width="800" alt="Klassendiagramm Fahrzeuge">
+
+<h3>1 - <i>Fahrzeug</i>-Klassen verwenden</h3>
+
+<p>
+    Sie haben bereits Minimal-Implementierungen der im Klassendiagramm 
+    dargestellten Klassen gegeben.  
+    <strong>Beachten Sie bitte unbedingt die folgenden Hinweise:</strong>
+    <ul>
+        <li>
+            Sie können alle Klassen und Interfaces ausnahmweise der 
+            Einfachheit halber in einer Datei belassen (<i>Fahrzeuge.java</i>).
+        </li>
+        <li>
+            Wie im Klassendiagramm dargestellt, haben die Klassen bis auf 
+            die (zu überladene) <i>toString</i>-Methode <strong>bewusst
+            keine weiteren Attribute und Methoden.</strong> 
+        </li>
+        <li>
+            Lösen Sie bitte die folgenden Teilaufgaben.
+        </li>
+    </ul>
+</p>
+
+<p><strong>Teilaufgaben</strong>:</p>
+
+<ul>
+    <li><input type="checkbox">
+        <strong>Liste mit Fahrzeugen</strong>: Erstellen Sie in der <i>Main.java</i> eine 
+        <strong>gemeinsame Liste</strong> für alle Fahrzeuge. Fügen Sie dieser Liste exemplarisch 
+        von jedem Fahrzeugtyp ein Objekt hinzu. 
+    </li>
+    <li><input type="checkbox">
+        <strong>Ausgabe der Fahrzeuge</strong>: Geben Sie alle Fahrzeuge der Liste mit einer 
+        <i>foreach</i>-Schleife aus.
+    </li> 
+    <li><input type="checkbox">
+        <strong>Schnittstellen</strong>: Setzen Sie bitte die im Klassendiagramm rot kennzeichneten
+        Schnittstellen um. Passen Sie die geg. Klassen entsprechend an.
+    </li>
+</ul>
+
+      <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-8-1',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+
+         </script>
+         <script type="plain/text" title="Fahrzeuge.java">
+// Der Einfachheit halber dürfen Sie ausnahmweise alle Fahrzeugklassen definieren
+         </script>
+                
+      </div>
+
+
+<h3>2 - Type-Casting für <i>Fahrzeuge</i></h3>
+
+<p>
+    In dieser Aufgabe werden wir den Einsatz von Type-Casting bei Objekten konkret anhand 
+    unserer <i>Fahrzeug</i>-Klassen üben. Bearbeiten Sie dazu bitte die folgenden Teilaufgaben.
+</p>
+
+<p><strong>Teilaufgaben:</strong></p>
+
+<ul>
+    <li><input type="checkbox">
+        Kopieren Sie bitte ihre Fahrzeuge.java von Aufgabe 1.
+    </li>
+    <li><input type="checkbox">
+        <strong>Fehler korrigieren:</strong> Die <i>Main.java</i> verwendet unsere 
+        Fahrzeug-Klassen. Dabei sind einige Fehler aufgetreten. Finden und beheben Sie diese bitte, 
+        insofern dies möglich ist.
+        <i>Denken Sie daran, dass es auch Laufzeitfehler geben kann.</i>
+    </li>
+</ul>
+
+<div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-8-2',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+/* Bitte zunächst die Fahrzeug-Klassen aus Aufgabe 1 in 
+ * Fahrzeuge.java kopieren. 
+ * Finden Sie dann alle Fehler im Code und beheben Sie 
+ * diese, insodern das möglich ist. */
+
+// A2.1
+Fahrzeug fahrzeug = new EBike();
+fahrzeug.laden();    // Downcast fehlt
+
+// A2.2
+EBike eBike = fahrzeug; // Downcast fehlt
+
+// A2.3
+fahrzeug = null;
+VerbrennerAuto verbrenner = new Auto();
+verbrenner.tanken();
+
+// A2.4
+EAuto verbrenner = new VerbrennerAuto();
+Auto auto = verbrenner;
+auto.tanken();
+
+// A2.5
+Fahrrad fahrrad = (Fahrrad) fahrzeug;
+eBike = fahrrad;
+
+// A2.6
+List<Auto> autos = new ArrayList<>();
+
+autos.add(new EAuto());
+autos.add(new EAuto());
+
+for (Auto auto : autos) {
+   fahrzeug.laden();
+}
+
+// A2.7
+autos.add(new VerbrennerAuto());
+
+for (Auto auto : autos) {
+   fahrzeug.laden();
+}
+         </script>
+         <script type="plain/text" title="Fahrzeuge.java">
+// Kopieren Sie bitte Ihre Implementierung aus Aufgabe 1 hierher. 
+         </script>
+                
+      </div>
+
+<h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
+
+<h3>4 - Type-Casting und Schnittstellen </h3>
+
+    <p>Diese Aufgabe baut auf den o.g. Pflichtaufgaben auf. Lösen Sie bitte die 
+        folgenden Teilaufgaben.
+    </p>
+    
+    <p><strong>Teilaufgaben:</strong>
+        <ul>
+            <li>
+                <input type="checkbox">Kopieren Sie zunächst Ihre bestehenden 
+                <i>Fahrzeug</i>-Klassen aus Aufgabe 1 in <i>Fahrzeuge.java</i>. 
+            </li>
+            <li>
+                <input type="checkbox">Legen Sie bitte eine <strong>gemeinsame
+                    Liste für <i>alle</i> Fahrzeuge</strong> an (siehe Aufgabe 1).
+            </li>
+            <li>
+                <input type="checkbox">Erstellen Sie eine <i>foreach</i>-Schleife,
+                die dafür sorgt, dass alle <strong>aufladbaren</strong> Fahrzeuge 
+                geladen werden. 
+            </li>
+            <li>
+                <input type="checkbox">Legen Sie nun eine weitere gemeinsame Liste an - 
+                    allerdings <strong>nur für alle <i>aufladbaren</i> Fahrzeuge </strong>.
+            </li>
+            <li>
+                <input type="checkbox">Kopieren Sie nun (<i>foreach</i>-Schleife) alle 
+                <strong>aufladbaren</strong> Fahrzeuge ihrer urspünglichen Liste in diese 
+                neue Liste für aufladbare Fahrzeuge. 
+            </li>
+            <li>
+                <input type="checkbox">Sorgen Sie dafür, dass wieder alle Fahrzeuge der neuen 
+                Liste (aufladbare Fahrzeuge) geladen werden. 
+                <i>Geht das dieses Mal einfacher? </i>
+            </li>
+        </ul>
+    
+
+    <div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-8-bonus',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+         <script type="plain/text" title="Main.java">
+
+         </script>
+        <script type="plain/text" title="Fahrzeuge.java">
+/* Passen Sie Ihre Implementierungen aus Aufgabe 1 hier an. */
+         </script>                 
+    </div>
+
+</main>
+</body>
+</html>
