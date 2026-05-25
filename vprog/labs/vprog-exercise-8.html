@@ -4,10 +4,10 @@
     <title>VProg Praktikum 8</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="exercises.css">
-    <link rel='stylesheet' type='text/css' media='screen' href='./online-ide-embedded.css'>
-    <script type="module" crossorigin src="./online-ide-embedded.js"></script>
-    
+    <link rel="stylesheet" href="https://mhimstedt.github.io/vprog/labs/exercises.css">
+    <link rel='stylesheet' type='text/css' media='screen' href='https://mhimstedt.github.io/vprog/labs/online-ide-embedded.css'>
+    <script type="module" crossorigin src="https://mhimstedt.github.io/vprog/labs/online-ide-embedded.js"></script>
+
     <style>
         body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
         .ide-container { margin-bottom: 32px; }
@@ -218,9 +218,7 @@
 
          </script>
          <script type="plain/text" title="Fahrzeuge.java">
-// Der Einfachheit halber dürfen Sie hier ausnahmweise alle Fahrzeugklassen definieren
-
-
+// Der Einfachheit halber dürfen Sie ausnahmweise alle Fahrzeugklassen definieren
 
 abstract class Fahrzeug { 
    String toString() {
@@ -241,7 +239,7 @@ class VerbrennerAuto extends Auto {
 
 }
 
-class EAuto extends Auto {
+class EAuto extends Auto  {
    String toString() {
       return "EAuto";
    }
@@ -259,15 +257,16 @@ class EBike extends Fahrrad {
    String toString() {
       return "EBike";
    }
+
 }
 
 class Motorrad extends Fahrzeug { 
    String toString() {
       return "Motorrad";
    }
-}
 
-         </script>
+}
+        </script>
                 
       </div>
 
@@ -332,14 +331,14 @@ autos.add(new EAuto());
 autos.add(new EAuto());
 
 for (Auto auto : autos) {
-   fahrzeug.laden();
+   auto.laden();
 }
 
 // A2.7
 autos.add(new VerbrennerAuto());
 
 for (Auto auto : autos) {
-   fahrzeug.laden();
+   auto.laden();
 }
          </script>
          <script type="plain/text" title="Fahrzeuge.java">
