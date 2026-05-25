@@ -218,7 +218,55 @@
 
          </script>
          <script type="plain/text" title="Fahrzeuge.java">
-// Der Einfachheit halber dürfen Sie ausnahmweise alle Fahrzeugklassen definieren
+// Der Einfachheit halber dürfen Sie hier ausnahmweise alle Fahrzeugklassen definieren
+
+
+
+abstract class Fahrzeug { 
+   String toString() {
+      return "Fahrzeug";
+   }
+}
+
+abstract class Auto extends Fahrzeug { 
+   String toString() {
+      return "Auto";
+   }
+}
+
+class VerbrennerAuto extends Auto { 
+   String toString() {
+      return "VerbrennerAuto";
+   }
+
+}
+
+class EAuto extends Auto {
+   String toString() {
+      return "EAuto";
+   }
+
+}
+
+class Fahrrad extends Fahrzeug { 
+   String toString() {
+      return "Fahrrad";
+   }
+}
+
+class EBike extends Fahrrad {
+   
+   String toString() {
+      return "EBike";
+   }
+}
+
+class Motorrad extends Fahrzeug { 
+   String toString() {
+      return "Motorrad";
+   }
+}
+
          </script>
                 
       </div>
