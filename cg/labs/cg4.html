@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>CG4 Fractial Brownian Motion</title>
+
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+    }
+
+    a {
+      color: #6dff8f;
+    }
+
+    a:visited {
+      color: #5ce6a8;
+    }
+
+    a:hover,
+    a:focus {
+      color: #9dffbf;
+    }
+
+    img {
+      border: 1px solid #fff;
+      box-sizing: border-box;
+    }
+
+    li {
+      margin-bottom: 20px;
+    }
+
+    li > strong {
+      display: block;
+      margin-bottom: 0.35em;
+    }
+  </style>
+  
+</head>
+<body>
+  <h1>Fractial Brownian Motion</h1>
+  <h2>Ziel: Realistische Darstellung von Bergen und Polarlichtern</h2>
+  <p class="with-float-figure">
+    In diesem Praktikum wollen wir eine realistische Darstellung von Bergen
+    erreichen. Außerdem werden wir unsere bestehende Darstellung der Polarlichter
+    verbessern. Dazu werden wir prozedurale Muster mit Hilfe von 
+    <strong>Fractial Brownian Motion</strong> erzeugen.
+
+    Das Ergebnis soll dann in etwa wie die folgende Grafik aussehen:
+    <br><br>
+    <img src="img/cg4_result.gif" width="400px">
+  </p>
+
+  <h2>Vorbereitung</h2>
+  <p>Die folgenden Aufgaben setzen voraus, dass Sie die zugehörigen 
+     Vorlesungmaterialien vollständig durchgearbeitet haben: 
+     <ul>
+      <li>
+        <a href="https://slides.com/blackbill/cg-vorlage/fullscreen">
+          Vorlesung 4 (Rauschen)</a>
+      </li>
+      <li>
+        <a href="https://slides.com/blackbill/cg4-prozedurale-muster-und-fraktale/fullscreen">
+          Vorlesung 5 (Prozedurale Muster)</a>
+      </li>
+     </ul>
+  </p>
+  
+  <h2>Aufgaben</h2>
+  
+  <p>
+    Die folgenden Teilaufgaben lösen Sie bitte mit Hilfe des 
+     <a href="https://editor.thebookofshaders.com">Editors</a>, in dem Sie 
+    Ihre Lösungen interaktiv entwickeln und testen können.
+  </p>
+
+  <ol>
+    <li><strong>Nachthimmel</strong>
+      Legen Sie einen dunklen Hintergrund an, der zunächst den
+      gesamten Canvas bedeckt. Initialisieren Sie in der main-Funktion die 
+      Variable uv so, dass jeder Pixel eine positionsabhängige 2D-Koordinate im 
+      Bereich [-1, 1] erhält. Dazu müssen Sie den Wertebereich
+      von [0, 1] auf [-1, 1] transformieren.
+      <br>
+      <img src="./img/cg4_1.png" width="400px">
+    </li>
+    <li><strong>Farbverlauf</strong>
+      Erzeugen Sie einen dezenten Farbverlauf, der die dunkle Umgebung durch
+      etwas Restlicht erleuchtet. Der Effekt soll in etwa wie folgt aussehen:
+      <br> 
+      <img src="./img/cg4_2.png" width="400px">
+    </li>
+    <li><strong>Berge mit FBM</strong>
+      Implementieren Sie mit Hilfe von <i>Fractial Brownian Motion</i> und 
+      geeignetem <i>Noise</i> eine Bergkette. Dieses Muster erhalten Sie durch 
+      mehrfaches Überlagern von leicht veränderten <i>Noise</i>. Das Ergebnis
+      sollte in etwa wie folgt aussehen:
+      <br>
+      <img src="./img/cg4_3.png" width="400px"> 
+    </li>
+    
+    <li><strong>Kombinieren von Hintergrund und Bergen</strong>
+      Kombinieren Sie nun den Hintergrund (mit Farbverlauf) und 
+      die erzeugte Bergstruktur aus den letzten beiden Aufgaben.
+      Das Ergebnis sollte in etwa so aussehen:
+      <br>
+      <img src="./img/cg4_4.png" width="400px">
+    </li>
+
+    <li><strong>FBM für Polarlichter</strong>
+      Erweitern Sie Ihre Polarlichter aus dem vergangenen Praktikum 
+      durch die Nutzung von <i>Fractial Brownian Motion</i> und 
+      <i>Noise</i>. Das Ergebnis sollte in etwa wie folgt aussehen:
+      <br>
+      <img src="./img/cg4_5.png" width="400px">
+    </li>
+
+    <li><strong>Alles zusammen</strong>
+      Kombinieren Sie nun Ihre Polarlichter, Berge und Hintergrund.
+      Das Ergebnis sollte in etwa wie folgt aussehen:
+      <br>
+      <img src="./img/cg4_result.gif" width="400px">
+    </li>
+  <br>
+  <p>
+    <strong>Herzlichen Glückwunsch! Sie haben es geschafft - 
+      wir kommen unserem Polarlicht-Nachthimmel immer näher 😀! </strong>
+  </p>
+
+</body>
+</html>
