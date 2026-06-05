@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>VProg Praktikum 10</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://mhimstedt.github.io/vprog/labs/exercises.css">
+    <link rel='stylesheet' type='text/css' media='screen' href='https://mhimstedt.github.io/vprog/labs/online-ide-embedded.css'>
+    <script type="module" crossorigin src="https://mhimstedt.github.io/vprog/labs/online-ide-embedded.js"></script>
+    
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 10: Datenstrukturen</h1>
+<p>
+    In diesem Praktikum wollen wir den Einsatz von <i>Datenstrukturen</i> praktisch 
+    in Java <strong>unter Nutzung der IDE 
+        <a href="https://www.jetbrains.com/idea/download/?section=mac">IntelliJ IDEA</a>
+    </strong> üben. 
+</p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+    <li>geeignete Datenstrukturen für Problemstellungen auswählen</li>
+    <li>sicher mit Maps und Sets in Java umgehen</li>
+    <li>erste Projekte in der IDE IntelliJ enwickeln</li>
+</ul>
+
+<h2>🤔 Vorbereitung</h2>
+<p>
+   Installieren Sie sich nach Möglichkeit gern schon einmal die Entwicklungsumgebung (IDE) IntelliJ IDEA: 
+   <a href="https://www.jetbrains.com/idea/download/"></a>
+</p>
+
+<p><strong>Hinweise</strong>:</p>
+<ul>
+    <li>
+        <strong>Lizenz</strong>: Die Software kann in der einfachen Version auch nach 30 Tagen weiter 
+        verwendet werden. Sie brauchen <strong>keine Lizenz für die Ultimate-Version.</strong>
+    </li>
+    <li>
+        <strong>Eigener Computer</strong>: Wenn Sie keinen eigenen Computer haben oder die Software 
+        nicht auf Ihrem privaten Computer installieren wollen, ist das kein Problem. Wir haben die Software 
+        auf den Rechnern in den PC-Laboren installiert. Im 24h-Raum (auch in G3 Etage 1) können Sie die Software 
+        auch außerhalb der Praktikumszeiten nutzen. Sprechen Sie die Lehrbeauftragten bei Interesse gern an.
+    </li>
+    <li>
+        <strong>Klausur</strong>: Wir werden die IDE IntelliJ in den nächsten Wochen nutzen, um Sie noch näher 
+        an Java zu bringen. <strong>Bedenken Sie aber bitte, dass die Klausur wieder mit JOE durchgeführt wird. </strong>
+        Üben Sie daher auch in dieser Umgebung regelmäßig, um fit zu bleiben!
+    </li>
+    <li>
+        <strong>KI-Features</strong>: Im eigenen Interesse (Klausur und weiterführende Module) bitten wir Sie, 
+        <strong>alle KI-Features abzuschalten</strong>. Diese sollte man erst nutzen, wenn man gut programmieren kann!
+        Die Lehrbeauftragten/Tutor:innen helfen Ihnen sehr gern dabei.
+    </li>
+</ul>
+
+<p>
+    <strong>Bringen Sie bitte Ihre Implementierungen der Klassen <i>Person</i> und <i>Address</i> aus
+    <a href="https://mhimstedt.github.io/prog/vprog-exercise-2.html">Praktikum 2</a> mit. </strong> 
+</p>
+
+<h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
+
+<h3>1 - Projekt in IntelliJ anlegen </h3>
+
+<p>
+    Bearbeiten Sie bitte die folgenden Teilaufgaben in <strong>IntelliJ</strong>. Bitten Sie 
+    die Lehrbeauftragten/Tutor:innen im Praktikum gern um Hilfe.
+</p>
+<p><strong>Teilaufgaben</strong>:</p>
+<ul>
+    <li><input type="checkbox">Öffnen Sie bitte die IDE IntelliJ.</li>
+    <li><input type="checkbox">Legen Sie bitte ein neues (leeres) Projekt in IntelliJ an. </li>
+    <li><input type="checkbox">Legen Sie eine <i>Main.java</i> an. </li>
+    <li><input type="checkbox">Legen Sie eine <i>Main</i>-Klasse sowie eine <i>main</i>-Methode in <i>Main.java</i> an
+        (siehe: <a href="https://slides.com/blackbill/enums/fullscreen#/3/0/2">Vorlesung</a>).
+    </li>
+    <li><input type="checkbox">Geben Sie "Hello World" aus und starten Sie Ihr Projekt.</li>
+</ul>
+
+Jetzt sind wir für die Arbeit mit IntelliJ vorbereitet und können richtig loslegen 🚀
+
+<h3>2 - Vorbereitung des <i>AddressBook</i></h3>
+
+<img src="addressBook.svg">
+
+<p>
+    Wir haben vor einigen Wochen bereits eine <strong>Person</strong>-Klasse implementiert 
+    (siehe <a href="https://mhimstedt.github.io/prog/vprog-exercise-2.html">Praktikum 2</a>).
+    Diese wollen wir jetzt weiter nutzen, aber unter dem Klassennamen <strong>Contact</strong>. 
+</p>
+
+<p><strong>Anforderungen:</strong></p>   
+
+<ul>
+     <li><input type="checkbox"><strong><i>Person</i> zu <i>Contact</i></strong>: 
+         Passen Sie Ihre Klasse <i>Person</i> so an, dass diese nun <i>Contact</i> heißt 
+         (inkl. Konstruktoren usw.). 
+    </li>
+    <li><input type="checkbox"><strong>Address einbinden </strong>: 
+        Nutzen Sie bitte auch Ihre Klasse <i>Address</i> für Adressen von Kontakten.
+    </li>
+    <li><input type="checkbox"><strong>Klassendiagramm umsetzen</strong>: 
+        Setzen Sie bitte das oben dargestellte Klassendiagramm um. 
+    </li>
+    <li>
+        <input type="checkbox"><strong>Kontakte als Liste</strong>: 
+        Speichern Sie die Kontakte im <i>AddressBook</i> bitte in einer Liste ab.
+    </li>
+</ul>
+
+<h3>3 - Weiterentwicklung des <i>AddressBook</i></h3>
+
+<p>
+    Wir haben nun eine erste Implementierung unseres <i>AddressBook</i>. Diese hat aber noch ein 
+    paar Einschränkungen: Wenn wir einen Kontakt anlegen, der bereits existiert, wird das leider 
+    nicht erkannt. Dadurch können aktuell Duplikate entstehen. Überlegen Sie sich ein Konzept, wie Sie 
+    das verhindern können. Nutzen Sie dafür bitte möglichst eine elegante Variante durch geeignete 
+    Datenstrukturen (siehe: 
+    <a href="https://slides.com/blackbill/sortieren/fullscreen">Vorlesung Datenstrukturen</a>). 
+
+    Diskutieren Sie Ihre Lösung bitte mit den Lehrbeauftragten!
+</p>
+
+
+<h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
+
+<i>Hinweis:</i> Sie bekommen einen Bonuspunkt für eine Zusatzaufgabe.
+
+<h3>4 - Suche von Kontakten</h3>
+
+    <p>
+        Bitte eränzen Sie der Klasse <i>AddressBook</i> eine Methode <i>searchContacts</i>, die 
+        als Parameter einen <i>query</i>-String bekommt. Die Suche soll alle Daten des Addressbuchs
+        durchsuchen und auch Ergebnisse zeigen, wenn Groß-/Kleinschreibung nicht übereinstimmen oder 
+        nur ein Teil übereinstimmt. Sie können dafür gern eine 
+        <strong>lineare Suche</strong> implementieren.
+    </p>
+
+<h3>5 - Wörterbuch</h3>
+
+<p>
+    Implementieren Sie mit Hilfe einer <strong>Map</strong> eine Wörterbuch für die Übersetzung 
+    <i>Deutsch -> Englisch</i> und <i>Englisch -> Deutsch</i>. Achten Sie bitte darauf, dass
+    Groß-/Kleinschreibung nicht zwingend übereinstimmen müssen. Legen Sie bitte mind. 10 Wörter
+    mit Übersetzungen an. Lesen Sie Nutzereingaben bitte über die Kommandozeile ein und geben 
+    Sie entweder eine passende Übersetzung oder einen Fehler aus.
+</p>
+
+
+</main>
+</body>
+</html>
