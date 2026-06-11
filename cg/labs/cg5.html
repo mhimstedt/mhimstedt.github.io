@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>CG5 Transformationen</title>
+
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+    }
+
+    a {
+      color: #6dff8f;
+    }
+
+    a:visited {
+      color: #5ce6a8;
+    }
+
+    a:hover,
+    a:focus {
+      color: #9dffbf;
+    }
+
+    img {
+      border: 1px solid #fff;
+      box-sizing: border-box;
+    }
+
+    li {
+      margin-bottom: 20px;
+    }
+
+    li > strong {
+      display: block;
+      margin-bottom: 0.35em;
+    }
+  </style>
+  
+</head>
+<body>
+  <h1>Transformationen</h1>
+  <h2>Ziel: Bewegen eines 3D-Objekts im Raum</h2>
+  <p class="with-float-figure">
+    In diesem Praktikum wollen wir mit Transformationen auf 3D-Objekten arbeiten. 
+    Dazu wollen wir zunächst einen Würfel darstellen und diesen dann später 
+    (inkl. Farbvariation) auf einer Kreisbahn animieren. Dazu konzentrieren wir 
+    uns in diesem Praktikum vorranging auf <strong>Vertex-Shader</strong>.
+   
+    Das Ergebnis soll dann in etwa wie die folgende Grafik aussehen:
+    <br><br>
+    <img src="img/cg5_result.gif" width="400px">
+  </p>
+
+  <h2>Vorbereitung</h2>
+  <p>Die folgenden Aufgaben setzen voraus, dass Sie die zugehörigen 
+     Vorlesungmaterialien vollständig durchgearbeitet haben: 
+     <ul>
+      <li>
+        <a href="https://slides.com/blackbill/cg5-prozedurale-muster-und-fraktale/fullscreen">
+          Vorlesung 6 (Transformationen)</a>
+      </li>
+     </ul>
+  </p>
+  <p>
+    <strong>
+      Schließen Sie zur Vorbereitung bitte unbedingt den Vorbereitungstest 
+      im Lernraumkurs ab.
+    </strong>
+  </p>
+  
+  <h2>Aufgaben</h2>
+  
+  <p>
+    Die folgenden Teilaufgaben lösen Sie bitte mit Hilfe dieses 
+     <a href="https://web.cs.upb.de/cgvb/WebGLEditor/">Editors</a>, in dem Sie 
+    Ihre Lösungen interaktiv entwickeln und testen können.
+    <strong>
+      Hinweis: Das ist dieses Mal ein anderer Editor als in den vorhergehenden Praktika,
+      da wir auch 3D-Objekte in OpenGL/WebGL erstellen und <i>Vertex-Shader</i> 
+      implementieren wollen. 
+    </strong>
+  </p>
+
+  <ol>
+    <li><strong>Projekt laden</strong>
+      Laden Sie bitte die Datei <i>3D-Orbit-Cube.zip</i> vom Lernraum herunter
+      und öffnen Sie diesen im Editor durch Klicken des <i>Upload-Symbols</i> ↑.
+    </li>
+    <li><strong>Vorlage</strong>
+      In dem Projekt wird bereits ein 3D-Würfel erzeugt (in WebGL; siehe Reiter ganz links). 
+      Schauen Sie sich den Code bitte einmal genauer an und machen Sie sich damit vertraut.
+      Eine besondere Rolle hat hier die <i>render</i>-Funktion, die unsere Pipeline startet
+      und dabei u.a. auch Vertex- und Fragment-Shader durchläuft. 
+    </li>
+    <li><strong>Ausführen</strong>
+      Führen Sie die Vorlage aus und schauen Sie sich das Ergebnis an.
+      <br>
+      <img src="./img/cg5_1.png" width="400px"> 
+    </li>
+    
+    <li><strong>Ansicht ändern</strong>
+      In der Visualisierung können Sie die Ansicht des Würfels verändern. 
+      Was wird hierbei (automatisch) angepasst? Welche Teile der Transformationen 
+      sind hiervon betroffen?
+      <br>
+      <img src="./img/cg5_2.png" width="400px">
+    </li>
+
+    <li><strong>Objekt bewegen</strong>
+      Verändern Sie nun die Position des Würfels im Raum durch eine Translation. 
+      Nehmen Sie diese Veränderung im Vertex-Shader vor (siehe Reite VS). 
+      <br>
+      <img src="./img/cg5_3.png" width="400px">
+    </li>
+
+    <li><strong>Kreisbahn</strong>
+      Der Würfel soll sich nun kontinuierlich auf einer Kreisbahn 
+      um den Ursprung des Weltkoordinatensystems bewegen.
+      Dabei darf die Geometrie des Würfels nicht verändert werden. 
+      Lediglich seine Position soll sich entlang der Kreisbahn ändern.
+      <br>
+      <img src="./img/cg5_4.gif" width="400px">
+    </li>
+    <li><strong>Kreisbahn konfigurierbar</strong>
+      Erweitern Sie Ihre Implementierung dahingehend, dass der Radius 
+      der Kreisbahn als Variable innerhalb des Vertex-Shaders konfigurierbar wird.
+      <br>
+      <img src="./img/cg5_5.gif" width="400px">
+    </li>
+    <li><strong>Farbverlauf für Würfel</strong>
+      Geben Sie Ihrem Würfel noch einen Farbverlauf (-> Fragment-Shader). Dieser soll sich 
+      in Abhängigkeit von der 3D-Position des Würfels ändern. 
+      <br>
+      <img src="./img/cg5_result.gif" width="400px">
+    </li>
+  <br>
+
+
+</body>
+</html>
