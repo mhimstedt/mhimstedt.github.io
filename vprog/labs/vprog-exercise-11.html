@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>VProg Praktikum 11</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://mhimstedt.github.io/vprog/labs/exercises.css">
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 11: Grafische Oberflächen</h1>
+<p>
+    In diesem Praktikum wollen wir grafische Benutzeroberflächen 
+    (<i>engl. graphical user interfaces, GUI</i>) 
+    in Java <strong>unter Nutzung der IDE 
+        <a href="https://www.jetbrains.com/idea/download/?section=mac">IntelliJ IDEA</a>
+    </strong> und der Swing-Bibliothek gestalten und umsetzen. 
+</p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+    <li>GUI-Layouts in Java Swing nach Vorgaben erstellen</li>
+    <li>GUI-Komponenten (Buttons, Panels usw.) mit Java Swing darstellen</li>
+    <li>Erste Views zur Darstellung von GUIs erstellen</li>
+</ul>
+
+<h2>🤔 Vorbereitung</h2>
+<p>
+   Arbeiten Sie bitte nochmal die Vorlesungsunterlagen zum Thema 
+   <strong>Graphical User Interfaces (GUI)</strong> bis ca. zur Hälfte nach (siehe Lernraum).
+</p>
+
+<p>
+    <strong>
+        Bringen Sie bitte Ihre Implementierungen der Klassen <i>Contact</i>, <i>AddressBook</i> 
+        und davon abhängende Klasse aus dem 
+        <a href="https://mhimstedt.github.io/vprog/labs/vprog-exercise-10.html">Praktikum 10</a> mit. 
+    </strong> 
+</p>
+
+<h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
+
+<h3>1 - Die Klasse <i>AddressBookDialog</i> </h3>
+
+<p>
+    Dieses Projekt baut auf das vorhergehende Praktikum auf. Wir werden nun für unser Adressbuch eine 
+    grafische Darstellung mit Java Swing erstellen. Bearbeiten Sie dazu bitte die folgenden Teilaufgaben.
+    Das Ergebnis soll in etwa wie folgt aussehen:
+</p>
+<br>
+<br>
+<img width="400" src="addressBookDialog.png">
+<br>
+<br>
+
+<p><strong>Teilaufgaben</strong>:</p>
+<ul>
+    <li>
+        <input type="checkbox">Erstellen Sie eine Klasse <strong>AddressBookDialog</strong>, 
+        die von der Klasse <i>JFrame</i> erbt. Denken Sie daran, mit <i>super()</i> zunächst den Konstruktor 
+        der Basisklasse aufzurufen. Die weiteren Initialisierungen (siehe: folgenden Teilaufgaben) können 
+        Sie direkt im Konstruktur implementieren.
+     </li>
+    <li>
+        <input type="checkbox">Setzen Sie einen Titel für Ihre Anwendung mit <i>setTitle</i>. Setzen Sie 
+        die Größe Ihres Fenster mit <i>setSize</i> sowie den Ursprung durch <i>setLocationRelativeTo(null)</i>. 
+        Fügen Sie alle weiteren Methoden aus, die für die Initialisieren einer GUI in Java Swing notwendig sind 
+        (siehe: Vorlesungsfolien). 
+    </li>
+    <li>
+        <input type="checkbox">Nutzen Sie ein <i>BorderLayout</i> für den Dialog (gesamtes Fenster). 
+    </li>
+    <li>
+        <input type="checkbox"> Legen Sie als nächstes für die Suchleiste ein topPanel an (Typ <i>JPanel</i>). 
+        Setzen Sie auch hier das Layout auf <i>BorderLayout</i>. Fügen Sie für die Suchleiste ein <i>JLabel</i>
+        mit der Aufschrift "Suchen" sowie ein <i>JTextField</i> hinzu. Daneben legen Sie bitte noch ein <i>JButton</i> mit 
+        der Aufschrift "+" an (<i>Hierüber sollen später neue Kontakte angelegt werden</i>). Wählen Sie für 
+        alle Komponenten des <i>topPanel</i> geeignete Ausrichtungen für das BorderLayout. Vergessen Sie nicht 
+        das <i>topPanel</i> noch dem Dialog hinzuzufügen (<i>add(...)</i>). Geben Sie dabei auch die Ausrichtung 
+        für das BorderLayout des <i>topPanel</i> relativ zum gesamten Fenster an.
+    </li>
+    <li>
+        <input type="checkbox">Legen Sie als nächstes bitte ein <i>JScrollPane</i> an. Diese Swing-Komponente 
+        ermöglicht uns, eine scrollbare Liste unserer Kontakte darzustellen. Das <i>JScrollPane</i> bekommt als 
+        Parameter eine <i>jList</i> bspw. vom Typ <i>String</i>: <i>JList&lt;String&gt;</i>. Zur Erzeugung der 
+        Elemente müssen wir ein eigenes <i>ListModel</i> von Swing verwenden. Hierüber soll eine Trennung der 
+        Daten von der Darstellung ermöglicht werden. Orientieren Sie sich gern an der folgenden Vorlage:
+        <pre>
+            <code>
+                JList&lt;String&gt; jList = new JList<>();
+
+                DefaultListModel&lt;String&gt; model = new DefaultListModel<>();
+                jList.setModel(model);
+
+                for (Contact c : addressBook.getContacts()) {
+                    model.addElement(c.getFirstName() + " " + c.getLastName());
+                }
+
+                JScrollPane listScroller = new JScrollPane(jList);
+                // Denken Sie daran, listScroller noch Ihrem Fenster hinzuzufügen.
+            </code>
+        </pre>
+    </li>
+    <li><input type="checkbox">Legen Sie eine <i>Main</i>-Klasse sowie eine <i>main</i>-Methode in <i>Main.java</i> an. 
+        Erzeugen Sie ein leeres Addressbuch, fügen Sie Beispiel-Kontakte hinzu und instanziieren Sie dann Ihren neuen
+        AddressBookDialog.
+    </li>
+</ul>
+
+<p>
+    <i>Hinweis: Das Suchfeld sowie den "+"-Button erstellen wir in diesem Praktikum nur. Die Funktionalitäten 
+        werden wir beim nächsten Praktikum erst umsetzen.
+    </i>
+</p>
+
+<h3>2 - Die Klasse <i>ShowContactDialog</i></h3>
+
+<p>
+    Wir werden nun einen weiteren Dialog vorbereiten, der Details von Kontakten darstellen soll. Dieser soll 
+    später aufgerufen werden, sobald Kontakte im <i>AddressBookDialog</i> doppelt geklickt werden (➔ Praktikum 12). 
+    In diesem Praktikum werden wir zunächst einmal die Darstellung vorbereiten. Bearbeiten Sie dazu bitte die 
+    folgenden Teilaufgaben. Das Ergebnis soll in etwa wie folgt aussehen:    
+</p>
+
+<br>
+<img width="400" src="addressBookDialog.png">
+<br>
+
+<p><strong>Teilaufgaben:</strong></p>   
+
+<ul>
+    <li><input type="checkbox">Erzeugen Sie eine Klasse <strong>ShowContactDialog</strong>, die 
+        von <i>Jframe</i> erbt. Der Konstruktor bekommt als Parameter einen <i>Contact</i> übergeben.
+    </li>
+    <li><input type="checkbox">Führen Sie wieder alle notwendigen Initialisierungen für das Fenster durch
+        (siehe Aufgabe 1). Verwenden Sie für das Fenster bitte wieder das <i>BorderLayout</i>.
+    </li>
+    <li>
+        <input type="checkbox">Erstellen Sie ein weiteres JPanel <i>contactView</i>. Erstellen Sie hier 
+        mehrere <i>JLabel</i>, um alle Kontaktinformationen darzustellen (Vor-/Nachname, Adresse, Telefonnummer). 
+        Auch hier eignet sich das <i>BoxLayout</i> wieder sehr gut. Zur besseren Strukturierung können Sie bspw. 
+        auch den <i>JSeparator</i> verwenden. <strong>Seien Sie hier kreativ und spielen Sie mit den 
+        verschiedenen Layout-Optionen.</strong>
+        
+    </li>
+    <li><input type="checkbox">Testen Sie Ihre Klasse durch Aufruf von der <i>Main</i>-Klasse. Übergeben Sie einfach
+        einen Kontakt exemplarisch aus Ihrem Adressbuch bzw. erzeugen Sie sich einen zum Testen. 
+    </li>
+</ul>
+
+<p>
+    <i>Hinweis: Denken Sie bitte daran, dass es hier erstmal nur um die Vorbereitung der Views (Darstellungen) 
+        gehen soll. Um den Aufruf dieses Dialogs von der Liste kümmern wir uns im nächsten Praktikum.
+    </i>
+</p>
+
+<h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
+
+<h3>3 - Sortierte Darstellung von Kontakten</h3>
+
+    <p>
+        Überlegen Sie sich bitte ein <i>pragmatisches Konzept</i>, um Ihre Kontakte sortiert (z.B. nach Vorname) 
+        darzustellen. Sie dürfen dafür auch gern das Model (die Daten selbst) anpassen (=sortieren). 
+    </p>
+
+    <p>
+        <i>Hinweis: Die Sortierung aus der GUI heraus werden wir uns später noch ansehen. </i>
+    </p>
+
+</main>
+</body>
+</html>
