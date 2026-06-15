@@ -1,0 +1,69 @@
+private static AddressBook createAddressBook() {
+        AddressBook addressBook = new AddressBook();
+
+        addressBook.addContact(new Contact("Petra", "Musterfrau",
+                new Address("Seifenweg", "19a", "38192", "Dortmund"),
+                "0151 12345678"));
+
+        addressBook.addContact(new Contact("Max", "Mustermann",
+                new Address("Hauptstraße", "12", "10115", "Berlin"),
+                "0170 23456789"));
+
+        addressBook.addContact(new Contact("Anna", "Schmidt",
+                new Address("Lindenallee", "7", "20095", "Hamburg"),
+                "0162 34567890"));
+
+        addressBook.addContact(new Contact("Thomas", "Weber",
+                new Address("Bahnhofstraße", "45", "80331", "München"),
+                "0157 45678901"));
+
+        addressBook.addContact(new Contact("Julia", "Meyer",
+                new Address("Gartenweg", "3", "50667", "Köln"),
+                "0171 56789012"));
+
+        addressBook.addContact(new Contact("Michael", "Fischer",
+                new Address("Kirchplatz", "18", "70173", "Stuttgart"),
+                "0152 67890123"));
+
+        addressBook.addContact(new Contact("Laura", "Becker",
+                new Address("Birkenweg", "22", "28195", "Bremen"),
+                "0160 78901234"));
+
+        addressBook.addContact(new Contact("Stefan", "Hoffmann",
+                new Address("Schulstraße", "9", "04109", "Leipzig"),
+                "0173 89012345"));
+
+        addressBook.addContact(new Contact("Sarah", "Koch",
+                new Address("Parkstraße", "31", "01067", "Dresden"),
+                "0159 90123456"));
+
+        addressBook.addContact(new Contact("Daniel", "Richter",
+                new Address("Mühlenweg", "14", "45127", "Essen"),
+                "0176 11223344"));
+
+        addressBook.addContact(new Contact("Lisa", "Wolf",
+                new Address("Rosenweg", "5", "24103", "Kiel"),
+                "0151 22334455"));
+
+        addressBook.addContact(new Contact("Andreas", "Neumann",
+                new Address("Waldstraße", "27", "39104", "Magdeburg"),
+                "0163 33445566"));
+
+        addressBook.addContact(new Contact("Katharina", "Schulz",
+                new Address("Bergstraße", "11", "66111", "Saarbrücken"),
+                "0178 44556677"));
+
+        addressBook.addContact(new Contact("Tobias", "Krüger",
+                new Address("Akazienweg", "8", "99084", "Erfurt"),
+                "0155 55667788"));
+
+        addressBook.addContact(new Contact("Nina", "Hartmann",
+                new Address("Feldweg", "16", "18055", "Rostock"),
+                "0167 66778899"));
+
+        addressBook.addContact(new Contact("Jan", "Zimmermann",
+                new Address("Eichenstraße", "24", "79098", "Freiburg"),
+                "0179 77889900"));
+
+        return addressBook;
+    }
