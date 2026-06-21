@@ -16,7 +16,7 @@
     in Java <strong>unter Nutzung der IDE 
         <a href="https://www.jetbrains.com/idea/download/?section=mac">IntelliJ IDEA</a>
     </strong> und der Swing-Bibliothek weiter entwickeln und um <strong>Funktionalitäten 
-        (u.a. Klick-Events) erweitern. </strong>. 
+        (u.a. Klick-Events) erweitern</strong>.
 </p>
 <h2>🚀 Lernziele</h2>
 <p>Sie können:</p>
@@ -45,7 +45,119 @@
 
 <h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
 
-🚧 Aufgaben werden rechtzeitig freigeschaltet.
+<h3>1 - Trennung von Darstellung und Modell </h3>
+
+Öffnen Sie bitte Ihr <i>IntelliJ</i>-Projekt aus dem letzten Praktikum. Zur Trennung von Darstellung und Modell 
+erstellen Sie bitte die folgenden <strong>Packages</strong> in IntelliJ: <i>Model</i> und <i>View</i>.
+(<i>MVC</i>-Konzept: siehe <a href="https://lernraum.th-luebeck.de/mod/resource/view.php?id=393451">GUI-Vorlesung</a>).
+Klicken Sie dazu rechts unter <i>src</i> und <i>New -> Package</i>. <br>
+Kopieren Sie alle Ihre Dialoge in das <i>View</i>-Package und Ihr Modell (u.a. <i>AddressBook</i>, <i>Contact</i>) in 
+das <i>Model</i>-Package. Ihre <i>Main</i>-Klasse ist die einzige Klasse, die außerhalb der Packages bestehen bleiben soll. 
+Sie müssen in den <i>Dialog</i>-Klassen ggf. Ihre <i>Modell</i>-Klassen (<i>Contact</i> usw.) durch <i>Imports</i> bekannt machen. 
+Bringen Sie bitte zunächst einmal Ihren bestehenden Code (inkl. der neuen Packages) wieder zum Laufen.
+
+<h3>2 - Neue <i>ContactList</i>-Klasse </h3>
+
+<p><strong>Teilaufgaben</strong>:</p>
+<ul>
+    <li>
+        <input type="checkbox"><strong>Neue <i>ContactList</i>-Klasse</strong>: Erstellen Sie im Package <i>View</i> 
+        eine neue Klasse <i>ContactList</i>, die von <i>AbstractListModel&lt;Contact&gt;</i> erbt. Diese Klasse soll 
+        über ein Attribut <i>List&lt;Contact&gt; </i> verfügen, die als leere Liste im Konstruktor initialisiert werden soll.
+        Überschreiben Sie bitte die Methoden <i>public int getSize()</i> sowie <i>public Contact getElementAt(int index)</i>,
+        die die Größe der Liste sowie ein Element der Liste (an einem bestimmten Index) zurückgeben sollen. 
+        Fügen Sie bitte noch die folgende <i>update</i>-Methode hinzu:
+        <pre>
+            <code>
+                public void update(Collection&lt;Contact&gt; contacts) {
+                    this.contacts.clear();
+                    this.contacts.addAll(contacts);
+                    this.fireContentsChanged(this, 0, contacts.size());
+                }
+            </code>
+        </pre> 
+    </li>
+    <li>
+        <input type="checkbox">Legen Sie im <i>AddressBookDialog</i> nun eine Instanz <i>filteredContacts</i> Ihrer 
+        neuen Klasse <i>ContactList</i>-Klasse an. Rufen Sie die Methode <i>update</i> auf, der Sie bitte die Kontakte 
+        vom AddressBook als Parameter übergeben. Ersetzen Sie Ihre bisherige <i>JList</i> bitte durch die folgende:
+        <pre>
+            <code>
+                JList<Contact> contactList = new JList&lt;&gt;(filteredContacts);
+                contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                contactList.setSelectedIndex(0);
+            </code>
+        </pre>
+    </li>
+</ul>
+
+<h3>3 - <i>AddressBookDialog</i> und <i>ShowContactDialog</i> verbinden</h3>
+
+<img width="400" src="addressBook_clicked.png">
+<br><br>
+
+Wir werden nun unseren <i>AddressBookDialog</i> aus dem letzten Praktikum um Funktionalitäten erweitern. 
+Genauer gesagt, wollen wir den <i>ShowContactDialog</i> durch Klicken eines Kontakts in der Liste von 
+<i>AddressBookDialog</i> automatisch öffnen. Bearbeiten Sie dazu bitte die folgenden Teilaufgaben:
+
+<p><strong>Teilaufgaben</strong>:</p>
+<ul>
+     <li>
+        <input type="checkbox"><strong>MouseListener für <i>contactList</i></strong>: Erweitern Sie Ihre 
+        <i>contactList</i> im <i>AddressBookDialog</i> um einen <i>MouseListener</i>. Nutzen Sie dafür bitte 
+        die in der Vorlesung eingeführte <i>MouseAdapter</i>-Klasse. Implementieren Sie dies zunächst erstmal 
+        als anonyme Klasse innerhalb des Dialogs (siehe Vorlesung).
+     </li>
+     <li>
+        <input type="checkbox"><strong><i>showContact</i>-Methode</strong>: Ergänzen Sie eine Methode 
+        <i>showContact</i> im <i>AddressBookDialog</i>, die den ausgewählten (<i>=geklickten</i>) Kontakt
+        nun im <i>ShowContactDialog</i> darstellen soll. Die Methode <i>getSelectedIndex</i> gibt Ihnen den 
+        ausgewählten Eintrag der <i>JList</i> zurück. Mit der Methode <i>getElementAt</i> Ihrer <i>ContactList</i>-Klasse
+        können Sie dann (zusammen mit dem Index) auf den Kontakt zugreifen. <br>
+        Instanziieren Sie hier einen neuen <i>ShowContactDialog</i> und stellen Sie diesen dar. 
+    </li>
+     
+</ul>
+
+<h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
+
+Es genügt, wenn Sie eine der folgenden Zusatzaufgaben bearbeiten, um <strong>einen Bonuspunkt</strong> zu erhalten. 
+
+<h3>4 - Suche nach Kontakten </h3>
+
+Erweitern Sie Ihre aktuelle Anwendung um eine Kontaktsuche. Beachten Sie dazu bitte folgende Anforderungen: 
+
+<p><strong>Anforderungen</strong>:</p>
+<ul>
+    <li><input type="checkbox">Es soll das Textfeld, das bereits angelegt wurde, genutzt werden. </li>
+    <li>
+        <input type="checkbox">Ergänze Sie bitte eine <strong>findByPattern(String text)</strong>-Methode in Ihrem 
+        <i>AddressBook</i>, die eine Liste von Kontakten zurückgeben soll, die dem eingegeben Text entsprechen. Dafür 
+        sollten Sie eine Volltextsuche über alle Kontaktdaten nutzen (siehe: letztes Praktikum).
+    </li>
+    <li>
+        <input type="checkbox">Sobald im Textfeld die Taste <i>Enter</i> gedrückt wurde (<i>KeyEvent.VK_ENTER</i>), soll 
+        die Liste automatisch entsprechend des Suchtextes aktualisiert werden. Nutzen Sie dafür bitte <i>KeyListener</i> sowie 
+        die <i>KeyAdapter</i>-Klasse. 
+    </li>
+    <li>
+        <input type="checkbox">Es soll die Methode <i>filterContacts(String text)</i> im AddressBookDialog ergänzt werden.
+        Dieser soll die Kontaktliste durchsuchen (siehe <i>findbyPattern</i>-methode) und die Darstellung der Kontaktliste 
+        mittels der <i>update</i>-Methode von der <i>ContactList</i> aktualisieren. Als Parameter bekommt diese Parameter 
+        die Liste mit den Suchergebnissen.
+    </li>
+</ul>
+
+<h3>5 - Ein <i>AddContact</i>-Dialog </h3>
+
+Erstellen Sie bitte einen <i>AddContactDialog</i>, der durch Klicken des bereits bestehenden <i>+</i>-Button geöffnet werden soll.
+Der Dialog soll für jedes Element der <i>Contact</i>-Klasse (inkl. <i>Address</i>) ein Textfeld sowie dazugehöriges Label mit dem 
+Namen des Attributs haben. Durch einen Button mit der Aufschrift "Hinzufügen" soll ein neuer Kontakt erstellt werden. Ein weiterer 
+Button soll das Abbrechen (und Schließen) des Dialogs ermöglichen.
+<br><br>
+Überlegen Sie bitte, was Sie in den Paketen <i>Model</i> und <i>View</i> ergänzen müssen, um diese Funktionalität 
+zu ermöglichen. Denken Sie auch daran, dass die <i>ContactList</i> im <i>AddressBookDialog</i> nach dem Hinzufügen eines Kontakts 
+auch aktualisiert werden muss.
 
 </main>
 </body>
