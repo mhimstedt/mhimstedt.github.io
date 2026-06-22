@@ -78,12 +78,18 @@ Bringen Sie bitte zunächst einmal Ihren bestehenden Code (inkl. der neuen Packa
         </pre> 
     </li>
     <li>
+        <input type="checkbox"><strong><i>toString</i> von <i>Contact</i> überschreiben</strong>: Überschreiben Sie bitte die 
+        <i>toString</i>-Methode Ihrer <i>Contact</i>-Klasse. Übergeben Sie hier bitte Vor- und Nachnamen der 
+        Kontakte als einen String. Das ist wichtig, um Ihre <i>ContactList</i> im <i>AddressBookDialog</i>
+        richtig darzustellen.
+    </li>
+    <li>
         <input type="checkbox">Legen Sie im <i>AddressBookDialog</i> nun eine Instanz <i>filteredContacts</i> Ihrer 
         neuen Klasse <i>ContactList</i>-Klasse an. Rufen Sie die Methode <i>update</i> auf, der Sie bitte die Kontakte 
         vom AddressBook als Parameter übergeben. Ersetzen Sie Ihre bisherige <i>JList</i> bitte durch die folgende:
         <pre>
             <code>
-                JList<Contact> contactList = new JList&lt;&gt;(filteredContacts);
+                JList&lt;Contact&gt; contactList = new JList&lt;&gt;(filteredContacts);
                 contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 contactList.setSelectedIndex(0);
             </code>
