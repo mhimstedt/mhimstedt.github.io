@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>CG6 Komet</title>
+
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+    }
+
+    a {
+      color: #6dff8f;
+    }
+
+    a:visited {
+      color: #5ce6a8;
+    }
+
+    a:hover,
+    a:focus {
+      color: #9dffbf;
+    }
+
+    img {
+      border: 1px solid #fff;
+      box-sizing: border-box;
+    }
+
+    li {
+      margin-bottom: 20px;
+    }
+
+    li > strong {
+      display: block;
+      margin-bottom: 0.35em;
+    }
+  </style>
+  
+</head>
+<body>
+
+<h1>Geometrische Funktionen</h1>
+<h2>Ziel: Darstellung eines Kometen</h2>
+
+<p>In diesem Praktikum entwickeln Sie schrittweise einen animierten Kometen. Dabei werden verschiedene Techniken aus der Shader-Programmierung kombiniert: Distanzfunktionen, zeitabhängige Animationen, Liniensegmente und Farbverläufe.</p>
+
+<p>Das Ergebnis soll dann in etwa wie die folgende Grafik aussehen:</p>
+<br><br>
+<img src="img/cg6_result.gif" width="400px">
+
+<ol>
+    <li>
+        <strong>Ein leuchtender Stern</strong>
+        <p>Erzeugen Sie zunächst einen einzelnen leuchtenden Punkt an einer frei wählbaren Position. Die Helligkeit soll vom Zentrum nach außen abnehmen.</p>
+        <p>Für einen Punkt <em>p</em> und ein Zentrum <em>c</em> ergibt sich der Abstand durch</p>
+        <p><em>d = ||p - c||</em></p>
+        <p>Untersuchen Sie, wie sich der Abstand in eine Helligkeit umwandeln lässt. Ein harter Übergang wirkt meist künstlich. Versuchen Sie stattdessen einen weichen Verlauf zu erzeugen.</p>
+        <p>Hilfreiche GLSL-Funktionen:</p>
+        <ul>
+            <li>length()</li>
+            <li>smoothstep()</li>
+            <li>clamp()</li>
+        </ul>
+        <p>Wie verändert sich die Erscheinung des Sterns, wenn Sie den Übergangsbereich größer oder kleiner wählen?</p>
+    </li>
+
+    <li>
+        <strong>Bewegung</strong>
+        <p>Lassen Sie den Stern über den Bildschirm wandern. Verwenden Sie dazu die Zeitvariable des Shaders.</p>
+        <p>Eine gleichförmige Bewegung kann beschrieben werden durch</p>
+        <p><em>x(t) = x<sub>0</sub> + v &middot; t</em></p>
+        <p>Dabei bezeichnet x<sub>0</sub> die Startposition und v die Geschwindigkeit.</p>
+        <p>Betrachten Sie die Geschwindigkeit als zweidimensionalen Vektor. Experimentieren Sie mit unterschiedlichen Richtungen und Geschwindigkeiten.</p>
+    
+    </li>
+
+    <li>
+        <strong>Wiederkehrende Bewegung</strong>
+        <p>Der Stern soll nach Verlassen des Bildschirms erneut erscheinen.</p>
+        <p>Viele periodische Bewegungen lassen sich mit der Modulo-Operation beschreiben:</p>
+        <p><em>x = t mod L</em></p>
+        <p>Untersuchen Sie die Wirkung einer periodischen Wiederholung auf die Bewegung.</p>
+        <p>Hilfreiche GLSL-Funktionen:</p>
+        <ul>
+            <li>mod()</li>
+            <li>fract()</li>
+        </ul>
+        <p>Wie beeinflusst die Periodenlänge die Animation?</p>
+    </li>
+
+    <li>
+        <strong>Ein Schweif</strong>
+        <p>Ein Komet besteht nicht nur aus einem hellen Kopf, sondern auch aus einem Schweif. Erzeugen Sie ein Liniensegment zwischen zwei Punkten.</p>
+        <p>Ein Punkt auf einer Geraden kann beschrieben werden durch</p>
+        <p><em>L(t) = a + t(b - a)</em></p>
+        <p>mit</p>
+        <p><em>0 &le; t &le; 1</em></p>
+        <p>Für die Darstellung eines Liniensegments ist häufig die kürzeste Entfernung eines Pixels zu diesem Segment interessant.</p>
+        <p>Hilfreiche GLSL-Funktionen:</p>
+        <ul>
+            <li>dot()</li>
+            <li>length()</li>
+            <li>clamp()</li>
+        </ul>
+        <p>Wie lässt sich ein Punkt auf das Segment projizieren? Was passiert außerhalb des Intervalls [0,1]?</p>
+    </li>
+
+    <li>
+        <strong>Kometenkopf und Schweif kombinieren</strong>
+        <p>Verwenden Sie den bewegten Stern als Kopf des Kometen. Der Schweif soll entlang der Bewegungsrichtung liegen.</p>
+        <p>Die Flugrichtung ergibt sich direkt aus dem Geschwindigkeitsvektor. Überlegen Sie, wie sich aus der Position des Kopfes und der Geschwindigkeit ein zweiter Punkt bestimmen lässt, der das Ende des Schweifs beschreibt.</p>
+        <p>Welche Wirkung haben unterschiedliche Schweiflängen?</p>
+    </li>
+
+    <li>
+        <strong>Ein auslaufender Schweif</strong>
+        <p>Der Schweif soll nicht überall gleich hell erscheinen. Nahe am Kopf soll er heller sein als weiter hinten.</p>
+        <p>Viele Größen entlang eines Liniensegments können durch einen Parameter</p>
+        <p><em>t &in; [0,1]</em></p>
+        <p>beschrieben werden.</p>
+        <p>Untersuchen Sie Möglichkeiten, die Helligkeit entlang dieses Parameters zu verändern.</p>
+        <p>Hilfreiche GLSL-Funktionen:</p>
+        <ul>
+            <li>mix()</li>
+            <li>smoothstep()</li>
+        </ul>
+        <p>Welche Unterschiede ergeben sich zwischen linearen und nichtlinearen Verläufen?</p>
+    </li>
+
+    <li>
+        <strong>Farbe</strong>
+        <p>Geben Sie dem Schweif eine eigene Farbe. Der Kopf kann weiterhin nahezu weiß erscheinen.</p>
+        <p>Farben werden im Shader als RGB-Vektoren dargestellt.</p>
+        <p>Untersuchen Sie verschiedene Farbgebungen für den Schweif.</p>
+        <p>Hilfreiche GLSL-Funktion:</p>
+        <ul>
+            <li>mix()</li>
+        </ul>
+    </li>
+
+    <li>
+        <strong>Richtungswechsel</strong>
+        <p>Der Komet soll nicht immer dieselbe Flugbahn verwenden. Lassen Sie ihn periodisch die Richtung wechseln.</p>
+        <p>Betrachten Sie die Zeit in Abschnitten fester Länge. Innerhalb verschiedener Zeitintervalle können unterschiedliche Geschwindigkeitsvektoren verwendet werden.</p>
+        <p>Hilfreiche GLSL-Funktionen:</p>
+        <ul>
+            <li>mod()</li>
+            <li>step()</li>
+        </ul>
+        <p>Welche Wechselintervalle wirken natürlich?</p>
+    </li>
+
+    <li>
+        <strong>Begrenzung des Sichtbereichs</strong>
+        <p>Der Komet soll nur in einem bestimmten Bereich des Himmels sichtbar sein.</p>
+        <p>Wird ein Teil des Schweifs außerhalb dieses Bereichs bewegt, soll nur der sichtbare Abschnitt dargestellt werden.</p>
+        <p>Gegeben sei eine horizontale Grenze</p>
+        <p><em>y = y<sub>min</sub></em></p>
+        <p>Untersuchen Sie, wie sich ein Schnittpunkt zwischen dieser Linie und einem Liniensegment bestimmen lässt.</p>
+        <p>Ein Liniensegment kann durch</p>
+        <p><em>P(t) = P<sub>0</sub> + t(P<sub>1</sub> - P<sub>0</sub>)</em></p>
+        <p>beschrieben werden.</p>
+        <p>Welche Artefakte entstehen, wenn das Segment nicht abgeschnitten wird?</p>
+    </li>
+
+    <li>
+        <strong>Abschluss</strong>
+        <p>Implementieren Sie eine Funktion</p>
+        <p><code>vec3 comet(vec2 p)</code></p>
+        <p>die die gesamte Darstellung des Kometen bündelt.</p>
+    </li>
+</ol>
+
+Integrieren Sie den Komet bitte in Ihre existierende Polarlichter-Animation der letzten Praktika.
+
+</body>
+</html>
