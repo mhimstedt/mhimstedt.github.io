@@ -53,12 +53,80 @@
 
 <h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
 
-🚧 Die Aufgaben werden rechtzeitig bereit gestellt.
+Übergeordnetes Ziel der folgenden Aufgaben ist es, dass Clients sich eine Kontaktliste (Typ <i>AddressBook</i>) 
+von einem Server laden können.  
 
-<h2>⭐ Zusatzaufgaben (1 Bonuspunkt)</h2>
+<h3>1 - <i>Model</i>-Klassen serialisieren</h3>
 
-🚧 Die Aufgaben werden rechtzeitig bereit gestellt.
+Bevor wir unser <i>AddressBook</i> über Netzwerk übertragen können, müssen wir zunächst unsere <i>Model</i>-Klassen 
+vorbereiten. Damit wir Java-Objekte aus dem Speicher in Dateien, Netzwerk-Sockets usw. schreiben können, müssen diese 
+in einen Byte-Stream umgewandelt werden. Dieser Prozess nennt sich <strong>Serialisierung</strong>. In Java gibt es 
+hier analog zu den vielen anderen Bereichen, die wir schon kennengelernt haben (u.a. Datenstrukturen, GUI) wieder 
+Schnittstellen: konkret <strong>die Schnittstelle Serializable</strong>. Sollen Objekte eigener Klassen serialisiert
+werden, so müssen Sie diese Schnittstelle implementieren 
+(siehe Beispiel: <a href="Networking-Example.zip">Networking-Example.zip</a>).<br>
 
+Implementieren Sie für alle <i>Model</i>-Klassen die <i>Serializable</i>-Schnittstelle. Denken Sie daran, die 
+Versionsnummer anzugeben: <br>
+<pre>
+    <code>
+            private static final long serialVersionUID = 1L;
+    </code>
+</pre>
+<br>
+Sie können bei allen Klassen zunächst <code>1L</code> angeben. Sollten Sie Klassen später verändern (vor allem 
+die Attribute), können Sie hier die Versionsnummer anpassen, sodass keine Fehler beim späteren <i>Deserialisieren</i>
+entstehen.
+
+<h3>2 - Ein <i>AddressBook</i>-Server</h3>
+Entwickeln Sie einen Server, der ein <i>AddressBook</i> initialisiert und dann - sobald sich ein
+Client verbunden hat - dieses automatisch überträgt.
+ <br><br>
+<strong>
+    Orientieren Sie sich wieder an dem Beispiel in: 
+    <a href="Networking-Example.zip">Networking-Example.zip</a>
+</strong>
+
+<h3>3 - Ein <i>AddressBook</i>-Client</h3>
+Entwickeln Sie nun einen Client, der sich mit dem Server verbindet. Sollte ein <i>AddressBook</i> erfolgreich 
+heruntergeladen worden sein, zeigen Sie bitte alle Kontakte an. 
+
+<h2>⭐ Zusatzaufgaben (bis zu 2 Bonuspunkte)</h2>
+
+Sie können in diesem Praktikum <strong>bis zu 2 Bonuspunkte</strong> erwerben. 
+
+<h3>4 - Integration in Kontakte-GUI (bis zu 2 Bonuspunkte)</h3>
+
+Überlegen Sie sich ein Konzept, wie Sie das Client-Server-Modell zum Herunterladen Ihrer Konktakte in 
+die grafische Oberfläche der letzten beiden Praktika integrieren können. 
+
+<p><strong>Anforderungen</strong>:</p>
+<ul>
+    <li>Es gibt einen weiteren Button. Durch Klicken soll dieser das Herunterladen veranlassen. </li>
+    <li>
+        <strong>Trennung</strong>: Achten Sie weiterhin darauf, dass Modell/Daten und Darstellung (View)
+        so gut wie möglich getrennt bleiben. Ihr Client-Server-Konzept sollten Sie im <i>Model</i> ergänzen. 
+    </li>
+</ul>
+
+Für jede Anforderung können Sie bis zu einen Bonuspunkt erwerben. 
+
+<h3>5 - <i>Multi-Client</i>-Erweiterung (bis zu 2 Bonuspunkte)</h3>
+
+Aktuell unterstützt unser Client-Server-Modell nur einen einzigen Client. Sobald der Server eine Verbindung 
+zu einem Client aufgebaut hat, wird dieser beendet. Sollten sich zufällig zwei Clients gleichzeitig mit 
+dem Server verbinden, so wird nur zu einem Client eine Verbindung aufgebaut.
+
+<p><strong>Anforderungen</strong>:</p>
+<ul>
+    <li>Der Server behandelt jeden Client in einem eigenen <strong>Thread</strong></li>
+    <li>Sollte sich der Client nicht sofort verbinden können (<i>z.B. weil der Server gerade 
+        ausgelastet ist oder noch gar nicht gestartet wurde</i>), so soll der Verbindungsaufbau mehrmals wiederholt 
+        werden. Die maximale Anzahl Wiederholungsversuche übergeben Sie bitte als Variable (z.B. <code>n=5</code>). 
+    </li>
+</ul>
+
+Für jede Anforderung können Sie bis zu einen Bonuspunkt erwerben. 
 
 </main>
 </body>
