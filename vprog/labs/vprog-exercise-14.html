@@ -178,13 +178,111 @@
 
 <h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
 
-🚧 Die Aufgaben werden rechtzeitig freigeschaltet. 
+In diesem Praktikum wollen wir den Verkauf von Tickets (z.B. Sport, Konzert) über potentiell mehrere
+Verkaufsstellen nachstellen. Die Tickets sollen dabei zentral in einem gemeinsamen Ticketbestand 
+(<i>TicketInventory</i>) erfasst werden. Der parallele Verkauf von Tickets an mehreren Stellen
+soll durch Ticketschalter (<i>TicketCounter</i>) ermöglicht werden. Schauen Sie sich zunächst genau
+das Klassendiagramm an und setzen Sie beide Klassen um (siehe Aufgabe 1 und 2). Überlegen Sie sich 
+dann, wie der konkurrierende Zugriff auf das Attribut <i>count</i> (Methode <i>sell</i>) durch 
+mehrere Verkaufsstellen synchronisiert werden kann.
+
+<br><br>
+
+<img src="https://mhimstedt.github.io/vprog/labs/ticketCounter.svg" width="300">
+
+<h3>1 - <i>TicketInventory</i>-Klasse</h3>
+
+<p>
+    Lösen Sie bitte die folgenden Teilaufgaben:
+</p>
+    <ul>
+        <li>
+            <input type="checkbox"><strong><i>TicketInventory</i> erstellen</strong>: 
+            Implementieren Sie bitte die Klasse <i>TicketInventory</i> so wie im 
+            Klassendiagramm dargestellt. Dem Konstruktor soll die Anzahl zu verkaufener
+            Tickets (<i>count</i>) übergeben werden.
+        </li>
+        <li>
+            <input type="checkbox"><strong><i>sell</i>-Methode</strong>: Die Methode
+            <i>sell</i> soll der Einfachheit halber nur einzelne Tickets verkaufen. 
+            Mit dem Aufruf <i>Thread.pause(100)</i> können Sie die Methode bewusst 
+            etwas verzögern, um zu simulieren, dass dort normalerweise Datenbankzugriffe 
+            usw. erfolgen.
+        </li>
+        <li>
+            Initialisieren Sie eine TicketInventory mit bspw. 20 Tickets.
+        </li>
+    </ul>
+
+<h3>2 - <i>TicketCounter</i>-Klasse</h3>
+
+<p>
+    Lösen Sie bitte die folgenden Teilaufgaben:
+</p>
+    <ul>
+        <li>
+            <input type="checkbox"><strong><i>TicketCounter</i> erstellen</strong>: 
+            Implementieren Sie bitte die Klasse <i>TicketCounter</i> so wie im 
+            Klassendiagramm dargestellt. Dem Konstruktor soll eine Referenz auf eine
+            (vorher initialiserte) TicketInventory übergeben werden.
+        </li>
+        <li>
+            <input type="checkbox"><strong><i>run</i>-Methode</strong>: Die Methode
+            <i>run</i> soll das Verkaufen eines Tickets ermöglichen und dazu die 
+            Methode <i>sell</i> der TicketInventory aufrufen. Geben Sie zusätzlich auch 
+            den Namen des Schalters sowie das zuletzt verkaufte Ticket 
+            (Rückgabewert von <i>sell</i>) mit <i>println</i> aus.
+        </li>
+        <li>
+            Initialisieren Sie mehrere TicketCounter-Instanzen - bspw. 8. Denken Sie 
+            daran, immer dieselbe Referenz auf die TicketInventory zu übergeben, da 
+            alle Schalter aus demselben Ticketbestand verkaufen sollen.
+        </li>
+    </ul>
+
+
+<h3>3 - Zugriff auf <i>TicketInventory</i> regeln</h3>
+
+Führen Sie Ihren Code mit bspw. 20 Tickets und 8 Verkaufsstellen (TicketCounter) aus. 
+Was stellen Sie fest? Bekommen Sie eine Ausgabe vergleichbar mit der folgenden?
+
+<pre>
+    Schalter 7: Sold ticket #20
+    Schalter 6: Sold ticket #19
+    Schalter 0: Sold ticket #18
+    Schalter 1: Sold ticket #17
+    Schalter 5: Sold ticket #16
+    Schalter 3: Sold ticket #14
+    Schalter 4: Sold ticket #13
+    Schalter 2: Sold ticket #15
+    Schalter 7: Sold ticket #12
+    Schalter 6: Sold ticket #12
+    Schalter 1: Sold ticket #11
+    Schalter 3: Sold ticket #9
+    Schalter 5: Sold ticket #10
+    Schalter 0: Sold ticket #8
+    Schalter 2: Sold ticket #7
+    Schalter 4: Sold ticket #6
+    Schalter 4: Sold ticket #5
+    Schalter 2: Sold ticket #2
+    Schalter 5: Sold ticket #3
+    Schalter 3: Sold ticket #4
+    Schalter 7: Sold ticket #1
+    Schalter 6: No more tickets available
+    Schalter 1: No more tickets available
+    Schalter 0: No more tickets available
+</pre>
+
+Welches Problem besteht aktuell beim Ticketverkauf? Wie können Sie das Problem lösen? 
+Vergleichen Sie Ihre Ausgaben vor und nach Ihren Anpassungen und diskutieren Sie diese 
+mit Ihren Lehrbeauftragten.
+
 <h2>⭐ Keine Zusatzaufgaben</h2>
 
 <p>
     <strong>
-        Hinweis: Da es sich um das letzte Praktikum handelt, wird es keine Zusatzaufgaben 
-        mehr geben. 
+        Hinweis: Da es sich um das letzte Praktikum handelt, gibt es keine Zusatzaufgaben 
+        mehr. 
     </strong>
 </p>
 
