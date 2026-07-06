@@ -178,6 +178,7 @@
 
 <h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
 
+<p>
 In diesem Praktikum wollen wir den Verkauf von Tickets (z.B. Sport, Konzert) über potentiell mehrere
 Verkaufsstellen nachstellen. Die Tickets sollen dabei zentral in einem gemeinsamen Ticketbestand 
 (<i>TicketInventory</i>) erfasst werden. Der parallele Verkauf von Tickets an mehreren Stellen
@@ -185,6 +186,11 @@ soll durch Ticketschalter (<i>TicketCounter</i>) ermöglicht werden. Schauen Sie
 das Klassendiagramm an und setzen Sie beide Klassen um (siehe Aufgabe 1 und 2). Überlegen Sie sich 
 dann, wie der konkurrierende Zugriff auf das Attribut <i>count</i> (Methode <i>sell</i>) durch 
 mehrere Verkaufsstellen synchronisiert werden kann.
+</p>
+<p>
+    Die Ticketschalter sollen solange Tickets verkaufen, bis keine mehr verfügbar sind.
+</p>
+
 
 <br><br>
 
@@ -251,6 +257,8 @@ mehrere Verkaufsstellen synchronisiert werden kann.
             Methode <i>sell</i> der TicketInventory aufrufen. Geben Sie zusätzlich auch 
             den Namen des Schalters sowie das zuletzt verkaufte Ticket 
             (Rückgabewert von <i>sell</i>) mit <i>println</i> aus.
+            <strong>Es sollen solange Tickets verkauft werden, bis keine mehr  
+                verfügbar sind.</strong>
         </li>
         <li>
             Initialisieren Sie mehrere TicketCounter-Instanzen - bspw. 8. Denken Sie 
