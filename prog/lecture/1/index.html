@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="02_files/libs/clipboard/clipboard.min.js"></script>
-<script src="02_files/libs/quarto-html/tabby.min.js"></script>
-<script src="02_files/libs/quarto-html/popper.min.js"></script>
-<script src="02_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="02_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="02_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="02_files/libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.24">
+<script src="01_files/libs/clipboard/clipboard.min.js"></script>
+<script src="01_files/libs/quarto-html/tabby.min.js"></script>
+<script src="01_files/libs/quarto-html/popper.min.js"></script>
+<script src="01_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="01_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="01_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="01_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
 
-  <title>Grundlagen der Programmierung (ITD1) Vorlesung 1</title>
+  <title>quarto-input60f94a61aae06cd1</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="02_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="02_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="01_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="01_files/libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.2em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -28,12 +34,12 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="02_files/libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
+  <link rel="stylesheet" href="01_files/libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link rel="stylesheet" href="styles.css">
-  <link href="02_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="02_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="02_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="02_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="01_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="01_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="01_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="01_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -139,7 +145,7 @@
 <div class="column" style="width:50%;">
 <ul>
 <li class="fragment">Studium der Informatik</li>
-<li class="fragment">Promotion in Robotik</li>
+<li class="fragment">Promotion in Bildverarbeitung und Robotik</li>
 <li class="fragment">Unterrichte seit 10+ Jahren</li>
 <li class="fragment">an der THL seit 2024</li>
 <li class="fragment">Fokus: <strong>Visual Computing</strong></li>
@@ -171,30 +177,29 @@
 <p><img data-src="img/joe-roo.png" style="width:50.0%"></p>
 </div></div>
 </section>
+<section id="praktikum" class="slide level2">
+<h2>Praktikum</h2>
+</section>
 <section id="praktikum-lehrende" class="slide level2">
 <h2>Praktikum: Lehrende</h2>
 <div class="columns">
-<div class="column" style="width:15%;">
-<p>
-</div><div class="column" style="width:85%;">
+<div class="column" style="width:12%;">
+<p><img data-src="img/team/kjell.png" style="width:100.0%"></p>
+</div><div class="column" style="width:88%;">
 <p><strong>Kjell Treder</strong></p>
 <p>Gruppe 1 (Montag)</p>
 </div></div>
 <div class="columns">
-<div class="column" style="width:15%;">
-</div><div class="column" style="width:85%;">
-<p><strong>Marian Himstedt</strong></p>
-<p>Gruppe 2 & 4 (Dienstag/Mittwoch)</p>
-</div></div>
-<div class="columns">
-<div class="column" style="width:15%;">
-</div><div class="column" style="width:85%;">
+<div class="column" style="width:12%;">
+<p><img data-src="img/team/david.webp" style="width:100.0%"></p>
+</div><div class="column" style="width:88%;">
 <p><strong>David Engelhardt</strong></p>
 <p>Gruppe 3 (Dienstag)</p>
 </div></div>
 <div class="columns">
-<div class="column" style="width:15%;">
-</div><div class="column" style="width:85%;">
+<div class="column" style="width:12%;">
+<p><img data-src="img/team/hans.png" style="width:100.0%"></p>
+</div><div class="column" style="width:88%;">
 <p><strong>Hans Timmermann</strong></p>
 <p>Gruppe 5 (Freitag)</p>
 </div></div>
@@ -206,11 +211,8 @@
 <section id="bonuspunkte" class="slide level2">
 <h2>Bonuspunkte</h2>
 <ul>
-<li class="fragment">gibt es für das erfolgreiche Lösen von Praktikumsaufgaben</li>
-<li class="fragment">Erreichbar sind <strong>max. 10%</strong> der Klausurpunkte</li>
-<li class="fragment">Wir beginnen erst <strong>ab dem 2. Praktikum</strong> damit</li>
-<li class="fragment">Punkte sind in Aufgabenbeschreibung vermerkt</li>
-<li class="fragment"><strong>Kompensation</strong>: Wer nicht alles schafft, kann trotzdem auf 100% Bonus kommen 😊</li>
+<li class="fragment">gibt es für einen <strong>unbenoteten Test</strong> (“Midterm”)</li>
+<li class="fragment">Erreichbar 5 Punkte (Klausur: 50 Punkte), d.h. <strong>max. 10%</strong></li>
 </ul>
 </section>
 <section id="übung-übung-übung" class="slide level2">
@@ -316,7 +318,7 @@
 <img data-src="img/joe-roo.png" class="quarto-figure quarto-figure-center r-stretch"></section>
 <section id="joe-in-action" class="slide level2">
 <h2>JOE in Action</h2>
-<p><iframe src="embed.html" width="1000" height="400" frameborder="0"></iframe></p>
+<p><iframe src="embed.html" width="1000" height="600" frameborder="0"></iframe></p>
 </section>
 <section id="lets-go" class="slide level2">
 <h2>Let’s go!</h2>
@@ -331,19 +333,19 @@
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="02_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="01_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="02_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="02_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="02_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="02_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="02_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="01_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="01_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="01_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="01_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="01_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="02_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="02_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="02_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="02_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="01_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="01_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="01_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="01_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -504,7 +506,7 @@
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1400,
 
         height: 700,
 
