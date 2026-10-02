@@ -216,7 +216,7 @@ println("Willkommen in GProg! Ich bin JOE!");
         <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
             {'id': 'Greeting', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': false}
             <script type="plain/text" title="Programm.java">
-                println("Ich bin nun im " + "GProg" + "-Kurs" + "eingeschrieben");
+println("Ich bin nun im " + "GProg" + "-Kurs" + "eingeschrieben");
             </script>
         </iframe>
     </div>
@@ -236,27 +236,27 @@ println("Willkommen in GProg! Ich bin JOE!");
         <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
             {'id': 'Grafik2D', 'speed': 100000, 'withBottomPanel': false ,'withPCode': false ,'withConsole': false ,'withFileList': false ,'withErrorList': true}
             <script type="plain/text" title="Grafik2D.java">
-                World w = new World(800, 600);         // Grafikbereich anlegen
-                w.setBackgroundColor(Color.white);
-                
-                Circle c1 = new Circle(100, 100, 80);
-                c1.setFillColor(0xff8000);
-                c1.setBorderColor(Color.blue);
-                c1.setBorderWidth(20);
-                
-                Ellipse e1 = new Ellipse(500, 300, 150, 50);
-                e1.setFillColor(Color.red);
-                
-                Circle c2 = new Circle(200, 200, 150);
-                c2.setFillColor("rgb(50, 100, 50)", 0.5);
-                
-                Circle c3 = new Circle(400, 200, 150);
-                c3.setFillColor("rgba(0, 0, 255, 0.8)");
-                
-                for(int i = 1; i <= 10; i++) {
-                   Circle c = new Circle(70 * i, 500, 50);
-                   c.setFillColor(Math.floor(Math.random()*0xffffff), 0.1*i);
-                }
+World w = new World(800, 600);         // Grafikbereich anlegen
+w.setBackgroundColor(Color.white);
+
+Circle c1 = new Circle(100, 100, 80);
+c1.setFillColor(0xff8000);
+c1.setBorderColor(Color.blue);
+c1.setBorderWidth(20);
+
+Ellipse e1 = new Ellipse(500, 300, 150, 50);
+e1.setFillColor(Color.red);
+
+Circle c2 = new Circle(200, 200, 150);
+c2.setFillColor("rgb(50, 100, 50)", 0.5);
+
+Circle c3 = new Circle(400, 200, 150);
+c3.setFillColor("rgba(0, 0, 255, 0.8)");
+
+for(int i = 1; i <= 10; i++) {
+    Circle c = new Circle(70 * i, 500, 50);
+    c.setFillColor(Math.floor(Math.random()*0xffffff), 0.1*i);
+}
             </script>
             </iframe>
       </div>
@@ -273,209 +273,209 @@ println("Willkommen in GProg! Ich bin JOE!");
       <iframe class="ideFrame" srcdoc="<script>window.jo_doc = window.frameElement.textContent;</script><script src='https://embed.learnj.de/include/js/includeide/includeIDE.js'></script>" frameborder="0" allow="fullscreen" allowfullscreen>
           {'id': 'Pong', 'speed': 100000, 'withBottomPanel': true ,'withPCode': false ,'withConsole': false ,'withFileList': true ,'withErrorList': true}
           <script type="plain/text" title="Ball.java">
-            class Ball extends Rectangle {
-   
-                double vx;
-                double vy;
-                Schlaeger schlaegerLinks;
-                Schlaeger schlaegerRechts;
-                Pong pong;
-             
-             
-                Ball(double breite, double x, double y, Schlaeger schlaegerLinks, Schlaeger schlaegerRechts, 
-                   Pong pong) {
-                   super(x - breite / 2, y - breite / 2, breite, breite);
-                   setFillColor(Color.white);
-                   this.schlaegerLinks = schlaegerLinks;
-                   this.schlaegerRechts = schlaegerRechts;
-                   this.pong = pong;
-             
-                   setzeZufallsGeschwindigkeit();
-                }
-             
-                public void act() {
-                   
-                   if(pong.zustand != "Im Spiel") {
-                      return;
-                   }
-             
-                   move(vx, vy);
-             
-                   if(getCenterY() < getWidth() / 2) {
-                      vy = vy * (-1);
-                   }
-             
-                   if(getCenterY() > 600 - getWidth() / 2) {
-                      vy = vy * (-1);
-                   }
-             
-                   if(collidesWith(schlaegerLinks) || collidesWith(schlaegerRechts)) {
-                      vx = vx * (-1);
-                   }
-             
-                   if(getCenterX() < - getWidth() / 2) {
-                      pong.punktFürRechtenSpieler();
-                      setzeZufallsGeschwindigkeit();
-                      moveTo(400, 300);
-                   }
-             
-                   if(getCenterX() > 800 + getWidth() / 2) {
-                      pong.punktFürLinkenSpieler();
-                      setzeZufallsGeschwindigkeit();
-                      moveTo(400, 300);
-                   }
-             
-                }
-                
-             
-                void setzeZufallsGeschwindigkeit() {
-             
-                   double r = Math.random() * 5 + 5;
-                   double winkelGrad = Math.random() * 50 + 20;
-                   double winkelRad = winkelGrad / 180 * Math.PI;
-                   
-                   vx = r * Math.cos(winkelRad);
-                   vy = - r * Math.sin(winkelRad);
-             
-                   if(Math.random() < 0.5) {
-                      vx = -vx;
-                   }
-             
-                   if(Math.random() < 0.5) {
-                      vy = -vy;
-                   }
-                }
-             }
-          </script>
-          <script type="plain/text" title="Schlaeger.java">
-            class Schlaeger extends Rectangle {
-   
-                String tasteRauf;
-                String tasteRunter;
-             
-                double dy = 5;
-                
-                Schlaeger(double x, double breite, double höhe, String tasteRauf, String tasteRunter) {
-                   super(x,(600 - höhe) / 2, breite, höhe);
-                   
-                   this.tasteRauf = tasteRauf;
-                   this.tasteRunter = tasteRunter;
-                   
-                   setFillColor(Color.white);
-                   
-                }
-             
-                public void act() {
-                   if(isKeyDown(tasteRauf)) {
-                      if(getCenterY() > getHeight() / 2) {
-                         move(0, -dy);
-                      }
-                   }
-                   
-                   if(isKeyDown(tasteRunter)) {
-                      if(getCenterY() < 600 - getHeight() / 2) {
-                         move(0, dy);
-                      }
-                   }
-                   
-                }
-             }
-        </script>
-        <script type="plain/text" title="Pong.java">
-            new Pong();
+class Ball extends Rectangle {
 
-            class Pong extends Actor {
-            
-            Text punkteanzeige;
-            
-            Text großeAnzeige;
-            
-            int punkteLinks = 0;
-            int punkteRechts = 0;
-            
-            String zustand;
-            
-            Schlaeger links;
-            Schlaeger rechts;
-            Ball ball;
-            
-            Pong() {
-                super();
-                links = new Schlaeger(0, 20, 200, "q", "a");
-                rechts = new Schlaeger(800 - 20, 20, 200, Key.ArrowUp, Key.ArrowDown);
-                ball = new Ball(20, 400, 300, links, rechts, this);
-            
-                punkteanzeige = new Text(400, 20, 64, "");
-                punkteanzeige.setAlignment(Alignment.center);
-                punkteanzeige.setFillColor(Color.white);
-                punkteAnzeigen();
-            
-                großeAnzeige = new Text(400, 150, 140, "PONG");
-                großeAnzeige.setAlignment(Alignment.center);
-                großeAnzeige.setFillColor(Color.white);
-            
-                setZustand("Vor dem Spiel");
+    double vx;
+    double vy;
+    Schlaeger schlaegerLinks;
+    Schlaeger schlaegerRechts;
+    Pong pong;
+    
+    
+    Ball(double breite, double x, double y, Schlaeger schlaegerLinks, Schlaeger schlaegerRechts, 
+        Pong pong) {
+        super(x - breite / 2, y - breite / 2, breite, breite);
+        setFillColor(Color.white);
+        this.schlaegerLinks = schlaegerLinks;
+        this.schlaegerRechts = schlaegerRechts;
+        this.pong = pong;
+    
+        setzeZufallsGeschwindigkeit();
+    }
+    
+    public void act() {
+        
+        if(pong.zustand != "Im Spiel") {
+            return;
+        }
+    
+        move(vx, vy);
+    
+        if(getCenterY() < getWidth() / 2) {
+            vy = vy * (-1);
+        }
+    
+        if(getCenterY() > 600 - getWidth() / 2) {
+            vy = vy * (-1);
+        }
+    
+        if(collidesWith(schlaegerLinks) || collidesWith(schlaegerRechts)) {
+            vx = vx * (-1);
+        }
+    
+        if(getCenterX() < - getWidth() / 2) {
+            pong.punktFürRechtenSpieler();
+            setzeZufallsGeschwindigkeit();
+            moveTo(400, 300);
+        }
+    
+        if(getCenterX() > 800 + getWidth() / 2) {
+            pong.punktFürLinkenSpieler();
+            setzeZufallsGeschwindigkeit();
+            moveTo(400, 300);
+        }
+    
+    }
+    
+    
+    void setzeZufallsGeschwindigkeit() {
+    
+        double r = Math.random() * 5 + 5;
+        double winkelGrad = Math.random() * 50 + 20;
+        double winkelRad = winkelGrad / 180 * Math.PI;
+        
+        vx = r * Math.cos(winkelRad);
+        vy = - r * Math.sin(winkelRad);
+    
+        if(Math.random() < 0.5) {
+            vx = -vx;
+        }
+    
+        if(Math.random() < 0.5) {
+            vy = -vy;
+        }
+    }
+    }
+</script>
+<script type="plain/text" title="Schlaeger.java">
+class Schlaeger extends Rectangle {
+
+    String tasteRauf;
+    String tasteRunter;
+    
+    double dy = 5;
+    
+    Schlaeger(double x, double breite, double höhe, String tasteRauf, String tasteRunter) {
+        super(x,(600 - höhe) / 2, breite, höhe);
+        
+        this.tasteRauf = tasteRauf;
+        this.tasteRunter = tasteRunter;
+        
+        setFillColor(Color.white);
+        
+    }
+    
+    public void act() {
+        if(isKeyDown(tasteRauf)) {
+            if(getCenterY() > getHeight() / 2) {
+                move(0, -dy);
             }
-            
-            public void onKeyTyped(String key) {
-                if(key == " " && zustand == "Vor dem Spiel") {
-                    setZustand("Im Spiel");
-                } else 
-                if(key == " " && zustand == "Game over") {
-                    setZustand("Vor dem Spiel");
-                }
+        }
+        
+        if(isKeyDown(tasteRunter)) {
+            if(getCenterY() < 600 - getHeight() / 2) {
+                move(0, dy);
             }
-            
-            void punkteAnzeigen() {
-                punkteanzeige.setText(punkteLinks + " : " + punkteRechts);
-                
-                if((punkteLinks == 3 || punkteRechts == 3) && zustand == "Im Spiel") {
-                    setZustand("Game over");   
-                }
-            }
-            
-            void punktFürRechtenSpieler() {
-                punkteRechts++;
-                punkteAnzeigen();
-            }
-            
-            void punktFürLinkenSpieler() {
-                punkteLinks++;
-                punkteAnzeigen();
-            }
-            
-            void setZustand(String neuerZustand) {
-                
-                if(neuerZustand == "Vor dem Spiel") {
-                    links.setVisible(false);
-                    rechts.setVisible(false);
-                    ball.setVisible(false); 
-                    punkteanzeige.setVisible(false);
-                    großeAnzeige.setVisible(true);
-                    großeAnzeige.setText("PONG");
-                } else if(neuerZustand == "Im Spiel") {
-                    links.setVisible(true);
-                    rechts.setVisible(true);
-                    ball.setVisible(true); 
-                    punkteanzeige.setVisible(true);
-                    großeAnzeige.setVisible(false);
-                    ball.setzeZufallsGeschwindigkeit();
-                    ball.moveTo(400, 300);
-                    punkteLinks = 0;
-                    punkteRechts = 0;
-                    punkteAnzeigen();
-                } else if(neuerZustand == "Game over") {
-                    links.setVisible(false);
-                    rechts.setVisible(false);
-                    ball.setVisible(false); 
-                    großeAnzeige.setVisible(true);
-                    großeAnzeige.setText("Game over"); 
-                }
-            
-                zustand = neuerZustand;
-            
-            }
-            }
+        }
+        
+    }
+    }
+</script>
+<script type="plain/text" title="Pong.java">
+new Pong();
+
+class Pong extends Actor {
+
+Text punkteanzeige;
+
+Text großeAnzeige;
+
+int punkteLinks = 0;
+int punkteRechts = 0;
+
+String zustand;
+
+Schlaeger links;
+Schlaeger rechts;
+Ball ball;
+
+Pong() {
+    super();
+    links = new Schlaeger(0, 20, 200, "q", "a");
+    rechts = new Schlaeger(800 - 20, 20, 200, Key.ArrowUp, Key.ArrowDown);
+    ball = new Ball(20, 400, 300, links, rechts, this);
+
+    punkteanzeige = new Text(400, 20, 64, "");
+    punkteanzeige.setAlignment(Alignment.center);
+    punkteanzeige.setFillColor(Color.white);
+    punkteAnzeigen();
+
+    großeAnzeige = new Text(400, 150, 140, "PONG");
+    großeAnzeige.setAlignment(Alignment.center);
+    großeAnzeige.setFillColor(Color.white);
+
+    setZustand("Vor dem Spiel");
+}
+
+public void onKeyTyped(String key) {
+    if(key == " " && zustand == "Vor dem Spiel") {
+        setZustand("Im Spiel");
+    } else 
+    if(key == " " && zustand == "Game over") {
+        setZustand("Vor dem Spiel");
+    }
+}
+
+void punkteAnzeigen() {
+    punkteanzeige.setText(punkteLinks + " : " + punkteRechts);
+    
+    if((punkteLinks == 3 || punkteRechts == 3) && zustand == "Im Spiel") {
+        setZustand("Game over");   
+    }
+}
+
+void punktFürRechtenSpieler() {
+    punkteRechts++;
+    punkteAnzeigen();
+}
+
+void punktFürLinkenSpieler() {
+    punkteLinks++;
+    punkteAnzeigen();
+}
+
+void setZustand(String neuerZustand) {
+    
+    if(neuerZustand == "Vor dem Spiel") {
+        links.setVisible(false);
+        rechts.setVisible(false);
+        ball.setVisible(false); 
+        punkteanzeige.setVisible(false);
+        großeAnzeige.setVisible(true);
+        großeAnzeige.setText("PONG");
+    } else if(neuerZustand == "Im Spiel") {
+        links.setVisible(true);
+        rechts.setVisible(true);
+        ball.setVisible(true); 
+        punkteanzeige.setVisible(true);
+        großeAnzeige.setVisible(false);
+        ball.setzeZufallsGeschwindigkeit();
+        ball.moveTo(400, 300);
+        punkteLinks = 0;
+        punkteRechts = 0;
+        punkteAnzeigen();
+    } else if(neuerZustand == "Game over") {
+        links.setVisible(false);
+        rechts.setVisible(false);
+        ball.setVisible(false); 
+        großeAnzeige.setVisible(true);
+        großeAnzeige.setText("Game over"); 
+    }
+
+    zustand = neuerZustand;
+
+    }
+}
         </script>
           
       </iframe>
