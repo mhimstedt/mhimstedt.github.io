@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="build/glslEditor.css">
+<title>GLSL-Fragment-Shader-Referenz.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+	
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+
+<h1>Klausur: Computergrafik</h1>
+  <h2>Ende SoSe 2026</h2>
+  
+  <h2>Aufgabe</h2>
+
+  <p>
+    Bitte lösen Sie die folgende Aufgabe als GLSL Fragment Shader. 
+    <strong>Kopien Sie Ihre Lösung anschließend bitte als Antwort in den Lernraum-Test hinein.</strong>
+  </p>
+
+  <ul>
+    <li>Normalisieren Sie die Fragment-Koordinaten</li>
+    <li>Zeichnen Sie ein <strong>Rechteck</strong></li>
+    <li>Das Rechteck soll über Variablen konfigurierbar sein:</li>
+      <ul>
+        <li>2D-Koordinaten der oberen, linken Ecke</li>
+        <li>Breite</li>
+        <li>Höhe</li>
+      </ul>
+      <li>Es soll ein grüner, vertikaler Farbverlauf gezeichnet werden, der nur innerhalb des Rechtecks sichtbar ist</li>
+      <li>Die Hintergrundfarbe soll einstellbar sein.</li>
+      <li>Sorgen Sie dafür, dass der Farbverlauf gleich bleibt, wenn das Rechteck auf der Zeichenfläche verschoben wird</li>
+  </ul>
+
+
+<p>Das Ergebnis soll in etwa wie folgt aussehen: </p>
+
+<img src="rectangle.png" width="400">
+
+
+
+  <div id="cg1" class="editor"></div>
+  
+
+  <script src="build/glslEditor.js"></script>
+  <script>
+    // Editor 1
+    new GlslEditor('#cg1', {
+      canvas_size: 400,
+      theme: 'monokai',
+      canvas_follow: true,
+      canvas_float: 'right',
+      frag: `precision mediump float;
+
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+
+void main(){
+    vec2 uv = gl_FragCoord.xy/u_resolution.xy;
+    gl_FragColor = vec4(vec3(1., 0., 0.), 1.0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+`
+    });
+
+  </script>
+
+
+<h1 id="glsl-befehle-f%C3%BCr-fragment-shader">GLSL-Befehle für Fragment-Shader</h1>
+<blockquote>
+<p>Dokumentation basierend auf dem <a href="https://thebookofshaders.com/glossary/">Glossary von The Book of Shaders</a></p>
+</blockquote>
+<p>Diese Referenz listet alle GLSL-Befehle, Datentypen, Qualifizierer, eingebauten Variablen und Funktionen für Fragment-Shader (GLSL ES 1.0 / WebGL 1.0). Interaktive Programmierbeispiele aus der Beschreibungs-Sektion wurden ausgelassen.</p>
+<h2 id="inhaltsverzeichnis">Inhaltsverzeichnis</h2>
+<ul>
+<li><a href="#typen">Typen</a></li>
+<li><a href="#qualifizierer">Qualifizierer</a></li>
+<li><a href="#eingebaute-variablen-fragment-shader">Eingebaute Variablen (Fragment-Shader)</a></li>
+<li><a href="#eingebaute-variablen-vertex-shader">Eingebaute Variablen (Vertex-Shader)</a></li>
+<li><a href="#eingebaute-konstanten">Eingebaute Konstanten</a></li>
+<li><a href="#winkel-und-trigonometrische-funktionen">Winkel- und Trigonometrische Funktionen</a></li>
+<li><a href="#exponentialfunktionen">Exponentialfunktionen</a></li>
+<li><a href="#allgemeine-funktionen">Allgemeine Funktionen</a></li>
+<li><a href="#geometrische-funktionen">Geometrische Funktionen</a></li>
+<li><a href="#matrixfunktionen">Matrixfunktionen</a></li>
+<li><a href="#vektor-relationale-funktionen">Vektor-Relationale Funktionen</a></li>
+<li><a href="#textur-lookup-funktionen">Textur-Lookup-Funktionen</a></li>
+<li><a href="#ableitungen-fragment-shader">Ableitungen (Fragment-Shader)</a></li>
+<li><a href="#sonstige">Sonstige</a></li>
+</ul>
+<hr>
+<h2 id="typen">Typen</h2>
+<p><a id="void"></a></p>
+<h3 id="void"><code>void</code></h3>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">void</span> main(<span class="hljs-type">void</span>);
+<span class="hljs-type">int</span> aFunction(<span class="hljs-type">void</span>);
+<span class="hljs-type">void</span> bFunction(<span class="hljs-type">float</span>);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>void is used when a function has no parameters or when a function does not return a value.</p>
+<p><strong>Siehe auch:</strong> void, bool, int, float</p>
+<p><a id="bool"></a></p>
+<h3 id="bool"><code>bool</code></h3>
+<p>Boolean variable type</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bool</span> aBool = <span class="hljs-literal">true</span>;
+<span class="hljs-type">bool</span> bBool = <span class="hljs-type">bool</span>(aInt);
+<span class="hljs-type">bool</span> cBool = <span class="hljs-type">bool</span>(aFloat);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>bool data type is either true or false.</p>
+<p><strong>Siehe auch:</strong> void, bool, int, float, bvec2, bvec3, bvec4, struct</p>
+<p><a id="int"></a></p>
+<h3 id="int"><code>int</code></h3>
+<p>Integer data type</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">int</span> aInt = <span class="hljs-number">42</span>;
+<span class="hljs-type">int</span> bInt = <span class="hljs-type">int</span>(aBool);
+<span class="hljs-type">int</span> cInt = <span class="hljs-type">int</span>(aFloat);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>int is used for integer values.</p>
+<p><strong>Siehe auch:</strong> void, bool, int, float, ivec2, ivec3, ivec4</p>
+<p><a id="float"></a></p>
+<h3 id="float"><code>float</code></h3>
+<p>Floating-point variable type</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> aFloat = <span class="hljs-number">1.0</span>;
+<span class="hljs-type">float</span> bFloat = <span class="hljs-type">float</span>(aBool);
+<span class="hljs-type">float</span> cFloat = <span class="hljs-type">float</span>(aInt);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>float is used for floating point values.</p>
+<p><strong>Siehe auch:</strong> void, bool, int, float, bvec2, bvec3, bvec4, struct</p>
+<p><a id="bvec2"></a></p>
+<h3 id="bvec2"><code>bvec2</code></h3>
+<p>2 dimensional boolean vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bvec2</span> aBvec2 = <span class="hljs-type">bvec2</span>(<span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+<span class="hljs-type">bvec2</span> bBvec2 = <span class="hljs-type">bvec2</span>(<span class="hljs-literal">true</span>);
+
+<span class="hljs-type">bvec2</span> cBvec2 = <span class="hljs-type">bvec2</span>(aBvec3);
+<span class="hljs-type">bvec2</span> dBvec2 = <span class="hljs-type">bvec2</span>(aBvec3.x, aBvec3.y);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>bvec2 is a boolean vector with two components. It can be initialized by:</p>
+<ul>
+<li>Providing a scalar value for each component.</li>
+<li>Providing one scalar value. This value is used for all components.</li>
+<li>Providing a vector of higher dimension. The respective values are used to initialize the components.</li>
+</ul>
+<p><strong>Siehe auch:</strong> bool, int, float, bvec2, bvec3, bvec4, ivec2, ivec3, ivec4, vec2, vec3, vec4, mat2, mat3, mat4</p>
+<p><a id="bvec3"></a></p>
+<h3 id="bvec3"><code>bvec3</code></h3>
+<p>3 dimensional boolean vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">vec3</span> aBvec3 = <span class="hljs-type">bvec3</span>(<span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+<span class="hljs-type">vec3</span> bBvec3 = <span class="hljs-type">bvec3</span>(<span class="hljs-literal">true</span>);
+
+<span class="hljs-type">vec3</span> cBvec3 = <span class="hljs-type">bvec3</span>(aBvec4);
+<span class="hljs-type">vec3</span> dBvec3 = <span class="hljs-type">bvec3</span>(aBvec4.x, aBvec4.y, aBvec4.z);
+
+<span class="hljs-type">vec3</span> eBvec3 = <span class="hljs-type">bvec3</span>(aBvec2, aBool);
+<span class="hljs-type">vec3</span> fBvec3 = <span class="hljs-type">bvec3</span>(aBvec2.x, aBvec2.y, aBool);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>bvec3 is a boolean vector with three components. It can be initialized by:</p>
+<ul>
+<li>Providing a scalar value for each component.</li>
+<li>Providing one scalar value. This value is used for all components.</li>
+<li>Providing a vector of higher dimension. The respective values are used to initialize the components.</li>
+<li>Providing a combination of vectors and/or scalars. The respective values are used to initialize the vector. The arguments of the constructor must have at least as many components as the vector that is initialized.</li>
+</ul>
+<p><strong>Siehe auch:</strong> bool, int, float, bvec2, bvec3, bvec4, ivec2, ivec3, ivec4, vec2, vec3, vec4, mat2, mat3, mat4</p>
+<p><a id="bvec4"></a></p>
+<h3 id="bvec4"><code>bvec4</code></h3>
+<p>4 dimensional boolean vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">vec4</span> aBvec4 = <span class="hljs-type">bvec4</span>(<span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+<span class="hljs-type">vec4</span> bBvec4 = <span class="hljs-type">bvec4</span>(<span class="hljs-literal">true</span>);
+
+<span class="hljs-type">vec4</span> cBvec4 = <span class="hljs-type">bvec4</span>(aBvec2, aBool, aBvec3);
+<span class="hljs-type">vec4</span> dBvec4 = <span class="hljs-type">bvec4</span>(aBvec2.x, aBvec2.y, aBool, aBvec3.x);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>bvec4 is a boolean vector with four components. It can be initialized by:</p>
+<ul>
+<li>Providing a scalar value for each component.</li>
+<li>Providing one scalar value. This value is used for all components.</li>
+<li>Providing a combination of vectors and scalars. The respective values are used to initialize the components. The arguments of the constructor must have at least as many components as the vector that is initialized.</li>
+</ul>
+<p><strong>Siehe auch:</strong> bool, int, float, bvec2, bvec3, bvec4, ivec2, ivec3, ivec4, vec2, vec3, vec4, mat2, mat3, mat4</p>
+<p><a id="ivec2"></a></p>
+<h3 id="ivec2"><code>ivec2</code></h3>
+<p>2 dimensional integer vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bvec2</span> aIvec2 = <span class="hljs-type">ivec2</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+<span class="hljs-type">bvec2</span> bIvec2 = <span class="hljs-type">ivec2</span>(<span class="hljs-number">1</span>);
+
+<span class="hljs-type">bvec2</span> cIvec2 = <span class="hljs-type">ivec2</span>(aIvec3);
+<span class="hljs-type">bvec2</span> dIvec2 = <span class="hljs-type">ivec2</span>(aIvec3.x, aIvec3.y);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>ivec2 is an integer vector with two components. It can be initialized by:</p>
+<ul>
+<li>Providing a scalar value for each component.</li>
+<li>Providing one scalar value. This value is used for all components.</li>
+<li>Providing a vector of higher dimension. The respective values are used to initialize the components.</li>
+</ul>
+<p><strong>Siehe auch:</strong> bool, int, float, bvec2, bvec3, bvec4, ivec2, ivec3, ivec4, vec2, vec3, vec4, mat2, mat3, mat4</p>
+<p><a id="ivec3"></a></p>
+<h3 id="ivec3"><code>ivec3</code></h3>
+<p>3 dimensional integer vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">vec3</span> aIvec3 = <span class="hljs-type">ivec3</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+<span class="hljs-type">vec3</span> bIvec3 = <span class="hljs-type">ivec3</span>(<span class="hljs-number">1</span>);
+
+<span class="hljs-type">vec3</span> cIvec3 = <span class="hljs-type">ivec3</span>(aIvec4);
+<span class="hljs-type">vec3</span> dIvec3 = <span class="hljs-type">ivec3</span>(aIvec4.x, aIvec4.y, aIvec4.z);
+
+<span class="hljs-type">vec3</span> eIvec3 = <span class="hljs-type">ivec3</span>(aIvec2, aInt);
+<span class="hljs-type">vec3</span> fIvec3 = <span class="hljs-type">ivec3</span>(aIvec2.x, aIvec2.y, aInt);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>ivec3 is an integer vector with three components. It can be initialized by:</p>
+<ul>
+<li>Providing a scalar value for each component.</li>
+<li>Providing one scalar value. This value is used for all components.</li>
+<li>Providing a vector of higher dimension. The respective values are used to initialize the components.</li>
+<li>Providing a combination of vectors and/or scalars. The respective values are used to initialize the vector. The arguments of the constructor must have at least as many components as the vector that is initialized.</li>
+</ul>
+<p><strong>Siehe auch:</strong> bool, int, float, bvec2, bvec3, bvec4, ivec2, ivec3, ivec4, vec2, vec3, vec4, mat2, mat3, mat4</p>
+<p><a id="ivec4"></a></p>
+<h3 id="ivec4"><code>ivec4</code></h3>
+<p>4 dimensional integer vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">vec4</span> aIvec4 = <span class="hljs-type">ivec4</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+<span class="hljs-type">vec4</span> bIvec4 = <span class="hljs-type">ivec4</span>(<span class="hljs-number">1</span>);
+
+<span class="hljs-type">vec4</span> cIvec4 = <span class="hljs-type">ivec4</span>(aIvec2, aInteger, aIvec3);
+<span class="hljs-type">vec4</span> dIvec4 = <span class="hljs-type">ivec4</span>(aIvec2.x, aIvec2.y, aInt, aIvec3.x);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>ivec4 is an integer vector with four components. It can be initialized by:</p>
+<ul>
+<li>Providing a scalar value for each component.</li>
+<li>Providing one scalar value. This value is used for all components.</li>
+<li>Providing a combination of vectors and/or scalars. The respective values are used to initialize the vector. The arguments of the constructor must have at least as many components as the vector that is initialized.</li>
+</ul>
+<p><strong>Siehe auch:</strong> bool, int, float, bvec2, bvec3, bvec4, ivec2, ivec3, ivec4, vec2, vec3, vec4, mat2, mat3, mat4</p>
+<p><a id="vec2"></a></p>
+<h3 id="vec2"><code>vec2</code></h3>
+<p>2 dimensional floating point vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">vec2</span> aVec2 = <span class="hljs-type">vec2</span>(<span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>);
+<span class="hljs-type">vec2</span> bVec2 = <span class="hljs-type">vec2</span>(<span class="hljs-number">1.0</span>);
+
+<span class="hljs-type">vec2</span> cVec2 = <span class="hljs-type">vec2</span>(aVec3);
+<span class="hljs-type">vec2</span> dVec2 = <span class="hljs-type">vec2</span>(aVec3.x, aVec3.y);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>vec2 is a floating point vector with two components. It can be initialized by:</p>
+<ul>
+<li>Providing a scalar value for each component.</li>
+<li>Providing one scalar value. This value is used for all components.</li>
+<li>Providing a vector of higher dimension. The respective values are used to initialize the components.</li>
+</ul>
+<p><strong>Siehe auch:</strong> bool, int, float, bvec2, bvec3, bvec4, ivec2, ivec3, ivec4, vec2, vec3, vec4, mat2, mat3, mat4</p>
+<p><a id="vec3"></a></p>
+<h3 id="vec3"><code>vec3</code></h3>
+<p>3 dimensional floating point vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">vec3</span> aVec3 = <span class="hljs-type">vec3</span>(<span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>);
+<span class="hljs-type">vec3</span> bVec3 = <span class="hljs-type">vec3</span>(<span class="hljs-number">1.0</span>);
+
+<span class="hljs-type">vec3</span> cVec3 = <span class="hljs-type">vec3</span>(aVec4);
+<span class="hljs-type">vec3</span> dVec3 = <span class="hljs-type">vec3</span>(aVec4.x, aVec4.y, aVec4.z);
+
+<span class="hljs-type">vec3</span> eVec3 = <span class="hljs-type">vec3</span>(aVec2, aFloat);
+<span class="hljs-type">vec3</span> fVec3 = <span class="hljs-type">vec3</span>(aVec2.x, aVec2.y, aFloat);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>vec3 is a floating point vector with three components. It can be initialized by:</p>
+<ul>
+<li>Providing a scalar value for each component.</li>
+<li>Providing one scalar value. This value is used for all components.</li>
+<li>Providing a vector of higher dimension. The respective values are used to initialize the components.</li>
+<li>Providing a combination of vectors and/or scalars. The respective values are used to initialize the vector. The arguments of the constructor must have at least as many components as the vector that is initialized.</li>
+</ul>
+<p><strong>Siehe auch:</strong> bool, int, float, bvec2, bvec3, bvec4, ivec2, ivec3, ivec4, vec2, vec3, vec4, mat2, mat3, mat4</p>
+<p><a id="vec4"></a></p>
+<h3 id="vec4"><code>vec4</code></h3>
+<p>4 dimensional floating point vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">vec4</span> aVec4 = <span class="hljs-type">vec4</span>(<span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>);
+<span class="hljs-type">vec4</span> bVec4 = <span class="hljs-type">vec4</span>(<span class="hljs-number">1.0</span>);
+
+<span class="hljs-type">vec4</span> cVec4 = <span class="hljs-type">vec4</span>(aVec2, aFloat, aVec3);
+<span class="hljs-type">vec4</span> dVec4 = <span class="hljs-type">vec4</span>(aBvec2.x, aBvec2.y, aFloat, aBvec3.x);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>vec4 is a floating point vector with four components. It can be initialized by:</p>
+<ul>
+<li>Providing a scalar value for each component.</li>
+<li>Providing one scalar value. This value is used for all components.</li>
+<li>Providing a combination of vectors and scalars. The respective values are used to initialize the components. The arguments of the constructor must have at least as many components as the vector that is initialized.</li>
+</ul>
+<p><strong>Siehe auch:</strong> bool, int, float, bvec2, bvec3, bvec4, ivec2, ivec3, ivec4, vec2, vec3, vec4, mat2, mat3, mat4</p>
+<p><a id="mat2"></a></p>
+<h3 id="mat2"><code>mat2</code></h3>
+<p>2x2 floating point matrix</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">mat2</span> aMat2 = <span class="hljs-type">mat2</span>(<span class="hljs-number">1.0</span>, <span class="hljs-number">0.0</span>,  <span class="hljs-comment">// 1. column</span>
+                  <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>); <span class="hljs-comment">// 2. column</span>
+<span class="hljs-type">mat2</span> bMat2 = <span class="hljs-type">mat2</span>(<span class="hljs-number">1.0</span>);
+<span class="hljs-type">mat2</span> cMat2 = <span class="hljs-type">mat2</span>(aVec2, bVec2);
+<span class="hljs-type">mat2</span> dMat2 = <span class="hljs-type">mat2</span>(aVec3, aFloat);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>mat2 data type is compose for a 2x2 matrix of floating point. As you can see above, can be initialize in different ways:</p>
+<ul>
+<li>
+<p>Providing a value for each component column by column.</p>
+</li>
+<li>
+<p>Providing one value that is used for the components on the main diagonal.</p>
+</li>
+<li>
+<p>Providing a combination of vectors and scalars.</p>
+</li>
+</ul>
+<p>In the same way data can be accessed component-wise or column by column:</p>
+<p><strong>FENCE_0</strong></p>
+<p><strong>Siehe auch:</strong> mat3, mat4, matrixCompMult()</p>
+<p><a id="mat3"></a></p>
+<h3 id="mat3"><code>mat3</code></h3>
+<p>3x3 floating point matrix</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">mat3</span> aMat3 = <span class="hljs-type">mat3</span>(<span class="hljs-number">1.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>,  <span class="hljs-comment">// 1. column</span>
+                  <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">0.0</span>,  <span class="hljs-comment">// 2. column</span>
+                  <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>); <span class="hljs-comment">// 3. column</span>
+<span class="hljs-type">mat3</span> bMat3 = <span class="hljs-type">mat3</span>(<span class="hljs-number">1.0</span>);
+
+<span class="hljs-type">mat3</span> cMat3 = <span class="hljs-type">mat3</span>(aVec3, bVec3, cVec3);
+<span class="hljs-type">mat3</span> dMat3 = <span class="hljs-type">mat3</span>(aVec4, aVec3, bVec4, aFloat);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>mat3 data type is compose for a 3x3 matrix of floating point. As you can see above, can be initialize in different ways:</p>
+<ul>
+<li>
+<p>Providing a value for each component column by column.</p>
+</li>
+<li>
+<p>Providing one value that is used for the components on the main diagonal.</p>
+</li>
+<li>
+<p>Providing a combination of vectors and scalars.</p>
+</li>
+</ul>
+<p>In the same way data can be accessed component-wise or column by column:</p>
+<p><strong>FENCE_0</strong></p>
+<p><strong>Siehe auch:</strong> mat2, mat4, matrixCompMult()</p>
+<p><a id="mat4"></a></p>
+<h3 id="mat4"><code>mat4</code></h3>
+<p>4x4 floating point matrix</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">mat4</span> aMat4 = <span class="hljs-type">mat4</span>(<span class="hljs-number">1.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>,  <span class="hljs-comment">// 1. column</span>
+                  <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>,  <span class="hljs-comment">// 2. column</span>
+                  <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">0.0</span>,  <span class="hljs-comment">// 3. column</span>
+                  <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>); <span class="hljs-comment">// 4. column</span>
+<span class="hljs-type">mat4</span> bMat4 = <span class="hljs-type">mat4</span>(<span class="hljs-number">1.0</span>);
+
+<span class="hljs-type">mat4</span> cMat4 = <span class="hljs-type">mat4</span>(aVec4, bVec4, cVec4, dVec4);
+<span class="hljs-type">mat4</span> dMat4 = <span class="hljs-type">mat4</span>(aVec4, aVec3, bVec4, cVec4, aFloat);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>mat4 data type is compose for a 4x4 matrix of floating point. As you can see above, can be initialize in different ways:</p>
+<ul>
+<li>
+<p>Providing a value for each component column by column.</p>
+</li>
+<li>
+<p>Providing one value that is used for the components on the main diagonal.</p>
+</li>
+<li>
+<p>Providing a combination of vectors and scalars.</p>
+</li>
+</ul>
+<p>In the same way data can be accessed component-wise or column by column:</p>
+<p><strong>FENCE_0</strong></p>
+<p><strong>Siehe auch:</strong> mat2, mat3, matrixCompMult()</p>
+<p><a id="sampler2d"></a></p>
+<h3 id="sampler2d"><code>sampler2D</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="samplercube"></a></p>
+<h3 id="samplercube"><code>samplerCube</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="struct"></a></p>
+<h3 id="struct"><code>struct</code></h3>
+<p>Structure variable type</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div>struct matStruct {
+    <span class="hljs-type">vec4</span> ambientColor;
+    <span class="hljs-type">vec4</span> diffuseColor;
+    <span class="hljs-type">vec4</span> specularColor;
+    <span class="hljs-type">float</span> specularExponent;
+} newMaterial;
+
+newMaterial = matStruct(<span class="hljs-type">vec4</span>(<span class="hljs-number">0.1</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">1.0</span>),
+                        <span class="hljs-type">vec4</span>(<span class="hljs-number">1.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>),
+                        <span class="hljs-type">vec4</span>(<span class="hljs-number">0.7</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">1.0</span>),
+                        <span class="hljs-number">50.0</span>);
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>struct declares a custom data structure based on standard types. A constructor for the structure with the same name is created automatically. The declaration of a variable (in this case &quot;newMaterial&quot;) is optional.</p>
+<hr>
+<h2 id="qualifizierer">Qualifizierer</h2>
+<p><a id="attribute"></a></p>
+<h3 id="attribute"><code>attribute</code></h3>
+<p>Vertex attribute data.</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">attribute</span> <span class="hljs-type">vec4</span> v_color;
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>attribute read-only variables containing data shared from WebGL/OpenGL environment to the vertex shader.</p>
+<p>Because the vertex shader is executed one time for each vertex, attributes are specify per vertex data typically with information such as: space position, color, normal direction and texture coordinates of a vertex.</p>
+<p><strong>Siehe auch:</strong> const, uniform, varying, Chapter 03: Uniforms</p>
+<p><a id="const"></a></p>
+<h3 id="const"><code>const</code></h3>
+<p>Constant qualifier</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">const</span> <span class="hljs-type">float</span> PI = <span class="hljs-number">3.14159265359</span>;
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>const qualifier can be applied to the declaration of any variable to specify that its value will not be changed.</p>
+<p><strong>Siehe auch:</strong> attribute, uniform, varying</p>
+<p><a id="uniform"></a></p>
+<h3 id="uniform"><code>uniform</code></h3>
+<p>Uniform variable qualifier.</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">uniform</span> <span class="hljs-type">vec4</span> direction;
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>uniform variables contain read-only data shared from WebGL/OpenGL environment to a vertex or fragment shader.</p>
+<p>The value is per primitive, so is useful for variables which remain constant along a primitive, frame or scene.</p>
+<p><strong>Siehe auch:</strong> attribute, const, varying, Chapter 03: Uniforms</p>
+<p><a id="varying"></a></p>
+<h3 id="varying"><code>varying</code></h3>
+<p>Varying variable qualifier.</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">varying</span> <span class="hljs-type">vec3</span> position;
+</div></code></pre>
+<p><strong>Beschreibung:</strong></p>
+<p>varying variables contain data shared from a vertex shader to a fragment shader.</p>
+<p>The variable must be written in the vertex shader and the read-only value in the fragment shader is then interpolated from the vertices which make up the fragment.</p>
+<p><strong>Siehe auch:</strong> attribute, const, uniform, Chapter 03: Uniforms</p>
+<p><a id="precision"></a></p>
+<h3 id="precision"><code>precision</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="highp"></a></p>
+<h3 id="highp"><code>highp</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="mediump"></a></p>
+<h3 id="mediump"><code>mediump</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="lowp"></a></p>
+<h3 id="lowp"><code>lowp</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="in"></a></p>
+<h3 id="in"><code>in</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="out"></a></p>
+<h3 id="out"><code>out</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="inout"></a></p>
+<h3 id="inout"><code>inout</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<hr>
+<h2 id="eingebaute-variablen-fragment-shader">Eingebaute Variablen (Fragment-Shader)</h2>
+<p><a id="gl-fragcoord"></a></p>
+<h3 id="glfragcoord"><code>gl_FragCoord</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="gl-fragcolor"></a></p>
+<h3 id="glfragcolor"><code>gl_FragColor</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="gl-frontfacing"></a></p>
+<h3 id="glfrontfacing"><code>gl_FrontFacing</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="gl-pointcoord"></a></p>
+<h3 id="glpointcoord"><code>gl_PointCoord</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<hr>
+<h2 id="eingebaute-variablen-vertex-shader">Eingebaute Variablen (Vertex-Shader)</h2>
+<p><a id="gl-position"></a></p>
+<h3 id="glposition"><code>gl_Position</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="gl-pointsize"></a></p>
+<h3 id="glpointsize"><code>gl_PointSize</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<hr>
+<h2 id="eingebaute-konstanten">Eingebaute Konstanten</h2>
+<p><a id="gl-maxvertexattribs"></a></p>
+<h3 id="glmaxvertexattribs"><code>gl_MaxVertexAttribs</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="gl-maxvaryingvectors"></a></p>
+<h3 id="glmaxvaryingvectors"><code>gl_MaxVaryingVectors</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="gl-maxvertextextureimageunits"></a></p>
+<h3 id="glmaxvertextextureimageunits"><code>gl_MaxVertexTextureImageUnits</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="gl-maxcombinedtextureimageunits"></a></p>
+<h3 id="glmaxcombinedtextureimageunits"><code>gl_MaxCombinedTextureImageUnits</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="gl-maxtextureimageunits"></a></p>
+<h3 id="glmaxtextureimageunits"><code>gl_MaxTextureImageUnits</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="gl-maxfragmentuniformvectors"></a></p>
+<h3 id="glmaxfragmentuniformvectors"><code>gl_MaxFragmentUniformVectors</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="gl-maxdrawbuffers"></a></p>
+<h3 id="glmaxdrawbuffers"><code>gl_MaxDrawBuffers</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<hr>
+<h2 id="winkel--und-trigonometrische-funktionen">Winkel- und Trigonometrische Funktionen</h2>
+<p><a id="radians"></a></p>
+<h3 id="radians"><code>radians</code></h3>
+<p>Convert a quantity in degrees to radians</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">radians</span>(<span class="hljs-type">float</span> <span class="hljs-built_in">degrees</span>)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">radians</span>(<span class="hljs-type">vec2</span> <span class="hljs-built_in">degrees</span>)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">radians</span>(<span class="hljs-type">vec3</span> <span class="hljs-built_in">degrees</span>)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">radians</span>(<span class="hljs-type">vec4</span> <span class="hljs-built_in">degrees</span>)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>degrees specifies the quantity, in degrees, to be converted to radians.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>radians() converts a quantity, specified in degrees into radians. That is, the return value is (PI * degrees)/180.</p>
+<p><strong>Siehe auch:</strong> degrees</p>
+<p><a id="degrees"></a></p>
+<h3 id="degrees"><code>degrees</code></h3>
+<p>Convert a quantity in radians to degrees</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">degrees</span>(<span class="hljs-type">float</span> <span class="hljs-built_in">radians</span>)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">degrees</span>(<span class="hljs-type">vec2</span> <span class="hljs-built_in">radians</span>)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">degrees</span>(<span class="hljs-type">vec3</span> <span class="hljs-built_in">radians</span>)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">degrees</span>(<span class="hljs-type">vec4</span> <span class="hljs-built_in">radians</span>)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>radians specifies the quantity, in radians, to be converted to degrees.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>degrees() converts a quantity, specified in radians into degrees. That is, the return value is (180.0*radians)/PI</p>
+<p><strong>Siehe auch:</strong> radians</p>
+<p><a id="sin"></a></p>
+<h3 id="sin"><code>sin</code></h3>
+<p>Return the sine of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">sin</span>(<span class="hljs-type">float</span> angle)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">sin</span>(<span class="hljs-type">vec2</span> angle)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">sin</span>(<span class="hljs-type">vec3</span> angle)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">sin</span>(<span class="hljs-type">vec4</span> angle)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>angle specifies the quantity, in radians, of which to return the sine.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>sin() returns the trigonometric sine of angle.</p>
+<p><strong>Siehe auch:</strong> acos, cos, asin, tan, atan, Chapter 05: Shaping Functions</p>
+<p><a id="cos"></a></p>
+<h3 id="cos"><code>cos</code></h3>
+<p>Return the cosine of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">cos</span>(<span class="hljs-type">float</span> angle)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">cos</span>(<span class="hljs-type">vec2</span> angle)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">cos</span>(<span class="hljs-type">vec3</span> angle)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">cos</span>(<span class="hljs-type">vec4</span> angle)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>angle specify the quantity, in radians, of which to return the cosine.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>cos() returns the trigonometric cosine of angle.</p>
+<p><strong>Siehe auch:</strong> acos, sin, asin, tan, atan, Chapter 05: Shaping Functions</p>
+<p><a id="tan"></a></p>
+<h3 id="tan"><code>tan</code></h3>
+<p>Return the tangent of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">tan</span>(<span class="hljs-type">float</span> angle)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">tan</span>(<span class="hljs-type">vec2</span> angle)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">tan</span>(<span class="hljs-type">vec3</span> angle)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">tan</span>(<span class="hljs-type">vec4</span> angle)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>angle specifies the quantity, in radians, of which to return the tangent.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>tan() returns the trigonometric tangent of angle.</p>
+<p><strong>Siehe auch:</strong> cos, acos, sin, asin, atan, Chapter 05: Shaping Functions</p>
+<p><a id="asin"></a></p>
+<h3 id="asin"><code>asin</code></h3>
+<p>Return the arcsine of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">asin</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">asin</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">asin</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">asin</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value whose arcsine to return.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>asin() returns the angle whose trigonometric sine is x.</p>
+<p><strong>Siehe auch:</strong> cos, sin, acos, tan, atan, Chapter 05: Shaping Functions</p>
+<p><a id="acos"></a></p>
+<h3 id="acos"><code>acos</code></h3>
+<p>Return the arccosine of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">acos</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">acos</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">acos</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">acos</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value whose arccosine to return.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>acos() returns the angle whose trigonometric cosine is x.</p>
+<p><strong>Siehe auch:</strong> cos(), sin(), asin(), tan(), atan(), Chapter 05: Shaping Functions</p>
+<p><a id="atan"></a></p>
+<h3 id="atan"><code>atan</code></h3>
+<p>Return the arc-tangent of the parameters</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">atan</span>(<span class="hljs-type">float</span> y, <span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">atan</span>(<span class="hljs-type">vec2</span> y, <span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">atan</span>(<span class="hljs-type">vec3</span> y, <span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">atan</span>(<span class="hljs-type">vec4</span> y, <span class="hljs-type">vec4</span> x)
+
+<span class="hljs-type">float</span> <span class="hljs-built_in">atan</span>(<span class="hljs-type">float</span> y_over_x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">atan</span>(<span class="hljs-type">vec2</span> y_over_x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">atan</span>(<span class="hljs-type">vec3</span> y_over_x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">atan</span>(<span class="hljs-type">vec4</span> y_over_x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>y specifies the numerator of the fraction whose arctangent to return.</p>
+<p>x specifies the denominator of the fraction whose arctangent to return.</p>
+<p>y_over_x specifies the fraction whose arctangent to return.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>atan() returns the angle whose trigonometric arctangent is y,x or y_over_x, depending on which overload is invoked. In the first overload, the signs of y and x are used to determine the quadrant that the angle lies in. The values returned by atan in this case are in the range -PI and PI. Results are undefined if x is zero.</p>
+<p>For the second overload, atan() returns the angle whose tangent is y_over_x. Values returned in this case are in the range -PI/2 to PI/2.</p>
+<p><strong>Siehe auch:</strong> cos, acos, sin, asin, atan, Chapter 05: Shaping Functions, Chapter 06: Color</p>
+<hr>
+<h2 id="exponentialfunktionen">Exponentialfunktionen</h2>
+<p><a id="pow"></a></p>
+<h3 id="pow"><code>pow</code></h3>
+<p>Return the value of the first parameter raised to the power of the second.</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">pow</span>(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">pow</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">pow</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">pow</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value to raise to the power y.</p>
+<p>y specifies the power to which to raise x.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>pow() returns the value of x raised to the y power.</p>
+<p><strong>Siehe auch:</strong> inversesqrt, sqrt, Chapter 05: Shaping Functions</p>
+<p><a id="exp"></a></p>
+<h3 id="exp"><code>exp</code></h3>
+<p>Return the natural exponentiation of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">exp</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">exp</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">exp</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">exp</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value to exponentiate.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>exp() returns the natural exponentiation of x.</p>
+<p><strong>Siehe auch:</strong> log, log2, exp2, Chapter 05: Shaping Functions</p>
+<p><a id="log"></a></p>
+<h3 id="log"><code>log</code></h3>
+<p>Return the natural logarithm of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">log</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">log</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">log</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">log</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value of which to take the natural logarithm.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>log() returns the natural logarithm of x.</p>
+<p><strong>Siehe auch:</strong> log2, exp, exp2, Chapter 05: Shaping Functions</p>
+<p><a id="exp2"></a></p>
+<h3 id="exp2"><code>exp2</code></h3>
+<p>Return 2 raised to the power of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">exp2</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">exp2</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">exp2</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">exp2</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value of the power to which 2 will be raised.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>exp2() returns 2 raised to the power of x.</p>
+<p><strong>Siehe auch:</strong> log, log2, exp, Chapter 05: Shaping Functions</p>
+<p><a id="log2"></a></p>
+<h3 id="log2"><code>log2</code></h3>
+<p>Return the base 2 logarithm of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">log2</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">log2</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">log2</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">log2</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value of which to take the base 2 logarithm.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>log2() returns the base 2 logarithm of x.</p>
+<p><strong>Siehe auch:</strong> log, exp, exp2, Chapter 05: Shaping Functions</p>
+<p><a id="sqrt"></a></p>
+<h3 id="sqrt"><code>sqrt</code></h3>
+<p>Return the square root of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">sqrt</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">sqrt</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">sqrt</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">sqrt</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value of which to take the square root.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>sqrt() returns the square root of x.</p>
+<div class="codeAndCanvas" data="../07/circle-making.frag"></div>
+<p><strong>Siehe auch:</strong> inversesqrt, pow, Chapter 05: Shaping Functions</p>
+<p><a id="inversesqrt"></a></p>
+<h3 id="inversesqrt"><code>inversesqrt</code></h3>
+<p>Return the inverse of the square root of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">inversesqrt</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">inversesqrt</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">inversesqrt</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">inversesqrt</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value of which to take the inverse of the square root.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>inversesqrt() returns the inverse of the square root of  x.</p>
+<p><strong>Siehe auch:</strong> pow, sqrt, Chapter 05: Shaping Functions</p>
+<hr>
+<h2 id="allgemeine-funktionen">Allgemeine Funktionen</h2>
+<p><a id="abs"></a></p>
+<h3 id="abs"><code>abs</code></h3>
+<p>Return the absolute value of the parameter.</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">abs</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">abs</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">abs</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">abs</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value of which to return the absolute.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>abs() returns the absolute value of x.</p>
+<p><strong>Siehe auch:</strong> sign(), min(), max(), Chapter 05: Shaping Functions</p>
+<p><a id="sign"></a></p>
+<h3 id="sign"><code>sign</code></h3>
+<p>Extract the sign of the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">sign</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">sign</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">sign</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">sign</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value from which to extract the sign.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>sign() returns -1.0 if x is less than 0.0, 0.0 if x is equal to 0.0, and +1.0 if x is greater than 0.0.</p>
+<p><strong>Siehe auch:</strong> abs, Chapter 05: Shaping Functions</p>
+<p><a id="floor"></a></p>
+<h3 id="floor"><code>floor</code></h3>
+<p>Find the nearest integer less than or equal to the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">floor</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">floor</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">floor</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">floor</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value to evaluate.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>floor() returns a value equal to the nearest integer that is less than or equal to x.</p>
+<p><strong>Siehe auch:</strong> ceil, fract, mod, Chapter 05: Shaping Functions</p>
+<p><a id="ceil"></a></p>
+<h3 id="ceil"><code>ceil</code></h3>
+<p>Find the nearest integer that is greater than or equal to the parameter</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">ceil</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">ceil</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">ceil</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">ceil</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value to evaluate.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>ceil()  returns a value equal to the nearest integer that is greater than or equal to x.</p>
+<p><strong>Siehe auch:</strong> floor, fract, mod, Chapter 05: Shaping Functions</p>
+<p><a id="fract"></a></p>
+<h3 id="fract"><code>fract</code></h3>
+<p>Compute the fractional part of the argument</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">fract</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">fract</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">fract</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">fract</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value to evaluate.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>fract() returns the fractional part of x. This is calculated as x - floor(x).</p>
+<p><strong>Siehe auch:</strong> floor, ceil, mod, Chapter 05: Shaping Functions</p>
+<p><a id="mod"></a></p>
+<h3 id="mod"><code>mod</code></h3>
+<p>Compute value of one parameter modulo another</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">mod</span>(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">mod</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">mod</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">mod</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)
+
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">mod</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">mod</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">mod</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">float</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value to evaluate.
+y specifies the value to obtain the modulo of.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>mod() returns the value of x modulo y. This is computed as x - y * floor(x/y).</p>
+<p><strong>Siehe auch:</strong> floor, fract, ceil, Chapter 05: Shaping Functions</p>
+<p><a id="min"></a></p>
+<h3 id="min"><code>min</code></h3>
+<p>Return the lesser of two values</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">min</span>(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">min</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">min</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">min</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)
+
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">min</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">min</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">min</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">float</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first value to compare.</p>
+<p>y specifies the second value to compare.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>min() returns the minimum of the two parameters. It returns y if y is less than x, otherwise it returns x.</p>
+<p><strong>Siehe auch:</strong> max, abs, clamp, Chapter 05: Shaping Functions</p>
+<p><a id="max"></a></p>
+<h3 id="max"><code>max</code></h3>
+<p>Return the greater of two values</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">max</span>(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">max</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">max</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">max</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)
+
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">max</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">max</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">max</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">float</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first value to compare.</p>
+<p>y specifies the second value to compare.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>max() returns the maximum of the two parameters. It returns y if y is greater than x, otherwise it returns x.</p>
+<p><strong>Siehe auch:</strong> min, abs, clamp, Chapter 05: Shaping Functions</p>
+<p><a id="clamp"></a></p>
+<h3 id="clamp"><code>clamp</code></h3>
+<p>Constrain a value to lie between two further values</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">clamp</span>(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> minVal, <span class="hljs-type">float</span> maxVal)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">clamp</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> minVal, <span class="hljs-type">vec2</span> maxVal)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">clamp</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> minVal, <span class="hljs-type">vec3</span> maxVal)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">clamp</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> minVal, <span class="hljs-type">vec4</span> maxVal)
+
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">clamp</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">float</span> minVal, <span class="hljs-type">float</span> maxVal)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">clamp</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">float</span> minVal, <span class="hljs-type">float</span> maxVal)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">clamp</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">float</span> minVal, <span class="hljs-type">float</span> maxVal)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the value to constrain.</p>
+<p>minVal specifies the lower end of the range into which to constrain x.</p>
+<p>maxVal specifies the upper end of the range into which to constrain x.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>clamp() returns the value of x constrained to the range minVal to maxVal. The returned value is computed as min(max(x, minVal), maxVal).</p>
+<p><strong>Siehe auch:</strong> min, abs, max</p>
+<p><a id="mix"></a></p>
+<h3 id="mix"><code>mix</code></h3>
+<p>Constrain a value to lie between two further values</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">mix</span>(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> y, <span class="hljs-type">float</span> a)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">mix</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y, <span class="hljs-type">vec2</span> a)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">mix</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y, <span class="hljs-type">vec3</span> a)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">mix</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y, <span class="hljs-type">vec4</span> a)
+
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">mix</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y, <span class="hljs-type">float</span> a)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">mix</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y, <span class="hljs-type">float</span> a)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">mix</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y, <span class="hljs-type">float</span> a)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the start of the range in which to interpolate.</p>
+<p>y specifies the end of the range in which to interpolate.</p>
+<p>a specifies the value to use to interpolate between x and y.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>mix() performs a linear interpolation between x and y using a to weight between them. The return value is computed as x×(1−a)+y×a.</p>
+<div class="codeAndCanvas" data="../06/mix.frag"></div>
+<div class="codeAndCanvas" data="../06/gradient.frag"></div>
+<p><strong>Siehe auch:</strong> min, max, Chapter 06: Color</p>
+<p><a id="step"></a></p>
+<h3 id="step"><code>step</code></h3>
+<p>Generate a step function by comparing two values</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">step</span>(<span class="hljs-type">float</span> edge, <span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">step</span>(<span class="hljs-type">vec2</span> edge, <span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">step</span>(<span class="hljs-type">vec3</span> edge, <span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">step</span>(<span class="hljs-type">vec4</span> edge, <span class="hljs-type">vec4</span> x)
+
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">step</span>(<span class="hljs-type">float</span> edge, <span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">step</span>(<span class="hljs-type">float</span> edge, <span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">step</span>(<span class="hljs-type">float</span> edge, <span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>edge specifies the location of the edge of the step function.</p>
+<p>x specifies the value to be used to generate the step function.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>step() generates a step function by comparing x to edge.</p>
+<p>For element i of the return value, 0.0 is returned if x[i] &lt; edge[i], and 1.0 is returned otherwise.</p>
+<div class="codeAndCanvas" data="../05/step.frag"></div>
+<p><strong>Siehe auch:</strong> mix, smoothstep, Chapter 05: Shaping Functions</p>
+<p><a id="smoothstep"></a></p>
+<h3 id="smoothstep"><code>smoothstep</code></h3>
+<p>Perform Hermite interpolation between two values</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">smoothstep</span>(<span class="hljs-type">float</span> edge0, <span class="hljs-type">float</span> edge1, <span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">smoothstep</span>(<span class="hljs-type">vec2</span> edge0, <span class="hljs-type">vec2</span> edge1, <span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">smoothstep</span>(<span class="hljs-type">vec3</span> edge0, <span class="hljs-type">vec3</span> edge1, <span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">smoothstep</span>(<span class="hljs-type">vec4</span> edge0, <span class="hljs-type">vec4</span> edge1, <span class="hljs-type">vec4</span> x)
+
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">smoothstep</span>(<span class="hljs-type">float</span> edge0, <span class="hljs-type">float</span> edge1, <span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">smoothstep</span>(<span class="hljs-type">float</span> edge0, <span class="hljs-type">float</span> edge1, <span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">smoothstep</span>(<span class="hljs-type">float</span> edge0, <span class="hljs-type">float</span> edge1, <span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>edge0 specifies the value of the lower edge of the Hermite function.</p>
+<p>edge1 specifies the value of the upper edge of the Hermite function.</p>
+<p>x specifies the source value for interpolation.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>smoothstep() performs smooth Hermite interpolation between 0 and 1 when edge0 &lt; x &lt; edge1. This is useful in cases where a threshold function with a smooth transition is desired. smoothstep() is equivalent to:</p>
+<p><strong>FENCE_0</strong></p>
+<p>Results are undefined if edge0 ≥ edge1.</p>
+<div class="codeAndCanvas" data="../05/smoothstep.frag"></div>
+<p><strong>Siehe auch:</strong> mix, step, Chapter 05: Shaping Functions</p>
+<hr>
+<h2 id="geometrische-funktionen">Geometrische Funktionen</h2>
+<p><a id="length"></a></p>
+<h3 id="length"><code>length</code></h3>
+<p>Calculate the length of a vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">length</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">float</span> <span class="hljs-built_in">length</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">float</span> <span class="hljs-built_in">length</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">float</span> <span class="hljs-built_in">length</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies a vector of which to calculate the length.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>length() returns the length of the vector.</p>
+<div class="codeAndCanvas" data="../07/circle-making.frag"></div>
+<p><strong>Siehe auch:</strong> distance(), normalize(), Chapter 07: Shapes</p>
+<p><a id="distance"></a></p>
+<h3 id="distance"><code>distance</code></h3>
+<p>Calculate the distance between two points</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">distance</span>(<span class="hljs-type">float</span> p0, <span class="hljs-type">float</span> p1)  
+<span class="hljs-type">float</span> <span class="hljs-built_in">distance</span>(<span class="hljs-type">vec2</span> p0, <span class="hljs-type">vec2</span> p1)  
+<span class="hljs-type">float</span> <span class="hljs-built_in">distance</span>(<span class="hljs-type">vec3</span> p0, <span class="hljs-type">vec3</span> p1)  
+<span class="hljs-type">float</span> <span class="hljs-built_in">distance</span>(<span class="hljs-type">vec4</span> p0, <span class="hljs-type">vec4</span> p1)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>p0 specifies the first of two points</p>
+<p>p1 specifies the second of two points</p>
+<p><strong>Beschreibung:</strong></p>
+<p>distance() returns the distance between the two points p0 and p1.</p>
+<div class="codeAndCanvas" data="../07/circle-making.frag"></div>
+<p><strong>Siehe auch:</strong> length(), normalize(), Chapter 07: Shapes</p>
+<p><a id="dot"></a></p>
+<h3 id="dot"><code>dot</code></h3>
+<p>Calculate the dot product of two vectors</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">dot</span>(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> y)  
+<span class="hljs-type">float</span> <span class="hljs-built_in">dot</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">float</span> <span class="hljs-built_in">dot</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)  
+<span class="hljs-type">float</span> <span class="hljs-built_in">dot</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first of two vectors</p>
+<p>y specifies the second of two vectors</p>
+<p><strong>Beschreibung:</strong></p>
+<p>dot() returns the dot product of two vectors, x and y. i.e., x[0]⋅y[0]+x[1]⋅y[1]+...
+If x and y are the same the square root of the dot product is equivalent to the length of the vector. The input parameters can be floating scalars or float vectors. In case of floating scalars the dot function is trivial and returns the product of x and y.</p>
+<div class="codeAndCanvas" data="../07/circle.frag"></div>
+<p><strong>Siehe auch:</strong> cross(), Chapter 07: Shapes</p>
+<p><a id="cross"></a></p>
+<h3 id="cross"><code>cross</code></h3>
+<p>Calculate the cross product of two vectors</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">vec3</span> <span class="hljs-built_in">cross</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first of two vectors</p>
+<p>y specifies the second of two vectors</p>
+<p><strong>Beschreibung:</strong></p>
+<p>cross() returns the cross product of two vectors, x and y. The input parameters can only be 3-component floating vectors. The cross product is equivalent to the product of the length of the vectors times the sinus of the(smaller) angle between x and y.</p>
+<p><strong>Siehe auch:</strong> dot()</p>
+<p><a id="normalize"></a></p>
+<h3 id="normalize"><code>normalize</code></h3>
+<p>Calculate the unit vector in the same direction as the input vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">normalize</span>(<span class="hljs-type">float</span> x)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">normalize</span>(<span class="hljs-type">vec2</span> x)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">normalize</span>(<span class="hljs-type">vec3</span> x)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">normalize</span>(<span class="hljs-type">vec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the vector to normalize.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>normalize() returns a vector with the same direction as its parameter, x, but with length 1.</p>
+<p><strong>Siehe auch:</strong> length()</p>
+<p><a id="faceforward"></a></p>
+<h3 id="faceforward"><code>faceforward</code></h3>
+<p>Return a vector pointing in the same direction as another</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">faceforward</span>(<span class="hljs-type">float</span> N, <span class="hljs-type">float</span> I, <span class="hljs-type">float</span> Nref)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">faceforward</span>(<span class="hljs-type">vec2</span> N, <span class="hljs-type">vec2</span> I, <span class="hljs-type">vec2</span> Nref)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">faceforward</span>(<span class="hljs-type">vec3</span> N, <span class="hljs-type">vec3</span> I, <span class="hljs-type">vec3</span> Nref)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">faceforward</span>(<span class="hljs-type">vec4</span> N, <span class="hljs-type">vec4</span> I, <span class="hljs-type">vec4</span> Nref)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>N specifies the vector to orient.</p>
+<p>I specifies the incident vector.</p>
+<p>Nref specifies the reference vector.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>faceforward() orients a vector to point away from a surface as defined by its normal. If dot(Nref, I) &lt; 0 faceforward returns N, otherwise it returns -N.</p>
+<p><strong>Siehe auch:</strong> reflect(), refract()</p>
+<p><a id="reflect"></a></p>
+<h3 id="reflect"><code>reflect</code></h3>
+<p>Calculate the reflection direction for an incident vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">reflect</span>(<span class="hljs-type">float</span> I, <span class="hljs-type">float</span> N)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">reflect</span>(<span class="hljs-type">vec2</span> I, <span class="hljs-type">vec2</span> N)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">reflect</span>(<span class="hljs-type">vec3</span> I, <span class="hljs-type">vec3</span> N)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">reflect</span>(<span class="hljs-type">vec4</span> I, <span class="hljs-type">vec4</span> N)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>I specifies the incident vector.</p>
+<p>N specifies the normal vector.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>For a given incident vector I and surface normal N reflect returns the reflection direction calculated as I - 2.0 * dot(N, I) * N.</p>
+<p>N should be normalized in order to achieve the desired result.</p>
+<p><strong>Siehe auch:</strong> dot(), refract()</p>
+<p><a id="refract"></a></p>
+<h3 id="refract"><code>refract</code></h3>
+<p>Calculate the refraction direction for an incident vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">float</span> <span class="hljs-built_in">refract</span>(<span class="hljs-type">float</span> I, <span class="hljs-type">float</span> N, <span class="hljs-type">float</span> eta)  
+<span class="hljs-type">vec2</span> <span class="hljs-built_in">refract</span>(<span class="hljs-type">vec2</span> I, <span class="hljs-type">vec2</span> N, <span class="hljs-type">float</span> eta)  
+<span class="hljs-type">vec3</span> <span class="hljs-built_in">refract</span>(<span class="hljs-type">vec3</span> I, <span class="hljs-type">vec3</span> N, <span class="hljs-type">float</span> eta)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">refract</span>(<span class="hljs-type">vec4</span> I, <span class="hljs-type">vec4</span> N, <span class="hljs-type">float</span> eta)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>I specifies the incident vector.</p>
+<p>N specifies the normal vector.</p>
+<p>eta specifies the ratio of indices of refraction.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>For a given incident vector I, surface normal N and ratio of indices of refraction, eta, refract returns the refraction vector, R.</p>
+<p>R is calculated as:</p>
+<p><strong>FENCE_0</strong></p>
+<p>The input parameters I and N should be normalized in order to achieve the desired result.</p>
+<p><strong>Siehe auch:</strong> dot(), reflect()</p>
+<hr>
+<h2 id="matrixfunktionen">Matrixfunktionen</h2>
+<p><a id="matrixcompmult"></a></p>
+<h3 id="matrixcompmult"><code>matrixCompMult</code></h3>
+<p>Perform a component-wise multiplication of two matrices</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">mat2</span> <span class="hljs-built_in">matrixCompMult</span>(<span class="hljs-type">mat2</span> x, <span class="hljs-type">mat2</span> y)  
+<span class="hljs-type">mat3</span> <span class="hljs-built_in">matrixCompMult</span>(<span class="hljs-type">mat3</span> x, <span class="hljs-type">mat3</span> y)  
+<span class="hljs-type">mat4</span> <span class="hljs-built_in">matrixCompMult</span>(<span class="hljs-type">mat4</span> x, <span class="hljs-type">mat4</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first matrix multiplicand.</p>
+<p>y specifies the second matrix multiplicand.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>matrixCompMult() performs a component-wise multiplication of two matrices, yielding a result matrix where each component, result[i][j] is computed as the scalar product of x[i][j] and y[i][j].</p>
+<p><strong>Siehe auch:</strong> Chapter 08: Matrix</p>
+<hr>
+<h2 id="vektor-relationale-funktionen">Vektor-Relationale Funktionen</h2>
+<p><a id="lessthan"></a></p>
+<h3 id="lessthan"><code>lessThan</code></h3>
+<p>Perform a component-wise less-than comparison of two vectors</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bvec2</span> <span class="hljs-built_in">lessThan</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">lessThan</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)    
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">lessThan</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)  
+
+<span class="hljs-type">bvec2</span> <span class="hljs-built_in">lessThan</span>(<span class="hljs-type">ivec2</span> x, <span class="hljs-type">ivec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">lessThan</span>(<span class="hljs-type">ivec3</span> x, <span class="hljs-type">ivec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">lessThan</span>(<span class="hljs-type">ivec4</span> x, <span class="hljs-type">ivec4</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first vector to be used in the comparison operation.</p>
+<p>y specifies the second vector to be used in the comparison operation.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>lessThan() returns a boolean vector in which each element i is computed as x[i] &lt; y[i].</p>
+<p><strong>Siehe auch:</strong> lessThanEqual(), greaterThan(), greaterThanEqual(), equal(), notEqual(), any(), all(), not()</p>
+<p><a id="lessthanequal"></a></p>
+<h3 id="lessthanequal"><code>lessThanEqual</code></h3>
+<p>Perform a component-wise less-than-or-equal comparison of two vectors</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bvec2</span> <span class="hljs-built_in">lessThanEqual</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">lessThanEqual</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">lessThanEqual</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)  
+
+<span class="hljs-type">bvec2</span> <span class="hljs-built_in">lessThanEqual</span>(<span class="hljs-type">ivec2</span> x, <span class="hljs-type">ivec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">lessThanEqual</span>(<span class="hljs-type">ivec3</span> x, <span class="hljs-type">ivec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">lessThanEqual</span>(<span class="hljs-type">ivec4</span> x, <span class="hljs-type">ivec4</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first vector to be used in the comparison operation.</p>
+<p>y specifies the second vector to be used in the comparison operation.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>lessThanEqual() returns a boolean vector in which each element i is computed as x[i] ≤ y[i].</p>
+<p><strong>Siehe auch:</strong> lessThan(), greaterThan(), greaterThanEqual(), equal(), notEqual(), any(), all(), not()</p>
+<p><a id="greaterthan"></a></p>
+<h3 id="greaterthan"><code>greaterThan</code></h3>
+<p>Perform a component-wise greater-than comparison of two vectors</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bvec2</span> <span class="hljs-built_in">greaterThan</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">greaterThan</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">greaterThan</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)  
+
+<span class="hljs-type">bvec2</span> <span class="hljs-built_in">greaterThan</span>(<span class="hljs-type">ivec2</span> x, <span class="hljs-type">ivec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">greaterThan</span>(<span class="hljs-type">ivec3</span> x, <span class="hljs-type">ivec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">greaterThan</span>(<span class="hljs-type">ivec4</span> x, <span class="hljs-type">ivec4</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first vector to be used in the comparison operation.</p>
+<p>y specifies the second vector to be used in the comparison operation.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>greaterThan() returns a boolean vector in which each element i is computed as x[i] &gt; y[i].</p>
+<p><strong>Siehe auch:</strong> lessThanEqual(), lessThan(), greaterThanEqual(), equal(), notEqual(), any(), all(), not()</p>
+<p><a id="greaterthanequal"></a></p>
+<h3 id="greaterthanequal"><code>greaterThanEqual</code></h3>
+<p>Perform a component-wise greater-than-or-equal comparison of two vectors</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bvec2</span> <span class="hljs-built_in">greaterThanEqual</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">greaterThanEqual</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">greaterThanEqual</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)  
+
+<span class="hljs-type">bvec2</span> <span class="hljs-built_in">greaterThanEqual</span>(<span class="hljs-type">ivec2</span> x, <span class="hljs-type">ivec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">greaterThanEqual</span>(<span class="hljs-type">ivec3</span> x, <span class="hljs-type">ivec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">greaterThanEqual</span>(<span class="hljs-type">ivec4</span> x, <span class="hljs-type">ivec4</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first vector to be used in the comparison operation.</p>
+<p>y specifies the second vector to be used in the comparison operation.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>greaterThanEqual() returns a boolean vector in which each element i is computed as x[i] ≥ y[i].</p>
+<p><strong>Siehe auch:</strong> lessThanEqual(), lessThan(), greaterThan(), equal(), notEqual(), any(), all(), not()</p>
+<p><a id="equal"></a></p>
+<h3 id="equal"><code>equal</code></h3>
+<p>Perform a component-wise equal-to comparison of two vectors</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bvec2</span> <span class="hljs-built_in">equal</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">equal</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">equal</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)  
+
+<span class="hljs-type">bvec2</span> <span class="hljs-built_in">equal</span>(<span class="hljs-type">ivec2</span> x, <span class="hljs-type">ivec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">equal</span>(<span class="hljs-type">ivec3</span> x, <span class="hljs-type">ivec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">equal</span>(<span class="hljs-type">ivec4</span> x, <span class="hljs-type">ivec4</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first vector to be used in the comparison operation.</p>
+<p>y specifies the second vector to be used in the comparison operation.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>equal() returns a boolean vector in which each element i is computed as x[i] == y[i].</p>
+<p><strong>Siehe auch:</strong> lessThanEqual(), lessThan(), greaterThanEqual(), greaterThan(), notEqual(), any(), all(), not()</p>
+<p><a id="notequal"></a></p>
+<h3 id="notequal"><code>notEqual</code></h3>
+<p>Perform a component-wise not-equal-to comparison of two vectors</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bvec2</span> <span class="hljs-built_in">notEqual</span>(<span class="hljs-type">vec2</span> x, <span class="hljs-type">vec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">notEqual</span>(<span class="hljs-type">vec3</span> x, <span class="hljs-type">vec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">notEqual</span>(<span class="hljs-type">vec4</span> x, <span class="hljs-type">vec4</span> y)  
+
+<span class="hljs-type">bvec2</span> <span class="hljs-built_in">notEqual</span>(<span class="hljs-type">ivec2</span> x, <span class="hljs-type">ivec2</span> y)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">notEqual</span>(<span class="hljs-type">ivec3</span> x, <span class="hljs-type">ivec3</span> y)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">notEqual</span>(<span class="hljs-type">ivec4</span> x, <span class="hljs-type">ivec4</span> y)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the first vector to be used in the comparison operation.</p>
+<p>y specifies the second vector to be used in the comparison operation.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>notEqual() returns a boolean vector in which each element i is computed as x[i] != y[i].</p>
+<p><strong>Siehe auch:</strong> lessThanEqual(), lessThan(), greaterThanEqual(), greaterThan(), equal(), any(), all(), not()</p>
+<p><a id="any"></a></p>
+<h3 id="any"><code>any</code></h3>
+<p>Check whether any element of a boolean vector is true</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bool</span> <span class="hljs-built_in">all</span>(<span class="hljs-type">bvec2</span> x)  
+<span class="hljs-type">bool</span> <span class="hljs-built_in">all</span>(<span class="hljs-type">bvec3</span> x)  
+<span class="hljs-type">bool</span> <span class="hljs-built_in">all</span>(<span class="hljs-type">bvec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the vector to be tested for truth.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>any() returns true if any element of x is true and false otherwise. It is functionally equivalent to:</p>
+<p><strong>FENCE_0</strong></p>
+<p><strong>Siehe auch:</strong> any(), not()</p>
+<p><a id="all"></a></p>
+<h3 id="all"><code>all</code></h3>
+<p>Check whether all elements of a boolean vector are true</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bool</span> <span class="hljs-built_in">any</span>(<span class="hljs-type">bvec2</span> x)  
+<span class="hljs-type">bool</span> <span class="hljs-built_in">any</span>(<span class="hljs-type">bvec3</span> x)  
+<span class="hljs-type">bool</span> <span class="hljs-built_in">any</span>(<span class="hljs-type">bvec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the vector to be tested for truth.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>all() returns true if all elements of x are true and false otherwise. It is functionally equivalent to:</p>
+<p><strong>FENCE_0</strong></p>
+<p><strong>Siehe auch:</strong> any(), not()</p>
+<p><a id="not"></a></p>
+<h3 id="not"><code>not</code></h3>
+<p>Logically invert a boolean vector</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">bvec2</span> <span class="hljs-built_in">not</span>(<span class="hljs-type">bvec2</span> x)  
+<span class="hljs-type">bvec3</span> <span class="hljs-built_in">not</span>(<span class="hljs-type">bvec3</span> x)  
+<span class="hljs-type">bvec4</span> <span class="hljs-built_in">not</span>(<span class="hljs-type">bvec4</span> x)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>x specifies the vector to be inverted.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>not() logically inverts the boolean vector x. It returns a new boolean vector for which each element i is computed as !x[i].</p>
+<p><strong>Siehe auch:</strong> any(), all()</p>
+<hr>
+<h2 id="textur-lookup-funktionen">Textur-Lookup-Funktionen</h2>
+<p><a id="texture2d"></a></p>
+<h3 id="texture2d"><code>texture2D</code></h3>
+<p>Retrieves texels from a texture</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">vec4</span> <span class="hljs-built_in">texture2D</span>(<span class="hljs-type">sampler2D</span> sampler, <span class="hljs-type">vec2</span> coord)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">texture2D</span>(<span class="hljs-type">sampler2D</span> sampler, <span class="hljs-type">vec2</span> coord, <span class="hljs-type">float</span> bias)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>sampler specifies the sampler to which the texture from which texels will be retrieved is bound.</p>
+<p>coord specifies the texture coordinates at which texture will be sampled.</p>
+<p>bias specifies an optional bias to be applied during level-of-detail computation.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>The texture2D function returns a texel, i.e. the (color) value of the texture for the given coordinates. The function has one input parameter of the type sampler2D and one input parameter of the type vec2 : sampler, the uniform the texture is bound to, and coord, the 2-dimensional coordinates of the texel to look up.</p>
+<p>There is an optional third input parameter of the type float: bias. After calculating the appropriate level of detail for a texture with mipmaps the bias is added before the actual texture lookup operation is executed.</p>
+<p>Side note: On iOS devices texture lookup functionality is only available in the fragment shader.</p>
+<p><strong>Siehe auch:</strong> textureCube</p>
+<p><a id="texturecube"></a></p>
+<h3 id="texturecube"><code>textureCube</code></h3>
+<p>Retrieves texels from a texture</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-type">vec4</span> <span class="hljs-built_in">textureCube</span>(<span class="hljs-type">samplerCube</span> sampler, <span class="hljs-type">vec3</span> coord)  
+<span class="hljs-type">vec4</span> <span class="hljs-built_in">textureCube</span>(<span class="hljs-type">samplerCube</span> sampler, <span class="hljs-type">vec3</span> coord, <span class="hljs-type">float</span> bias)
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>sampler specifies the sampler to which the texture from which texels will be retrieved is bound.</p>
+<p>coord specifies the texture coordinates at which texture will be sampled.</p>
+<p>bias specifies an optional bias to be applied during level-of-detail computation.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>The textureCube function returns a texel, i.e. the (color) value of the texture for the given coordinates. The function has one input parameter of the type samplerCube and one input parameter of the type vec3 : sampler, the uniform the texture is bound to, and coord, the 3-dimensional coordinates of the texel to look up.</p>
+<p>There is an optional third input parameter of the type float: bias. After calculating the appropriate level of detail for a texture with mipmaps the bias is added before the actual texture lookup operation is executed.</p>
+<p>Side note: On iOS devices texture lookup functionality is only available in the fragment shader.</p>
+<p><strong>Siehe auch:</strong> texture2D</p>
+<hr>
+<h2 id="ableitungen-fragment-shader">Ableitungen (Fragment-Shader)</h2>
+<p><a id="dfdx"></a></p>
+<h3 id="dfdx"><code>dFdx</code></h3>
+<p>Return the partial derivative of an argument with respect to x</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div>genType <span class="hljs-built_in">dFdx</span>(<span class="hljs-type">float</span> x);
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>p specifies the expression of which to take the partial derivative.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>Available only in the fragment shader, dFdx return the partial derivative of expression p in x. Derivatives are calculated using local differencing. Expressions that imply higher order derivatives such as dFdx(dFdx(n)) have undefined results, as do mixed-order derivatives such as dFdx(dFdy(n)). It is assumed that the expression p is continuous and therefore, expressions evaluated via non-uniform control flow may be undefined.</p>
+<p><strong>Siehe auch:</strong> dFdy()</p>
+<p><a id="dfdy"></a></p>
+<h3 id="dfdy"><code>dFdy</code></h3>
+<p>Return the partial derivative of an argument with respect to y</p>
+<p><strong>Deklaration:</strong></p>
+<pre class="hljs"><code><div>genType <span class="hljs-built_in">dFdy</span>(<span class="hljs-type">float</span> y);
+</div></code></pre>
+<p><strong>Parameter:</strong></p>
+<p>p specifies the expression of which to take the partial derivative.</p>
+<p><strong>Beschreibung:</strong></p>
+<p>Available only in the fragment shader, dFdy return the partial derivative of expression p in y. Derivatives are calculated using local differencing. Expressions that imply higher order derivatives such as dFdy(dFdy(n)) have undefined results, as do mixed-order derivatives such as dFdy(dFdx(n)). It is assumed that the expression p is continuous and therefore, expressions evaluated via non-uniform control flow may be undefined.</p>
+<p><strong>Siehe auch:</strong> dFdx()</p>
+<hr>
+<h2 id="sonstige">Sonstige</h2>
+<p><a id="gl-es"></a></p>
+<h3 id="gles"><code>GL_ES</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="main"></a></p>
+<h3 id="main"><code>main</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<p><a id="return"></a></p>
+<h3 id="return"><code>return</code></h3>
+<p><em>Keine Beschreibung im Glossary vorhanden.</em></p>
+<hr>
+<h2 id="alphabetisches-verzeichnis">Alphabetisches Verzeichnis</h2>
+<ul>
+<li><a href="#abs"><code>abs</code></a></li>
+<li><a href="#acos"><code>acos</code></a></li>
+<li><a href="#all"><code>all</code></a></li>
+<li><a href="#any"><code>any</code></a></li>
+<li><a href="#asin"><code>asin</code></a></li>
+<li><a href="#atan"><code>atan</code></a></li>
+<li><a href="#attribute"><code>attribute</code></a></li>
+<li><a href="#bool"><code>bool</code></a></li>
+<li><a href="#bvec2"><code>bvec2</code></a></li>
+<li><a href="#bvec3"><code>bvec3</code></a></li>
+<li><a href="#bvec4"><code>bvec4</code></a></li>
+<li><a href="#ceil"><code>ceil</code></a></li>
+<li><a href="#clamp"><code>clamp</code></a></li>
+<li><a href="#const"><code>const</code></a></li>
+<li><a href="#cos"><code>cos</code></a></li>
+<li><a href="#cross"><code>cross</code></a></li>
+<li><a href="#degrees"><code>degrees</code></a></li>
+<li><a href="#dfdx"><code>dFdx</code></a></li>
+<li><a href="#dfdy"><code>dFdy</code></a></li>
+<li><a href="#distance"><code>distance</code></a></li>
+<li><a href="#dot"><code>dot</code></a></li>
+<li><a href="#equal"><code>equal</code></a></li>
+<li><a href="#exp"><code>exp</code></a></li>
+<li><a href="#exp2"><code>exp2</code></a></li>
+<li><a href="#faceforward"><code>faceforward</code></a></li>
+<li><a href="#float"><code>float</code></a></li>
+<li><a href="#floor"><code>floor</code></a></li>
+<li><a href="#fract"><code>fract</code></a></li>
+<li><a href="#gl-es"><code>GL_ES</code></a></li>
+<li><a href="#gl-fragcolor"><code>gl_FragColor</code></a></li>
+<li><a href="#gl-fragcoord"><code>gl_FragCoord</code></a></li>
+<li><a href="#gl-frontfacing"><code>gl_FrontFacing</code></a></li>
+<li><a href="#gl-maxcombinedtextureimageunits"><code>gl_MaxCombinedTextureImageUnits</code></a></li>
+<li><a href="#gl-maxdrawbuffers"><code>gl_MaxDrawBuffers</code></a></li>
+<li><a href="#gl-maxfragmentuniformvectors"><code>gl_MaxFragmentUniformVectors</code></a></li>
+<li><a href="#gl-maxtextureimageunits"><code>gl_MaxTextureImageUnits</code></a></li>
+<li><a href="#gl-maxvaryingvectors"><code>gl_MaxVaryingVectors</code></a></li>
+<li><a href="#gl-maxvertexattribs"><code>gl_MaxVertexAttribs</code></a></li>
+<li><a href="#gl-maxvertextextureimageunits"><code>gl_MaxVertexTextureImageUnits</code></a></li>
+<li><a href="#gl-pointcoord"><code>gl_PointCoord</code></a></li>
+<li><a href="#gl-pointsize"><code>gl_PointSize</code></a></li>
+<li><a href="#gl-position"><code>gl_Position</code></a></li>
+<li><a href="#greaterthan"><code>greaterThan</code></a></li>
+<li><a href="#greaterthanequal"><code>greaterThanEqual</code></a></li>
+<li><a href="#highp"><code>highp</code></a></li>
+<li><a href="#in"><code>in</code></a></li>
+<li><a href="#inout"><code>inout</code></a></li>
+<li><a href="#int"><code>int</code></a></li>
+<li><a href="#inversesqrt"><code>inversesqrt</code></a></li>
+<li><a href="#ivec2"><code>ivec2</code></a></li>
+<li><a href="#ivec3"><code>ivec3</code></a></li>
+<li><a href="#ivec4"><code>ivec4</code></a></li>
+<li><a href="#length"><code>length</code></a></li>
+<li><a href="#lessthan"><code>lessThan</code></a></li>
+<li><a href="#lessthanequal"><code>lessThanEqual</code></a></li>
+<li><a href="#log"><code>log</code></a></li>
+<li><a href="#log2"><code>log2</code></a></li>
+<li><a href="#lowp"><code>lowp</code></a></li>
+<li><a href="#main"><code>main</code></a></li>
+<li><a href="#mat2"><code>mat2</code></a></li>
+<li><a href="#mat3"><code>mat3</code></a></li>
+<li><a href="#mat4"><code>mat4</code></a></li>
+<li><a href="#matrixcompmult"><code>matrixCompMult</code></a></li>
+<li><a href="#max"><code>max</code></a></li>
+<li><a href="#mediump"><code>mediump</code></a></li>
+<li><a href="#min"><code>min</code></a></li>
+<li><a href="#mix"><code>mix</code></a></li>
+<li><a href="#mod"><code>mod</code></a></li>
+<li><a href="#normalize"><code>normalize</code></a></li>
+<li><a href="#not"><code>not</code></a></li>
+<li><a href="#notequal"><code>notEqual</code></a></li>
+<li><a href="#out"><code>out</code></a></li>
+<li><a href="#pow"><code>pow</code></a></li>
+<li><a href="#precision"><code>precision</code></a></li>
+<li><a href="#radians"><code>radians</code></a></li>
+<li><a href="#reflect"><code>reflect</code></a></li>
+<li><a href="#refract"><code>refract</code></a></li>
+<li><a href="#return"><code>return</code></a></li>
+<li><a href="#sampler2d"><code>sampler2D</code></a></li>
+<li><a href="#samplercube"><code>samplerCube</code></a></li>
+<li><a href="#sign"><code>sign</code></a></li>
+<li><a href="#sin"><code>sin</code></a></li>
+<li><a href="#smoothstep"><code>smoothstep</code></a></li>
+<li><a href="#sqrt"><code>sqrt</code></a></li>
+<li><a href="#step"><code>step</code></a></li>
+<li><a href="#struct"><code>struct</code></a></li>
+<li><a href="#tan"><code>tan</code></a></li>
+<li><a href="#texture2d"><code>texture2D</code></a></li>
+<li><a href="#texturecube"><code>textureCube</code></a></li>
+<li><a href="#uniform"><code>uniform</code></a></li>
+<li><a href="#varying"><code>varying</code></a></li>
+<li><a href="#vec2"><code>vec2</code></a></li>
+<li><a href="#vec3"><code>vec3</code></a></li>
+<li><a href="#vec4"><code>vec4</code></a></li>
+<li><a href="#void"><code>void</code></a></li>
+</ul>
+
+</body>
+</html>

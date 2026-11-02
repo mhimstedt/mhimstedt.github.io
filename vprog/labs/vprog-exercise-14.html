@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>VProg Praktikum 14</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://mhimstedt.github.io/vprog/labs/exercises.css">
+    <link rel='stylesheet' type='text/css' media='screen' href='https://mhimstedt.github.io/vprog/labs/online-ide-embedded.css'>
+    <script type="module" crossorigin src="https://mhimstedt.github.io/vprog/labs/online-ide-embedded.js"></script>
+    
+    <style>
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+        .ide-container { margin-bottom: 32px; }
+        .ide-inner {
+            position: relative;
+            width: 80vw;
+            margin: 12px auto 0;
+        }
+        .fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+        }
+  .fullscreenBtn img { width: 32px; height: 32px; align-items: center;}
+        .ideFrame {
+            width: 100%;
+            height: 80vh;
+            aspect-ratio: 16 / 9;
+            display: block;
+        }
+        @supports not (aspect-ratio: 1) {
+            .ideFrame { height: calc(80vw * 0.5625); }
+        }
+        /* Admonition/Infobox Styles */
+        .admonition {
+            background: #fff4f4;
+            border-left: 4px solid #f8caca;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        .admonition .admonition-title {
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+        .admonition.note {
+            border-left-color: #e89b9b;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            (function () {
+                var containers = Array.prototype.slice.call(document.querySelectorAll('.ide-container'));
+                var stateByIframe = new WeakMap();
+
+                function isFullscreenActiveFor(el) {
+                    return document.fullscreenElement === el ||
+                           document.webkitFullscreenElement === el ||
+                           document.mozFullScreenElement === el ||
+                           document.msFullscreenElement === el;
+                }
+
+                function enterFullscreen(el) {
+                    if (!stateByIframe.has(el)) {
+                        stateByIframe.set(el, {
+                            originalCssText: el.style.cssText,
+                            originalWidthAttr: el.getAttribute('width'),
+                            originalHeightAttr: el.getAttribute('height')
+                        });
+                    }
+                    if (el.requestFullscreen) return el.requestFullscreen();
+                    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                    if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+                    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+                    return Promise.reject(new Error('Fullscreen API nicht verfügbar'));
+                }
+
+                function exitFullscreen() {
+                    if (document.exitFullscreen) return document.exitFullscreen();
+                    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                    if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                    if (document.msExitFullscreen) return document.msExitFullscreen();
+                    return Promise.reject(new Error('Fullscreen Exit API nicht verfügbar'));
+                }
+
+        function setButtonLabel(btn, isFull) {
+            var label = isFull ? 'Vollbild beenden' : 'Vollbild';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        }
+
+                function toggleFor(iframeEl, btnEl) {
+                    if (isFullscreenActiveFor(iframeEl)) {
+                        exitFullscreen().catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    } else {
+                        enterFullscreen(iframeEl).catch(function(e){ console.error('Fullscreen-Fehler:', e); });
+                    }
+                }
+
+        containers.forEach(function(container){
+            var btn = container.querySelector('.fullscreenBtn');
+            var iframe = container.querySelector('.ideFrame');
+            if (!btn || !iframe) return;
+            // Icon einsetzen, falls noch nicht vorhanden
+            if (!btn.querySelector('img')) {
+                var img = document.createElement('img');
+                img.src = 'https://mhimstedt.github.io/prog/assets/graphics/whole-window.svg';
+                img.alt = '';
+                btn.appendChild(img);
+            }
+            setButtonLabel(btn, isFullscreenActiveFor(iframe));
+            btn.addEventListener('click', function(){ toggleFor(iframe, btn); });
+        });
+
+                ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                    .forEach(function(ev){
+                        document.addEventListener(ev, function(){
+                            containers.forEach(function(container){
+                                var btn = container.querySelector('.fullscreenBtn');
+                                var iframe = container.querySelector('.ideFrame');
+                                if (!btn || !iframe) return;
+                                var isFull = isFullscreenActiveFor(iframe);
+                                setButtonLabel(btn, isFull);
+                                if (!isFull && stateByIframe.has(iframe)) {
+                                    var st = stateByIframe.get(iframe);
+                                    iframe.style.cssText = st.originalCssText || '';
+                                    if (st.originalWidthAttr != null) iframe.setAttribute('width', st.originalWidthAttr); else iframe.removeAttribute('width');
+                                    if (st.originalHeightAttr != null) iframe.setAttribute('height', st.originalHeightAttr); else iframe.removeAttribute('height');
+                                    void iframe.offsetHeight;
+                                }
+                            });
+                        });
+                    });
+            })();
+        });
+    </script>
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 14: Multi-Threading </h1>
+<p>
+    In diesem Praktikum wollen wir den Einsatz von <i>Multi-Threading</i> praktisch 
+    in Java üben. 
+</p>
+<p>
+    <strong>
+        Wichtig: Dieses Praktikum wird wieder in JOE durchgeführt, damit Sie den Umgang
+        mit dieser IDE gezielt für die Klausur wiederholen.
+    </strong>
+</p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+    <li>eigene Threads für Ihre Java-Anwendung einsetzen</li>
+    <li>die Notwendigkeit von Multi-Threading abschätzen</li>
+    <li>den Zugriff auf gemeinsame Ressourcen wie Variablen absichern</li>
+</ul>
+
+<h2>🤔 Vorbereitung</h2>
+<p>
+   Arbeiten Sie bitte noch einmal sorgfältig die Vorlesungsmaterialien zu Multi-Threading durch 
+   (siehe Lernraum). Wiederholen Sie bitte gezielt, wie der Zugriff auf gemeinsame Ressoucen wie 
+   Variablen abgesichert werden kann.
+</p>
+
+
+<h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
+
+<p>
+In diesem Praktikum wollen wir den Verkauf von Tickets (z.B. Sport, Konzert) über potentiell mehrere
+Verkaufsstellen nachstellen. Die Tickets sollen dabei zentral in einem gemeinsamen Ticketbestand 
+(<i>TicketInventory</i>) erfasst werden. Der parallele Verkauf von Tickets an mehreren Stellen
+soll durch Ticketschalter (<i>TicketCounter</i>) ermöglicht werden. Schauen Sie sich zunächst genau
+das Klassendiagramm an und setzen Sie beide Klassen um (siehe Aufgabe 1 und 2). Überlegen Sie sich 
+dann, wie der konkurrierende Zugriff auf das Attribut <i>count</i> (Methode <i>sell</i>) durch 
+mehrere Verkaufsstellen synchronisiert werden kann.
+</p>
+<p>
+    Die Ticketschalter sollen solange Tickets verkaufen, bis keine mehr verfügbar sind.
+</p>
+
+
+<br><br>
+
+<img src="https://mhimstedt.github.io/vprog/labs/ticketCounter.svg" width="300">
+
+<p>Ihre Lösungen für die Aufgaben 1-3 können Sie in diesem IDE-Fenster bearbeiten:</p>
+
+<div class="java-online" style="width: 90%; height: 600px; margin-left: 5px" data-java-online="{
+            'id': 'vprog-exercise-14',
+            'withBottomPanel': true,
+            'enableFileAccess': true 
+        }">
+        <script type="plain/text" title="Main.java">
+
+        </script>
+         <script type="plain/text" title="TicketCounter.java">
+
+         </script> 
+        <script type="plain/text" title="TicketInventory.java">
+
+
+        </script>               
+    </div>
+
+<h3>1 - <i>TicketInventory</i>-Klasse</h3>
+
+<p>
+    Lösen Sie bitte die folgenden Teilaufgaben:
+</p>
+    <ul>
+        <li>
+            <input type="checkbox"><strong><i>TicketInventory</i> erstellen</strong>: 
+            Implementieren Sie bitte die Klasse <i>TicketInventory</i> so wie im 
+            Klassendiagramm dargestellt. Dem Konstruktor soll die Anzahl zu verkaufener
+            Tickets (<i>count</i>) übergeben werden.
+        </li>
+        <li>
+            <input type="checkbox"><strong><i>sell</i>-Methode</strong>: Die Methode
+            <i>sell</i> soll der Einfachheit halber nur einzelne Tickets verkaufen. 
+            Mit dem Aufruf <i>Thread.sleep(100)</i> können Sie die Methode bewusst 
+            etwas verzögern, um zu simulieren, dass dort normalerweise Datenbankzugriffe 
+            usw. erfolgen.
+        </li>
+        <li>
+            Initialisieren Sie eine TicketInventory mit bspw. 20 Tickets.
+        </li>
+    </ul>
+
+<h3>2 - <i>TicketCounter</i>-Klasse</h3>
+
+<p>
+    Lösen Sie bitte die folgenden Teilaufgaben:
+</p>
+    <ul>
+        <li>
+            <input type="checkbox"><strong><i>TicketCounter</i> erstellen</strong>: 
+            Implementieren Sie bitte die Klasse <i>TicketCounter</i> so wie im 
+            Klassendiagramm dargestellt. Dem Konstruktor soll eine Referenz auf eine
+            (vorher initialiserte) TicketInventory übergeben werden.
+        </li>
+        <li>
+            <input type="checkbox"><strong><i>run</i>-Methode</strong>: Die Methode
+            <i>run</i> soll das Verkaufen eines Tickets ermöglichen und dazu die 
+            Methode <i>sell</i> der TicketInventory aufrufen. Geben Sie zusätzlich auch 
+            den Namen des Schalters sowie das zuletzt verkaufte Ticket 
+            (Rückgabewert von <i>sell</i>) mit <i>println</i> aus.
+            <strong>Es sollen solange Tickets verkauft werden, bis keine mehr  
+                verfügbar sind.</strong>
+        </li>
+        <li>
+            Initialisieren Sie mehrere TicketCounter-Instanzen - bspw. 8. Denken Sie 
+            daran, immer dieselbe Referenz auf die TicketInventory zu übergeben, da 
+            alle Schalter aus demselben Ticketbestand verkaufen sollen.
+        </li>
+    </ul>
+
+
+<h3>3 - Zugriff auf <i>TicketInventory</i> regeln</h3>
+
+Führen Sie Ihren Code mit bspw. 20 Tickets und 8 Verkaufsstellen (TicketCounter) aus. 
+Was stellen Sie fest? Bekommen Sie eine Ausgabe vergleichbar mit der folgenden?
+
+<pre>
+    Schalter 7: Sold ticket #20
+    Schalter 6: Sold ticket #19
+    Schalter 0: Sold ticket #18
+    Schalter 1: Sold ticket #17
+    Schalter 5: Sold ticket #16
+    Schalter 3: Sold ticket #14
+    Schalter 4: Sold ticket #13
+    Schalter 2: Sold ticket #15
+    Schalter 7: Sold ticket #12
+    Schalter 6: Sold ticket #12
+    Schalter 1: Sold ticket #11
+    Schalter 3: Sold ticket #9
+    Schalter 5: Sold ticket #10
+    Schalter 0: Sold ticket #8
+    Schalter 2: Sold ticket #7
+    Schalter 4: Sold ticket #6
+    Schalter 4: Sold ticket #5
+    Schalter 2: Sold ticket #2
+    Schalter 5: Sold ticket #3
+    Schalter 3: Sold ticket #4
+    Schalter 7: Sold ticket #1
+    Schalter 6: No more tickets available
+    Schalter 1: No more tickets available
+    Schalter 0: No more tickets available
+</pre>
+
+Welches Problem besteht aktuell beim Ticketverkauf? Wie können Sie das Problem lösen? 
+Vergleichen Sie Ihre Ausgaben vor und nach Ihren Anpassungen und diskutieren Sie diese 
+mit Ihren Lehrbeauftragten.
+
+<h2>⭐ Keine Zusatzaufgaben</h2>
+
+<p>
+    <strong>
+        Hinweis: Da es sich um das letzte Praktikum handelt, gibt es keine Zusatzaufgaben 
+        mehr. 
+    </strong>
+</p>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>VProg Praktikum 13</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://mhimstedt.github.io/vprog/labs/exercises.css">
+</head>
+<body>
+  
+<main class="ex-content">
+<h1>Praktikum 13: Netzwerkprogrammierung</h1>
+<p>
+    In diesem Praktikum wollen wir verteilte Anwendungen entwickeln, 
+    die über Netzwerk miteinander kommunizieren können.
+    Dafür verwenden wir Java <strong>unter Nutzung der IDE</strong> 
+        <a href="https://www.jetbrains.com/idea/download/">IntelliJ IDEA</a>.
+    <br>
+    Konkret: Wir wollen unsere Kontaktliste (<i>AddressBook</i>) nun von einem Server laden. 
+    Das Experiment wird auf unserem lokalen PC getestet (Client und Server auf gleichem Rechner). 
+    Grundsätzlich kann diese Anwendung aber auch über das Netzwerk genutzt werden. Das setzt 
+    allerdings entsprechende Einstellungen der Firewall voraus.
+</p>
+<h2>🚀 Lernziele</h2>
+<p>Sie können:</p>
+<ul>
+    <li>verteilte Anwendungen in Java entwickeln</li>
+    <li>sicher mit Sockets in Java umgehen</li>
+    <li>Objekte serialisieren</li>
+</ul>
+
+<h2>🤔 Vorbereitung</h2>
+<p>
+   Arbeiten Sie bitte nochmal die Vorlesungsunterlagen zum Thema 
+   <strong>Netzwerkprogrammierung</strong> durch (siehe Lernraum). 
+   Wiederholen Sie dabei insbesondere die Konzepte zur Kommunikation mit 
+   <strong>Sockets</strong> in Java.
+
+   <strong>
+    Schauen Sie sich bitte unbedingt vor dem Praktikum das folgende Beispiel an:
+    <a href="Networking-Example.zip">Networking-Example.zip</a><br>
+    Achten Sie dabei auf die Nutzung des <i>Serializable</i>-Interface in der 
+    <i>Person</i>-Klasse.
+   </strong>
+</p>
+
+<p>
+    <strong>
+        Bringen Sie bitte Ihre Implementierungen der Klassen <i>Contact</i>, <i>AddressBook</i> und 
+        <i>Address</i> wieder mit.
+    </strong> 
+</p>
+
+<h2>📝 Pflichtaufgaben (1 Bonuspunkt)</h2>
+
+Übergeordnetes Ziel der folgenden Aufgaben ist es, dass Clients sich eine Kontaktliste (Typ <i>AddressBook</i>) 
+von einem Server laden können.  
+
+<h3>1 - <i>Model</i>-Klassen serialisieren</h3>
+
+Bevor wir unser <i>AddressBook</i> über Netzwerk übertragen können, müssen wir zunächst unsere <i>Model</i>-Klassen 
+vorbereiten. Damit wir Java-Objekte aus dem Speicher in Dateien, Netzwerk-Sockets usw. schreiben können, müssen diese 
+in einen Byte-Stream umgewandelt werden. Dieser Prozess nennt sich <strong>Serialisierung</strong>. In Java gibt es 
+hier analog zu den vielen anderen Bereichen, die wir schon kennengelernt haben (u.a. Datenstrukturen, GUI) wieder 
+Schnittstellen: konkret <strong>die Schnittstelle Serializable</strong>. Sollen Objekte eigener Klassen serialisiert
+werden, so müssen Sie diese Schnittstelle implementieren 
+(siehe Beispiel: <a href="Networking-Example.zip">Networking-Example.zip</a>).<br>
+
+Implementieren Sie für alle <i>Model</i>-Klassen die <i>Serializable</i>-Schnittstelle. Denken Sie daran, die 
+Versionsnummer anzugeben: <br>
+<pre>
+    <code>
+            private static final long serialVersionUID = 1L;
+    </code>
+</pre>
+<br>
+Sie können bei allen Klassen zunächst <code>1L</code> angeben. Sollten Sie Klassen später verändern (vor allem 
+die Attribute), können Sie hier die Versionsnummer anpassen, sodass keine Fehler beim späteren <i>Deserialisieren</i>
+entstehen.
+
+<h3>2 - Ein <i>AddressBook</i>-Server</h3>
+Entwickeln Sie einen Server, der ein <i>AddressBook</i> initialisiert und dann - sobald sich ein
+Client verbunden hat - dieses automatisch überträgt.
+ <br><br>
+<strong>
+    Orientieren Sie sich wieder an dem Beispiel in: 
+    <a href="Networking-Example.zip">Networking-Example.zip</a>
+</strong>
+
+<h3>3 - Ein <i>AddressBook</i>-Client</h3>
+Entwickeln Sie nun einen Client, der sich mit dem Server verbindet. Sollte ein <i>AddressBook</i> erfolgreich 
+heruntergeladen worden sein, zeigen Sie bitte alle Kontakte an. 
+
+<h2>⭐ Zusatzaufgaben (bis zu 2 Bonuspunkte)</h2>
+
+Sie können in diesem Praktikum <strong>bis zu 2 Bonuspunkte</strong> erwerben. 
+
+<h3>4 - Integration in Kontakte-GUI (bis zu 2 Bonuspunkte)</h3>
+
+Überlegen Sie sich ein Konzept, wie Sie das Client-Server-Modell zum Herunterladen Ihrer Konktakte in 
+die grafische Oberfläche der letzten beiden Praktika integrieren können. 
+
+<p><strong>Anforderungen</strong>:</p>
+<ul>
+    <li>Es gibt einen weiteren Button. Durch Klicken soll dieser das Herunterladen veranlassen. </li>
+    <li>
+        <strong>Trennung</strong>: Achten Sie weiterhin darauf, dass Modell/Daten und Darstellung (View)
+        so gut wie möglich getrennt bleiben. Ihr Client-Server-Konzept sollten Sie im <i>Model</i> ergänzen. 
+    </li>
+</ul>
+
+Für jede Anforderung können Sie bis zu einen Bonuspunkt erwerben. 
+
+<h3>5 - <i>Multi-Client</i>-Erweiterung (bis zu 2 Bonuspunkte)</h3>
+
+Aktuell unterstützt unser Client-Server-Modell nur einen einzigen Client. Sobald der Server eine Verbindung 
+zu einem Client aufgebaut hat, wird dieser beendet. Sollten sich zufällig zwei Clients gleichzeitig mit 
+dem Server verbinden, so wird nur zu einem Client eine Verbindung aufgebaut.
+
+<p><strong>Anforderungen</strong>:</p>
+<ul>
+    <li>Der Server behandelt jeden Client in einem eigenen <strong>Thread</strong></li>
+    <li>Sollte sich der Client nicht sofort verbinden können (<i>z.B. weil der Server gerade 
+        ausgelastet ist oder noch gar nicht gestartet wurde</i>), so soll der Verbindungsaufbau mehrmals wiederholt 
+        werden. Die maximale Anzahl Wiederholungsversuche übergeben Sie bitte als Variable (z.B. <code>n=5</code>). 
+    </li>
+</ul>
+
+Für jede Anforderung können Sie bis zu einen Bonuspunkt erwerben. 
+
+</main>
+</body>
+</html>

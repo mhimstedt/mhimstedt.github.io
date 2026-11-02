@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>CG1 Sternenhimmel</title>
+
+  <link rel="stylesheet" href="build/glslEditor.css">
+
+  <style>
+    
+  </style>
+  
+</head>
+<body>
+  <h1>Klausur: Computergrafik</h1>
+  <h2>Ende SoSe 2026</h2>
+  
+  <h2>Aufgabe</h2>
+
+  <p>
+    Bitte lösen Sie die folgende Aufgabe als GLSL Fragment Shader. 
+    <strong>Kopien Sie Ihre Lösung anschließend bitte als Antwort in den Lernraum-Test hinein.</strong>
+  </p>
+
+  <ul>
+    <li>Normalisieren Sie die Fragment-Koordinaten</li>
+    <li>Zeichnen Sie ein <strong>Rechteck</strong></li>
+    <li>Das Rechteck soll über Variablen konfigurierbar sein:</li>
+      <ul>
+        <li>2D-Koordinaten der oberen, linken Ecke</li>
+        <li>Breite</li>
+        <li>Höhe</li>
+      </ul>
+      <li>Es soll ein grüner, vertikaler Farbverlauf gezeichnet werden, der nur innerhalb des Rechtecks sichtbar ist</li>
+      <li>Die Hintergrundfarbe soll einstellbar sein.</li>
+      <li>Sorgen Sie dafür, dass der Farbverlauf gleich bleibt, wenn das Rechteck auf der Zeichenfläche verschoben wird</li>
+  </ul>
+
+<button onclick="history.back()">Zurück zum Test</button>
+
+<p>Das Ergebnis soll in etwa wie folgt aussehen: </p>
+
+<img src="rectangle.png" width="400">
+
+
+
+  <div id="cg1" class="editor"></div>
+  
+
+  <script src="build/glslEditor.js"></script>
+  <script>
+    // Editor 1
+    new GlslEditor('#cg1', {
+      canvas_size: 400,
+      theme: 'monokai',
+      canvas_follow: true,
+      canvas_float: 'right',
+      frag: `precision mediump float;
+
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+
+void main(){
+    vec2 uv = gl_FragCoord.xy/u_resolution.xy;
+    gl_FragColor = vec4(vec3(1., 0., 0.), 1.0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+`
+    });
+
+  </script>
+
+
+
+
+<iframe src="glossary.html" width="1000" height="800" title="Glossary"></iframe>
+
+</body>
+</html>
